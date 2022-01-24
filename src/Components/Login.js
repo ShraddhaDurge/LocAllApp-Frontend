@@ -108,10 +108,8 @@ const Login = ({ handleChange }) => {
     const onSubmit = (values, props) => {
         const user = {
             email: values.email,
-            password: values.password
+            password: btoa(values.password.split('').reverse().join(''))
         }
-
-        console.log(user)
 
         axios.post("http://localhost:8088/user/login", user)
             .then((response) => {
@@ -123,16 +121,23 @@ const Login = ({ handleChange }) => {
                     localStorage.setItem('myInfo', JSON.stringify(jwt));
                     const dataInfo = JSON.parse(localStorage.getItem("myInfo"))
                     console.log(dataInfo.email)
-                    navigate('/vendorHome', { replace: true })
+                    console.log(dataInfo.role)
+
+                    if(response.data.role==='customer') {
+                        navigate('/customerHome', { replace: true })
+                    }
+                    else if(response.data.role==='vendor'){
+                        navigate('/vendorHome', { replace: true })
+                    }
+                    else {
+                        navigate('/adminHome', { replace: true })
+                    }
                 }
 
             })
             .catch((error) => {
                 if (error.response.status === 403) {
                     console.log(error.response.data);
-                    //setSuccess(true);
-                    // alert("Invalid email or Password ")
-                    //
                     setNotify({
                         isOpen: true,
                         mesg: "Invalid Email or password"
@@ -205,13 +210,7 @@ const Login = ({ handleChange }) => {
                                             )}
                                         </Formik>
                                         <br></br>
-                                        {/* <center>
-                                            <Typography >
-                                                <Link href="#" style={{ color: "#2E2EFE" }}>
-                                                    Forgot password ?
-                                                </Link>
-                                            </Typography>
-                                        </center> */}
+
 
                                         {/* {success ?<Snack mesg={mesg}/>:''} */}
                                         <Snack

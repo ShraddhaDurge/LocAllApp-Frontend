@@ -42,7 +42,7 @@ const Register = () => {
             username: values.username,
             phoneno: values.phoneno,
             email: values.email,
-            password: values.password,
+            password: btoa(values.password.split('').reverse().join('')),
             role: values.role
         }
 
@@ -57,6 +57,12 @@ const Register = () => {
                     setMesg(response.data.message);
                     setOpen(true);
 
+                    const jwt = response.data
+                    localStorage.setItem('userInfo', JSON.stringify(jwt));
+                    const userInfo = JSON.parse(localStorage.getItem("userInfo"))
+                    console.log(userInfo.user.email)
+                    console.log(userInfo.user.role)
+                    console.log(userInfo.user.id)
                 }
 
             })
@@ -81,10 +87,13 @@ const Register = () => {
     const handleClose = (event, reason) => {
         if (success) {
             setOpen(false);
-            if(event.target.role==='customer') {
+
+            const userInfo = JSON.parse(localStorage.getItem("userInfo"))
+
+            if(userInfo.user.role==='customer') {
                 navigate('/', { replace: true })
             }
-            else if(event.target.role==='vendor'){
+            else if(userInfo.user.role==='vendor'){
                 navigate('/businessRegister', { replace: true })
             }
             else {

@@ -14,6 +14,8 @@ import CategoryIcon from '@mui/icons-material/Category';
 import HomeIcon from '@mui/icons-material/Home';
 import PinDropIcon from '@mui/icons-material/PinDrop';
 import DocumentScannerIcon from '@mui/icons-material/DocumentScanner';
+import PublishSharpIcon from '@material-ui/icons/PublishSharp';
+import UploadImage from "./UploadImages";
 
 const BusinessRegister = () => {
     const paperStyle = { padding: '30px 20px', width: 300, margin: '20px auto' }
@@ -23,38 +25,46 @@ const BusinessRegister = () => {
     const [success, setSuccess] = useState(false);
     const [mesg, setMesg] = useState('');
     const [open, setOpen] = useState(false);
-    const emptyPins = {pincode:''}
+    const emptyPins = {pincode:''};
+       const [imgdialog, setImgdialog] = useState({ isOp: false });
 
 
     const initialValues = {
-        bname: '',
-        bcategory: '',
+        businessName: '',
+        businessCategory: '',
         address: '',
         pincodes: [emptyPins],
         gstin: '',
-        license: ''
+//        license: ''
     }
 
 
     let navigate = useNavigate();
+
     const  onValueChange = (event) => {
         this.setState({
           role: event.target.value
         });
     }
+    const userInfo = JSON.parse(localStorage.getItem("userInfo"));
+    const userid = userInfo.user.id;
 
     const onSubmit = (values, props) => {
         const business = {
-            bname: values.bname,
-            bcategory: values.bcategory,
+            businessName: values.businessName,
+            businessCategory: values.businessCategory,
             address: values.address,
             pincodes: values.pincodes,
             gstin: values.gstin,
-            license: values.license
+//            license: values.license
         }
 
+
+
         console.log(business)
-        axios.post("http://localhost:8088/user/businessRegister", business)
+
+
+        axios.post(`http://localhost:8088/vendor/register/${userid}`, business)
             .then((response) => {
                 var res = response.status;
                 console.log(response.data)
@@ -63,13 +73,22 @@ const BusinessRegister = () => {
                     setSuccess(true);
                     setMesg(response.data.message);
                     setOpen(true);
+
+
+                    const jwt = response.data.business;
+                    localStorage.setItem('businessInfo', JSON.stringify(jwt));
+                    const businessInfo = JSON.parse(localStorage.getItem("businessInfo"))
+                     setImgdialog({
+                        isOp: true
+
+                    })
+
                 }
 
             })
             .catch((error) => {
                 if (error.response.status === 400) {
                     console.log(error.response.data.message);
-                    //  alert("Email already exist")
                     setOpen(true);
                     setMesg(error.response.data.message);
                     props.resetForm()
@@ -85,7 +104,6 @@ const BusinessRegister = () => {
     const handleClose = (event, reason) => {
         if (success) {
             setOpen(false);
-            navigate('/login', { replace: true })
         }
         else {
             setOpen(false);
@@ -181,17 +199,14 @@ const BusinessRegister = () => {
           gstin: DocumentScannerIcon
         };
 
-        const FieldIcon = ({ name }) => {
-          const Icon = icons[name];
-          return Icon ? (<Icon />) : null;
-        };
+    const FieldIcon = ({ name }) => {
+      const Icon = icons[name];
+      return Icon ? (<Icon />) : null;
+    };
 
     const validationSchema = Yup.object().shape({
-        bname: Yup.string()
+        businessName: Yup.string()
             .required("Required"),
-//        pincode:
-//         Yup.string().matches(/^[1-9][0-9]{5}$/ ,"Enter valid pincode").required("Required")
-//    ,
     pincodes: Yup.array()
         .of(
           Yup.object().shape({
@@ -202,7 +217,7 @@ const BusinessRegister = () => {
         .required("Required")
         .min(1, "Atleast 1 pincode required")
         ,
-        bcategory: Yup.string().required("Required"),
+        businessCategory: Yup.string().required("Required"),
         gstin: Yup.string()
             .matches(/^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[1-9A-Z]{1}Z[0-9A-Z]{1}$/,
                 "Please Enter valid GSTIN")
@@ -243,11 +258,11 @@ const BusinessRegister = () => {
                                         <Formik initialValues={initialValues} onSubmit={onSubmit} validationSchema={validationSchema}>
                                             {(props) => (
                                                 <Form>
-                                                    <Field as={TextField} fullWidth size="small" className={classes.textField} variant="outlined" label='Business Name' name='bname' value={props.values.bname}
-                                                        required error={props.errors.bname && props.touched.bname}
-                                                        onChange={props.handleChange} helperText={<ErrorMessage name='bname' />} InputProps={{endAdornment: (<FieldIcon name="bname" />),}} />
-                                                    <Field as={TextField} fullWidth size="small" className={classes.textField} variant="outlined" label='Business Category' type='bcategory' required error={props.errors.bcategory && props.touched.bcategory}
-                                                        name='bcategory' value={props.values.bcategory} onChange={props.handleChange} helperText={<ErrorMessage name='bcategory' />} InputProps={{endAdornment: (<FieldIcon name="bcategory" />),}} />
+                                                    <Field as={TextField} fullWidth size="small" className={classes.textField} variant="outlined" label='Business Name' name='businessName' value={props.values.businessName}
+                                                        required error={props.errors.businessName && props.touched.businessName}
+                                                        onChange={props.handleChange} helperText={<ErrorMessage name='businessName' />} InputProps={{endAdornment: (<FieldIcon name="bname" />),}} />
+                                                    <Field as={TextField} fullWidth size="small" className={classes.textField} variant="outlined" label='Business Category' type='businessCategory' required error={props.errors.businessCategory && props.touched.businessCategory}
+                                                        name='businessCategory' value={props.values.businessCategory} onChange={props.handleChange} helperText={<ErrorMessage name='businessCategory' />} InputProps={{endAdornment: (<FieldIcon name="bcategory" />),}} />
                                                     <Field as={TextField} fullWidth label='Address' size="small" className={classes.textField} variant="outlined" name='address'  required error={props.errors.address && props.touched.address}
                                                          value={props.values.address} onChange={props.handleChange} helperText={<ErrorMessage name='address' />} InputProps={{endAdornment: (<FieldIcon name="address" />),}} />
                                                     <FieldArray name="pincodes">
@@ -277,11 +292,14 @@ const BusinessRegister = () => {
 
                                                     <Field as={TextField} fullWidth size="small" className={classes.textField} variant="outlined" label='GSTIN' required error={props.errors.gstin && props.touched.gstin}
                                                         value={props.values.gstin} onChange={props.handleChange} name='gstin' helperText={<ErrorMessage name='gstin' />} InputProps={{endAdornment: (<FieldIcon name="gstin" />),}} />
-                                                    {/* <Button type='submit' variant='contained' color='primary' style={marginTop} align='center'>Register</Button> */}
 
-                                                    <label>Upload Business License: </label>
+
+
+                                                    {/*<label>Upload Business License: </label>
                                                     <Input type="file" name="license" onChange={(event) => props.setFieldValue('license', event.target.files[0])} className={classes.textField} variant="outlined" required
-                                                    />
+                                                    />*/}
+
+
                                                     <center>
                                                         <Button type='submit' variant="contained" disabled={props.isSubmitting}
                                                             className={classes.buttons} >{props.isSubmitting ? "Loading" : "Register Business"}</Button>
@@ -306,6 +324,9 @@ const BusinessRegister = () => {
                                                 </Fragment>
                                             }
                                         />
+                                        <UploadImage imgdialog={imgdialog}
+                                          setImgdialog={setImgdialog} />
+
                                         <br></br>
                                     </Grid>
                                 </Grid>
