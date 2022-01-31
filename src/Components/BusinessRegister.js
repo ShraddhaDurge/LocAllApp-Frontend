@@ -7,7 +7,7 @@ import Snackbar from '@material-ui/core/Snackbar';
 import axios from 'axios';
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
-import background1 from './bg4.jpeg';
+import background1 from './bg1.jpg';
 import AddBusinessIcon from '@mui/icons-material/AddBusiness';
 import StoreIcon from '@mui/icons-material/Store';
 import CategoryIcon from '@mui/icons-material/Category';
@@ -26,7 +26,7 @@ const BusinessRegister = () => {
     const [mesg, setMesg] = useState('');
     const [open, setOpen] = useState(false);
     const emptyPins = {pincode:''};
-       const [imgdialog, setImgdialog] = useState({ isOp: false });
+    const [imgdialog, setImgdialog] = useState({ isOp: false });
 
 
     const initialValues = {
@@ -159,7 +159,7 @@ const BusinessRegister = () => {
                       color: '#199bf1',
                       fontWeight: 'bold',
                       letterSpacing: '1px',
-                      marginTop: '70px',
+                      marginTop: '80px',
                       width: '200px',
                       '&:hover': {
                           backgroundColor: "#9B8583 ",
@@ -239,8 +239,6 @@ const BusinessRegister = () => {
                                         <br></br>
                                         <br></br>
                                         <br></br>
-                                        <br></br>
-                                        <br></br>
 
                                         <Typography variant='h6' style={{ color: "#ECE5E2" }} >Already a member?</Typography>
                                         <br></br>
@@ -292,13 +290,6 @@ const BusinessRegister = () => {
 
                                                     <Field as={TextField} fullWidth size="small" className={classes.textField} variant="outlined" label='GSTIN' required error={props.errors.gstin && props.touched.gstin}
                                                         value={props.values.gstin} onChange={props.handleChange} name='gstin' helperText={<ErrorMessage name='gstin' />} InputProps={{endAdornment: (<FieldIcon name="gstin" />),}} />
-
-
-
-                                                    {/*<label>Upload Business License: </label>
-                                                    <Input type="file" name="license" onChange={(event) => props.setFieldValue('license', event.target.files[0])} className={classes.textField} variant="outlined" required
-                                                    />*/}
-
 
                                                     <center>
                                                         <Button type='submit' variant="contained" disabled={props.isSubmitting}

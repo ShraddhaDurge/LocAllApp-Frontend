@@ -59,7 +59,7 @@ export default function UploadImage(props) {
                     // alert("Remainders sent successfully")
                     setNotify({
                         isOpen: true,
-                        mesg: "Image Added successfully!"
+                        mesg: "Document uploaded successfully!"
                     })
                     setFileName(null);
                 }
@@ -99,7 +99,7 @@ export default function UploadImage(props) {
             aria-labelledby="alert-dialog-title"
             aria-describedby="alert-dialog-description"
         >
-            <DialogTitle id="add image">Upload Business License in PNG/JPG Format</DialogTitle>
+            <DialogTitle id="add image">Upload GSTIN Certificate in PNG/JPG/PDF Format</DialogTitle>
             <DialogContent>
                 <Grid
                     container

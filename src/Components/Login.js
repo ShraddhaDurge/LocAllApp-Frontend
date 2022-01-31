@@ -5,7 +5,7 @@ import { Formik , Form, Field, ErrorMessage } from 'formik'
 import * as Yup from 'yup'
 import axios from 'axios';
 import Snack from './Snackbar';
-import background1 from './bg4.jpeg';
+import background1 from './bg1.jpg';
 import EmailIcon from '@mui/icons-material/Email';
 import LockIcon from '@mui/icons-material/Lock';
 
@@ -34,6 +34,7 @@ const Login = ({ handleChange }) => {
         }
         , grid: {
             width: "600px",
+            height: "420px",
             position: 'center',
             borderRadius: '20px',
             marginTop : '30px' ,
@@ -64,7 +65,7 @@ const Login = ({ handleChange }) => {
             fontWeight: 'bold',
             //padding: '12px 45px',
             letterSpacing: '1px',
-            marginTop: '70px',
+            marginTop: '80px',
             '&:hover': {
                 backgroundColor: "#9B8583 ",
             },
@@ -121,6 +122,7 @@ const Login = ({ handleChange }) => {
                     localStorage.setItem('myInfo', JSON.stringify(jwt));
                     const dataInfo = JSON.parse(localStorage.getItem("myInfo"))
                     console.log(dataInfo.email)
+                    console.log(dataInfo.phoneno)
                     console.log(dataInfo.role)
 
                     if(response.data.role==='customer') {
@@ -136,7 +138,7 @@ const Login = ({ handleChange }) => {
 
             })
             .catch((error) => {
-                if (error.response.status === 403) {
+                if (error.response.status === 400) {
                     console.log(error.response.data);
                     setNotify({
                         isOpen: true,
@@ -173,9 +175,8 @@ const Login = ({ handleChange }) => {
                                         <br></br>
                                         <br></br>
                                         <br></br>
-                                        <br></br>
-                                        <br></br>
                                         <Typography variant='h6'  style={{ color: "#ECE5E2" }} >Not yet a member?</Typography>
+                                        <br></br>
                                         <br></br>
                                         <Typography variant='subtitle1'  style={{ color: "#ECE5E2" }}>Sign up and discover what we can do for you</Typography>
 
@@ -211,8 +212,6 @@ const Login = ({ handleChange }) => {
                                         </Formik>
                                         <br></br>
 
-
-                                        {/* {success ?<Snack mesg={mesg}/>:''} */}
                                         <Snack
                                             notify={notify}
                                             setNotify={setNotify}

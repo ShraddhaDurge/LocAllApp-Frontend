@@ -8,12 +8,15 @@ import Snackbar from '@material-ui/core/Snackbar';
 import axios from 'axios';
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
-import background1 from './bg4.jpeg';
+import background1 from './bg1.jpg';
 import EmailIcon from '@mui/icons-material/Email';
 import LockIcon from '@mui/icons-material/Lock';
 import PersonIcon from '@mui/icons-material/Person';
 import PhoneIcon from '@mui/icons-material/Phone';
 import RadioButton from './Radiobutton';
+import firebase from './firebase';
+import { getAuth, RecaptchaVerifier, signInWithPhoneNumber } from "firebase/compat/auth";
+import otpVerification from "./OtpVerification";
 
 const Register = () => {
     const paperStyle = { padding: '30px 20px', width: 300, margin: '20px auto' }
@@ -23,7 +26,8 @@ const Register = () => {
     const [success, setSuccess] = useState(false);
     const [mesg, setMesg] = useState('');
     const [open, setOpen] = useState(false);
-
+    const appVerifier = window.recaptchaVerifier;
+    const [otpdialog, setOtpdialog] = useState({ isOp: false });
 
     const initialValues = {
         firstname: '',
@@ -31,7 +35,8 @@ const Register = () => {
         email: '',
         password: '',
         confirmpassword: '',
-        role: 'customer'
+        role: 'customer',
+        otp: ''
     }
 
 
@@ -62,7 +67,11 @@ const Register = () => {
                     const userInfo = JSON.parse(localStorage.getItem("userInfo"))
                     console.log(userInfo.user.email)
                     console.log(userInfo.user.role)
-                    console.log(userInfo.user.id)
+
+                    setOtpdialog({
+                        isOp: true
+
+                    })
                 }
 
             })
@@ -90,6 +99,7 @@ const Register = () => {
 
             const userInfo = JSON.parse(localStorage.getItem("userInfo"))
 
+
             if(userInfo.user.role==='customer') {
                 navigate('/', { replace: true })
             }
@@ -105,15 +115,16 @@ const Register = () => {
 
         }
     };
+
+    const handleChange = (e) => {
+         const {name, value} = e.target
+         this.setState({
+         [name]: value
+         })
+    }
     const Login = () => {
         navigate('/', { replace: true })
     };
-    const handleCustReg = () => {
-            navigate('/', { replace: true })
-        };
-     const handleVendorReg = () => {
-             navigate('/businessRegister', { replace: true })
-         };
 
     const useStyles = makeStyles({
         card: {
@@ -198,6 +209,61 @@ const Register = () => {
           const Icon = icons[name];
           return Icon ? (<Icon />) : null;
         };
+        const configureCaptcha = () =>{
+            console.log("Recaptca generated")
+            window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier('get-otp-button', {
+              'size': 'invisible',
+              'callback': (response) => {
+                // reCAPTCHA solved, allow signInWithPhoneNumber.
+                handleGetOtp();
+                console.log("Recaptca varified")
+              },
+              defaultCountry: "IN"
+            });
+          }
+
+
+
+        const handleGetOtp = phoneno => (e) => {
+            e.preventDefault()
+            configureCaptcha()
+            console.log(phoneno)
+            const phoneNumber = "+91" + phoneno
+            console.log(phoneNumber)
+            const appVerifier = window.recaptchaVerifier;
+            firebase.auth().signInWithPhoneNumber(phoneNumber, appVerifier)
+                .then((confirmationResult) => {
+                  // SMS sent. Prompt user to type the code from the message, then sign the
+                  // user in with confirmationResult.confirm(code).
+                  window.confirmationResult = confirmationResult;
+                  console.log("OTP has been sent")
+                  // ...
+                }).catch((error) => {
+                  // Error; SMS not sent
+                  // ...
+                  console.log("SMS not sent")
+                });
+          }
+
+      const handleVerifyOtp = otp => (e) =>{
+          e.preventDefault()
+
+          console.log(otp)
+          window.confirmationResult.confirm(otp).then((result) => {
+            // User signed in successfully.
+            const user = result.user;
+            console.log(JSON.stringify(user))
+            //alert("User is verified")
+            setOpen(true);
+            setMesg("User is verified");
+            // ...
+          }).catch((error) => {
+            // User couldn't sign in (bad verification code?)
+            // ...
+            setOpen(true);
+            setMesg("Wrong OTP! User not verified");
+          });
+        }
 
 
     const validationSchema = Yup.object().shape({
@@ -234,8 +300,6 @@ const Register = () => {
                                         <br></br>
                                         <br></br>
                                         <br></br>
-                                        <br></br>
-                                        <br></br>
 
                                         <Typography variant='h6' style={{ color: "#ECE5E2" }} >Already a member?</Typography>
                                         <br></br>
@@ -255,15 +319,22 @@ const Register = () => {
                                         <Formik initialValues={initialValues} onSubmit={onSubmit} validationSchema={validationSchema}>
                                             {(props) => (
                                                 <Form>
-
+                                                    <div id="get-otp-button"> </div>
                                                     <Field as={TextField} fullWidth size="small" className={classes.textField} variant="outlined" label='User Name' name='username' value={props.values.username}
                                                         required error={props.errors.username && props.touched.username}
                                                         onChange={props.handleChange} helperText={<ErrorMessage name='username' />} InputProps={{endAdornment: (<FieldIcon name="user" />),}} />
                                                     <Field as={TextField} fullWidth size="small" className={classes.textField} variant="outlined" label='Email Id' type='email' required error={props.errors.email && props.touched.email}
                                                         name='email' value={props.values.email} onChange={props.handleChange} helperText={<ErrorMessage name='email' />} InputProps={{endAdornment: (<FieldIcon name="email" />),}} />
-                                                    <Field as={TextField} fullWidth label='Phone number' size="small" className={classes.textField} variant="outlined" name='phoneno' pattern="[789]{1}[0-9]{9}" required error={props.errors.phoneno && props.touched.phoneno}
+
+                                                    <Field as={TextField} style = {{width: 150}} label='Phone no.' size="small" className={classes.textField} variant="outlined" name='phoneno' pattern="[789]{1}[0-9]{9}" required error={props.errors.phoneno && props.touched.phoneno}
                                                          value={props.values.phoneno} onChange={props.handleChange} helperText={<ErrorMessage name='phoneno' />} InputProps={{endAdornment: (<FieldIcon name="phone" />),}} />
-                                                    <Field as={TextField} fullWidth label='Password' type='password' size="small" className={classes.textField} variant="outlined" required error={props.errors.password && props.touched.password}
+                                                         <Button variant='outlined' onClick={handleGetOtp(props.values.phoneno)}>Get OTP</Button>
+
+                                                    <Field as={TextField} style = {{width: 150}} label='Enter OTP' size="small" className={classes.textField} variant="outlined" name='otp' pattern="[789]{1}[0-9]{9}" required error={props.errors.otp && props.touched.otp}
+                                                     value={props.values.otp} onChange={props.handleChange} helperText={<ErrorMessage name='otp' />} />
+                                                     <Button onClick={handleVerifyOtp(props.values.otp)} variant='outlined' >Verify</Button>
+
+                                                     <Field as={TextField} fullWidth label='Password' type='password' size="small" className={classes.textField} variant="outlined" required error={props.errors.password && props.touched.password}
                                                         value={props.values.password} onChange={props.handleChange} name='password' helperText={<ErrorMessage name='password' />} InputProps={{endAdornment: (<FieldIcon name="password" />),}} />
                                                     <Field as={TextField} fullWidth size="small" className={classes.textField} variant="outlined" label='Confirm Password' type='password' required error={props.errors.confirmpassword && props.touched.confirmpassword}
                                                         value={props.values.confirmpassword} onChange={props.handleChange} name='confirmpassword' helperText={<ErrorMessage name='confirmpassword' />} InputProps={{endAdornment: (<FieldIcon name="password" />),}} />
@@ -336,6 +407,8 @@ const Register = () => {
                                                 </Fragment>
                                             }
                                         />
+                                        {/*<otpVerify otpdialog={otpdialog}
+                                            setOtpdialog={setOtpdialog} /> */}
                                         <br></br>
                                     </Grid>
                                 </Grid>
