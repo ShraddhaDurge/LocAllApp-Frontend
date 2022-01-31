@@ -16,7 +16,6 @@ import PhoneIcon from '@mui/icons-material/Phone';
 import RadioButton from './Radiobutton';
 import firebase from './firebase';
 import { getAuth, RecaptchaVerifier, signInWithPhoneNumber } from "firebase/compat/auth";
-import otpVerification from "./OtpVerification";
 
 const Register = () => {
     const paperStyle = { padding: '30px 20px', width: 300, margin: '20px auto' }
@@ -27,7 +26,6 @@ const Register = () => {
     const [mesg, setMesg] = useState('');
     const [open, setOpen] = useState(false);
     const appVerifier = window.recaptchaVerifier;
-    const [otpdialog, setOtpdialog] = useState({ isOp: false });
 
     const initialValues = {
         firstname: '',
@@ -67,11 +65,6 @@ const Register = () => {
                     const userInfo = JSON.parse(localStorage.getItem("userInfo"))
                     console.log(userInfo.user.email)
                     console.log(userInfo.user.role)
-
-                    setOtpdialog({
-                        isOp: true
-
-                    })
                 }
 
             })
@@ -407,8 +400,6 @@ const Register = () => {
                                                 </Fragment>
                                             }
                                         />
-                                        {/*<otpVerify otpdialog={otpdialog}
-                                            setOtpdialog={setOtpdialog} /> */}
                                         <br></br>
                                     </Grid>
                                 </Grid>
