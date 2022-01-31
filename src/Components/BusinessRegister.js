@@ -1,6 +1,6 @@
 import { React, useState, Fragment } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Grid, Paper, Typography, TextField, Button, Input, makeStyles, Box, Card, CardContent, Link } from '@material-ui/core';
+import { Grid, Typography, TextField, Button, makeStyles, Box, Card, CardContent } from '@material-ui/core';
 import { Form, Formik, ErrorMessage, Field, FieldArray } from 'formik';
 import * as Yup from 'yup';
 import Snackbar from '@material-ui/core/Snackbar';
@@ -8,20 +8,15 @@ import axios from 'axios';
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
 import background1 from './bg1.jpg';
-import AddBusinessIcon from '@mui/icons-material/AddBusiness';
 import StoreIcon from '@mui/icons-material/Store';
 import CategoryIcon from '@mui/icons-material/Category';
 import HomeIcon from '@mui/icons-material/Home';
 import PinDropIcon from '@mui/icons-material/PinDrop';
 import DocumentScannerIcon from '@mui/icons-material/DocumentScanner';
-import PublishSharpIcon from '@material-ui/icons/PublishSharp';
 import UploadImage from "./UploadImages";
 
 const BusinessRegister = () => {
-    const paperStyle = { padding: '30px 20px', width: 300, margin: '20px auto' }
-    const headStyle = { margin: 0, fontFamily: 'san-serif', color: 'blue' }
-    const marginTop = { margin: '8px 0' }
-    const formStyle = { textAlign: 'center' }
+
     const [success, setSuccess] = useState(false);
     const [mesg, setMesg] = useState('');
     const [open, setOpen] = useState(false);
@@ -41,11 +36,6 @@ const BusinessRegister = () => {
 
     let navigate = useNavigate();
 
-    const  onValueChange = (event) => {
-        this.setState({
-          role: event.target.value
-        });
-    }
     const userInfo = JSON.parse(localStorage.getItem("userInfo"));
     const userid = userInfo.user.id;
 
@@ -77,7 +67,6 @@ const BusinessRegister = () => {
 
                     const jwt = response.data.business;
                     localStorage.setItem('businessInfo', JSON.stringify(jwt));
-                    const businessInfo = JSON.parse(localStorage.getItem("businessInfo"))
                      setImgdialog({
                         isOp: true
 
@@ -160,7 +149,6 @@ const BusinessRegister = () => {
                       fontWeight: 'bold',
                       letterSpacing: '1px',
                       marginTop: '80px',
-                      width: '200px',
                       '&:hover': {
                           backgroundColor: "#9B8583 ",
                       }

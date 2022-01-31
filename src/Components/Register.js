@@ -1,7 +1,7 @@
 import { React, useState, Fragment } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Grid, Paper, Typography, TextField, Button, makeStyles, Box, Card, CardContent, Link} from '@material-ui/core';
-import {RadioGroup, Radio, FormControlLabel,FormControl, FormLabel } from '@material-ui/core';
+import { Grid, Typography, TextField, Button, makeStyles, Box, Card, CardContent} from '@material-ui/core';
+import {RadioGroup } from '@material-ui/core';
 import { Form, Formik, ErrorMessage, Field } from 'formik';
 import * as Yup from 'yup';
 import Snackbar from '@material-ui/core/Snackbar';
@@ -13,19 +13,13 @@ import EmailIcon from '@mui/icons-material/Email';
 import LockIcon from '@mui/icons-material/Lock';
 import PersonIcon from '@mui/icons-material/Person';
 import PhoneIcon from '@mui/icons-material/Phone';
-import RadioButton from './Radiobutton';
 import firebase from './firebase';
-import { getAuth, RecaptchaVerifier, signInWithPhoneNumber } from "firebase/compat/auth";
 
 const Register = () => {
-    const paperStyle = { padding: '30px 20px', width: 300, margin: '20px auto' }
-    const headStyle = { margin: 0, fontFamily: 'san-serif', color: 'blue' }
-    const marginTop = { margin: '8px 0' }
-    const formStyle = { textAlign: 'center' }
+
     const [success, setSuccess] = useState(false);
     const [mesg, setMesg] = useState('');
     const [open, setOpen] = useState(false);
-    const appVerifier = window.recaptchaVerifier;
 
     const initialValues = {
         firstname: '',
@@ -109,12 +103,6 @@ const Register = () => {
         }
     };
 
-    const handleChange = (e) => {
-         const {name, value} = e.target
-         this.setState({
-         [name]: value
-         })
-    }
     const Login = () => {
         navigate('/', { replace: true })
     };
@@ -164,7 +152,6 @@ const Register = () => {
                       fontWeight: 'bold',
                       letterSpacing: '1px',
                       marginTop: '70px',
-                      width: '200px',
                       '&:hover': {
                           backgroundColor: "#9B8583 ",
                       }
@@ -262,9 +249,7 @@ const Register = () => {
     const validationSchema = Yup.object().shape({
         username: Yup.string()
             .required("Required"),
-        phoneno: Yup.string()
-         .matches(/^[7-9]\d{9}$/
-         ,"Enter valid phone number") .required("Required"),
+        phoneno: Yup.string().matches(/^[7-9]\d{9}$/,"Enter valid phone number").required("Required"),
         email: Yup.string().email("Enter valid email").required("Required"),
         password: Yup.string()
             .matches(/^.*(?=.{8,})((?=.*[!@#$%^&*()\-_=+{};:,<.>]){1})(?=.*\d)((?=.*[a-z]){1})((?=.*[A-Z]){1}).*$/,
