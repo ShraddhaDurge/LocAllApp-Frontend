@@ -6,6 +6,10 @@ import BusinessRegister from './Components/BusinessRegister';
 import VendorHome from './Components/VendorHome';
 import AdminHome from './Components/AdminHome';
 import CustomerHome from './Components/CustomerHome';
+import InventoryManagement from './Components/InventoryManagement';
+import OrderManagement from './Components/OrderManagement';
+import VendorReports from './Components/VendorReports';
+import VendorVerification from './Components/VendorVerification';
 
 function App() {
   return (
@@ -19,7 +23,11 @@ function App() {
         <Route path="/vendorHome" element={<VendorHome/>} />
         <Route path="/adminHome" element={<AdminHome/>} />
         <Route path="/customerHome" element={<CustomerHome/>} />
-      </Routes>
+        <Route path="/inventoryManagement" element={<InventoryManagement/>} />
+        <Route path="/orderManagement" element={<OrderManagement/>} />
+        <Route path="/vendorReports" element={<VendorReports/>} />
+        <Route path="/vendorVerification" element={<VendorVerification/>} />
+        </Routes>
 
     </Router>
   );

@@ -11,52 +11,7 @@ import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
 import VendorSidebar from "./VendorSidebar";
 
-
-function businessProfile(action) {
-    const businessInfo=JSON.parse(localStorage.getItem("businessInfo"))
-    const myInfo=JSON.parse(localStorage.getItem("myInfo"))
-
-    switch (action.type) {
-        case 'field': {
-            return {
-              ...businessInfo,
-              [action.fieldName]: action.payload,
-            };
-          }
-
-      case 'success': {
-        return {
-        username: myInfo.username,
-        email: myInfo.email,
-        phoneno: myInfo.phoneno,
-        businessName: businessInfo.businessName,
-        businessCategory: businessInfo.businessCategory,
-        address: businessInfo.address,
-        pincodes: businessInfo.pincodes,
-        gstin: businessInfo.gstin,
-        //            license: values.license
-        businessStatus:businessInfo.status
-        };
-      }
-      case 'error': {
-        return {
-          ...businessInfo,
-
-        };
-      }
-
-      default:
-        return businessInfo;
-    }
-  }
-  const useStyles=makeStyles(theme=>({
-  root:{
-    top:theme.spacing(9)
-  }
-}
-  ))
-
-const VendorHome=()=>{
+const OrderManagement=()=>{
     const paperStyle={padding :'0px 20px 0px 20px',width:800, height:520, margin:"0px 360px"}
     const headStyle={margin:0,fontFamily:'san-serif',color:'blue'}
     const btnstyle = { margin:'20px auto',display:'flex',justifyContent:'center',alignItems:'center', width:'30%',height:'20%', backgroundColor: '#2196F3'}
@@ -65,7 +20,7 @@ const VendorHome=()=>{
 
     const myInfo=JSON.parse(localStorage.getItem("myInfo"))
     const businessInfo=JSON.parse(localStorage.getItem("businessInfo"))
-    const classes=useStyles();
+//    const classes=useStyles();
 
     const initialValues = {
         username: myInfo.username,
@@ -79,8 +34,8 @@ const VendorHome=()=>{
         businessStatus: businessInfo.status
     }
 
-    const [myprofile, setMyprofile] = useReducer(businessProfile, initialValues);
-    const { businessName,businessCategory,address,pincodes,gstin} = myprofile;
+//    const [myprofile, setMyprofile] = useReducer(businessProfile, initialValues);
+//    const { businessName,businessCategory,address,pincodes,gstin} = myprofile;
     const [success,setSuccess]=useState(false);
     const [mesg,setMesg]=useState('');
     const [open, setOpen] =useState(false);
@@ -88,42 +43,42 @@ const VendorHome=()=>{
     let navigate = useNavigate();
     const onSubmit = async (e) => {
         e.preventDefault();
-        const newBusiness = {
-            businessName,
-            businessCategory,
-            address,
-            pincodes,
-            gstin
-        };
+//        const newBusiness = {
+//            businessName,
+//            businessCategory,
+//            address,
+//            pincodes,
+//            gstin
+//        };
 
-        console.log(newBusiness)
-        axios.post("/account/saveBusinessProfile", newBusiness)
-        .then((response) => {
-            var res = response.status;
-
-            console.log(response.status)
-            if (res === 200) {
-                    setSuccess(true);
-                    setMesg("Business Profile Updated!");
-                    setOpen(true);
-            }
-
-        })
-        .catch((error) => {
-            if (error.response.status === 400) {
-                console.log(error.response.data.message);
-                // alert("Error ")
-                    setOpen(true);
-                    setMesg(error.response.data.message);
-
-
-            }
-            else{
-                // alert("Something went wrong")
-                   setOpen(true);
-                    setMesg("Something went wrong");}
-            console.log(error)
-        });
+//        console.log(newBusiness)
+//        axios.post("/account/saveBusinessProfile", newBusiness)
+//        .then((response) => {
+//            var res = response.status;
+//
+//            console.log(response.status)
+//            if (res === 200) {
+//                    setSuccess(true);
+//                    setMesg("Business Profile Updated!");
+//                    setOpen(true);
+//            }
+//
+//        })
+//        .catch((error) => {
+//            if (error.response.status === 400) {
+//                console.log(error.response.data.message);
+//                // alert("Error ")
+//                    setOpen(true);
+//                    setMesg(error.response.data.message);
+//
+//
+//            }
+//            else{
+//                // alert("Something went wrong")
+//                   setOpen(true);
+//                    setMesg("Something went wrong");}
+//            console.log(error)
+//        });
 
     }
     const handleClose = (event, reason) => {
@@ -138,17 +93,17 @@ const VendorHome=()=>{
   };
     const info2=JSON.parse(localStorage.getItem("businessInfo"))
     return(
-        <Grid>
-        <VendorSidebar/>
+    <Grid>
+    <VendorSidebar/>
         <Grid style={gridStyle}>
 
         <Paper elevation={20} style={paperStyle}>
             <Grid align='center' style={{padding:"30px 10px"}}>
 
-                <Typography variant='h6' color="textSecondary" align="center">Vendor Homepage</Typography>
+                <Typography variant='h6' color="textSecondary" align="center">Order Management</Typography>
             </Grid>
             <br/>
-            <Formik initialValues={initialValues} onSubmit={onSubmit}>
+           {/* <Formik initialValues={initialValues} onSubmit={onSubmit}>
                 {(props) => (
                     <Form>
                     <div class="container">
@@ -208,23 +163,18 @@ const VendorHome=()=>{
                               } helperText={<ErrorMessage name="address" />}/>
                         </Grid>
 
-
                         <Grid item xs={6}>
-                                    {info2.pincodes.map((pincode, i) => (
-                                      <span key={i}>
-                                      <Field as={TextField} label='Serviceable Pincodes' name="pincodes" required value={pincode.pincode
-                                      }error={props.errors.pincodes && props.touched.pincodes}   onInput={props.handleChange}
-                                     onChange={(e) =>
-                                       setMyprofile({
-                                           type: 'field',
-                                           fieldName: 'pincodes',
-                                           payload: e.currentTarget.value,
-                                         })
-                                       } helperText={<ErrorMessage name="pincodes" />}/>
-
-                                      </span>
-                                    ))}
+                            <Field as={TextField} label='Serviceable Pincodes' name="pincodes" required value= {info2.pincodes}
+                            error={props.errors.pincodes && props.touched.pincodes}   onInput={props.handleChange}
+                            onChange={(e) =>
+                              setMyprofile({
+                                  type: 'field',
+                                  fieldName: 'pincodes',
+                                  payload: e.currentTarget.value,
+                                })
+                              } helperText={<ErrorMessage name="pincodes" />}/>
                         </Grid>
+
                         <Grid item xs={6}>
                             <Field as={TextField} label='gstin' name="businessName" required  value={info2.gstin}
                             error={props.errors.gstin && props.touched.gstin} onInput={props.handleChange} disabled/>
@@ -238,11 +188,11 @@ const VendorHome=()=>{
 
                     </Form>
                 )}
-            </Formik>
+            </Formik> */}
 
         </Paper>
         <Snackbar
-        className={classes.root}
+//        className={classes.root}
         anchorOrigin={{
           vertical: 'top',
           horizontal: 'right',
@@ -268,4 +218,4 @@ const VendorHome=()=>{
 
 }
 
-export default VendorHome;
+export default OrderManagement;

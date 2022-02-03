@@ -10,7 +10,7 @@ import { Button, Grid } from '@material-ui/core'
 import Snack from './Snackbar';
 import { useNavigate } from 'react-router-dom';
 
-export default function UploadImage(props) {
+export default function UploadGstCertificate(props) {
 
     const [notify, setNotify] = React.useState({ isOpen: false, mesg: '' });
     const [selectedFile, setSelectedFile] = React.useState(null);

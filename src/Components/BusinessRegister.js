@@ -13,7 +13,7 @@ import CategoryIcon from '@mui/icons-material/Category';
 import HomeIcon from '@mui/icons-material/Home';
 import PinDropIcon from '@mui/icons-material/PinDrop';
 import DocumentScannerIcon from '@mui/icons-material/DocumentScanner';
-import UploadImage from "./UploadImages";
+import UploadGstCertificate from "./UploadGstCertificate";
 
 const BusinessRegister = () => {
 
@@ -63,10 +63,6 @@ const BusinessRegister = () => {
                     setSuccess(true);
                     setMesg(response.data.message);
                     setOpen(true);
-
-
-                    const jwt = response.data.business;
-                    localStorage.setItem('businessInfo', JSON.stringify(jwt));
                      setImgdialog({
                         isOp: true
 
@@ -257,7 +253,7 @@ const BusinessRegister = () => {
                                                               {props.values.pincodes.map((_, index) => (
                                                                 <Grid container item key={index} >
                                                                       <Grid >
-                                                                            <Field as={TextField} size="small" label='Servicable pincode' className={classes.textField} variant="outlined" required error={props.errors.pincode && props.touched.pincode}
+                                                                            <Field as={TextField} size="small" label='Serviceable pincode' className={classes.textField} variant="outlined" required error={props.errors.pincode && props.touched.pincode}
                                                                                   value={props.values.pincode} onChange={props.handleChange} pattern="^[1-9][0-9]{5}$" helperText={<ErrorMessage name='pincode' />} InputProps={{endAdornment: (<FieldIcon name="pincode" />),}} name={`pincodes.${index}.pincode`}/>
                                                                         </Grid>
                                                                     <Grid >
@@ -303,7 +299,7 @@ const BusinessRegister = () => {
                                                 </Fragment>
                                             }
                                         />
-                                        <UploadImage imgdialog={imgdialog}
+                                        <UploadGstCertificate imgdialog={imgdialog}
                                           setImgdialog={setImgdialog} />
 
                                         <br></br>

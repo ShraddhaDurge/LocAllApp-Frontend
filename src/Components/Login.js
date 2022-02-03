@@ -118,21 +118,34 @@ const Login = ({ handleChange }) => {
                 console.log(response.data)
                 console.log(response.status)
                 if (res === 200) {
-                    const jwt = response.data
-                    localStorage.setItem('myInfo', JSON.stringify(jwt));
-                    const dataInfo = JSON.parse(localStorage.getItem("myInfo"))
-                    console.log(dataInfo.email)
-                    console.log(dataInfo.phoneno)
-                    console.log(dataInfo.role)
+
 
                     if(response.data.role==='customer') {
+
+                        const jwt = response.data
+                        localStorage.setItem('myInfo', JSON.stringify(jwt));
+                        const dataInfo = JSON.parse(localStorage.getItem("myInfo"))
+                        console.log(dataInfo.role)
                         navigate('/customerHome', { replace: true })
                     }
-                    else if(response.data.role==='vendor'){
+                    else if(response.data.user.role==='vendor'){
+                        const busi = response.data;
+                        localStorage.setItem('businessInfo', JSON.stringify(busi));
+                        const businessInfo = JSON.parse(localStorage.getItem("businessInfo"))
+                        console.log(businessInfo.user.role)
+                        console.log(businessInfo.businessName)
                         navigate('/vendorHome', { replace: true })
                     }
-                    else {
+                    else if(response.data.role==='admin'){
+                        const jwt = response.data
+                        localStorage.setItem('myInfo', JSON.stringify(jwt));
+                        const dataInfo = JSON.parse(localStorage.getItem("myInfo"))
+                        console.log(dataInfo.role)
                         navigate('/adminHome', { replace: true })
+                    }
+                    else
+                    {
+                        navigate('/', { replace: false })
                     }
                 }
 
@@ -156,7 +169,6 @@ const Login = ({ handleChange }) => {
             });
     }
     const Register = () => {
-//        history.push('/register');
         navigate('/register', { replace: true })
     };
 

@@ -22,8 +22,7 @@ const Register = () => {
     const [open, setOpen] = useState(false);
 
     const initialValues = {
-        firstname: '',
-        lastname: '',
+        username: '',
         email: '',
         password: '',
         confirmpassword: '',
