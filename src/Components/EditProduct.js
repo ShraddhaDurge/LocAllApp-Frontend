@@ -11,7 +11,7 @@ import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } 
 import axios from 'axios';
 
 function editPage(edit, action) {
-  const dataInfo = JSON.parse(localStorage.getItem("myEdit"))
+  const productInfo = JSON.parse(localStorage.getItem("productInfo"))
   // const info=JSON.parse(localStorage.getItem("myInfo"))
 
   switch (action.type) {
@@ -24,13 +24,11 @@ function editPage(edit, action) {
 
     case 'success': {
       return {
-        event_id: dataInfo.event_id,
-        name: dataInfo.name,
-        event_type: "Weekend event",
-        description: dataInfo.description,
-        venue: dataInfo.venue
-
-
+        productName: productInfo.productName,
+        quantAvailable: productInfo.quantAvailable,
+        price: productInfo.price,
+        productTags: productInfo.productTags,
+        productDesc: productInfo.productDesc
       };
     }
     case 'error': {
@@ -56,23 +54,20 @@ const MenuProps = {
 };
 const EditProduct = (props) => {
 
-  const dataInfo1 = JSON.parse(localStorage.getItem("myEdit"))
   const marginTop = { marginTop: '10px', marginBottom: '8px', width: '100px' }
+  const tags = {tag:''};
   const initialValues = {
-    event_id: " ",
-    name: " ",
-    event_type: "Weekend event",
-    description: " ",
-    venue: " ",
-    start_time: " ",
-    end_time: " "
-  }
+          productName: '',
+          quantAvailable: '',
+          price: '',
+          productTags: [tags],
+          productDesc: ''
+      }
   const [notify, setNotify] = React.useState({ isOpen: false, mesg: '' });
-  const [wevent, setWevent] = useState([])
+  const [productList, setProductList] = useState([])
   const [edit, setEdit] = useReducer(editPage, initialValues);
-  const { event_id, name, venue, description, start_time, end_time, event_type } = edit;
-  const event = "Weekend event"
-  const [eventId, setEventId] = React.useState();
+  const {productName, quantAvailable,price,productTags,productDesc} = edit;
+  const [productId, setProductId] = React.useState();
   const { editp, setEditp } = props;
   const formStyle = { textAlign: 'center' }
   const handleClose = () => {
@@ -81,31 +76,30 @@ const EditProduct = (props) => {
     });
 
   };
+   const businessInfo=JSON.parse(localStorage.getItem("businessInfo"))
+   const bid = businessInfo.business_id
   React.useEffect(() => {
-    axios.get('/account/events/getEventsList/true/Weekend event')
+    axios.get(`http://localhost:8088/product/getList/${bid}`)
       .then(response => {
         console.log(response)
-        console.log(response.data[0].event_id)
-        setWevent(response.data)
+        console.log(response.data[0].productName)
+        setProductList(response.data)
 
       })
       .catch(err => {
         console.log(err)
-
-
       })
-  }, [event])
+  },[bid])
 
   const handleChange = (event) => {
-    const evid = event.target.value;
-    localStorage.setItem('editeventId', JSON.stringify(evid));
-    const editid = JSON.parse(localStorage.getItem("editeventId"));
-    axios.get(`/account/events/${editid}`)
+    const productId = event.target.value;
+    localStorage.setItem('editProductId', JSON.stringify(productId));
+    const editid = JSON.parse(localStorage.getItem("editProductId"));
+    axios.get(`http://localhost:8088/product/${editid}`)
       .then(response => {
         console.log(response)
-        console.log(response.data);
-        const pro = response.data
-        localStorage.setItem('myEdit', JSON.stringify(pro))
+        console.log(response.data)
+        localStorage.setItem('productInfo', JSON.stringify(response.data))
         setEdit({ type: 'success' })
 
       })
@@ -122,18 +116,18 @@ const EditProduct = (props) => {
 
   const onSubmit = async (e) => {
     e.preventDefault();
-    const user = {
+    const pid = JSON.parse(localStorage.getItem("productId"));
+            console.log(pid);
+   const Product = {
+       productId:pid,
+       productName,
+       quantAvailable,
+       price,
+       productTags,
+       productDesc
+   }
 
-      event_id,
-      name,
-      event_type,
-      description,
-      venue,
-      start_time,
-      end_time
-    }
-
-    axios.post("/account/admin/updateEvents", user)
+    axios.post("http://localhost:8088/product/update", Product)
       .then((response) => {
         var res = response.status;
 
@@ -147,20 +141,12 @@ const EditProduct = (props) => {
 
       })
       .catch((error) => {
-        if (error.response.status === 400) {
-          console.log(error.response.data.message);
-          setNotify({
-            isOpen: true,
-            mesg: "Something Went Wrong!"
-          })
-        }
-        else {
           setNotify({
             isOpen: true,
             mesg: "Something Went Wrong!"
           })
           console.log(error)
-        }
+
       });
   }
 
@@ -174,7 +160,7 @@ const EditProduct = (props) => {
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >    <center>
-          <DialogTitle id="past-event-dialog-title">Edit Events</DialogTitle>
+          <DialogTitle id="edit-product-dialog-title">Edit Product</DialogTitle>
           </center>
         <DialogContent >
 
@@ -195,38 +181,65 @@ const EditProduct = (props) => {
                               <InputLabel id="demo-simple-select-outlined-label">Product Name</InputLabel>
                               <Select
                                 labelId="demo-simple-select-outlined-label"
-                                id="demo-event-name"
+                                id="demo-product-name"
                                 label="Product Name"
-                                value={eventId}
+                                value={productId}
                                 onChange={handleChange}
 
                                 MenuProps={MenuProps}
                               >
-                                {wevent.map((eve) => (
-                                  <MenuItem key={eve.event_id} value={eve.event_id} >
-                                    {eve.name}
+                                {productList.map((prod) => (
+                                  <MenuItem key={prod.productId} value={prod.productId} >
+                                    {prod.productName}
                                   </MenuItem>
                                 ))}
                               </Select>
                               </FormControl></Grid>
 
                               <Grid item xs={6}>
-                                <Field as={TextField}  label='Venue' name="venue" onInput={props.handleChange} value={venue} style={{ marginLeft: '-20px' }}
+                                <Field as={TextField}  label='Quantity Available' name="quantAvailable" onInput={props.handleChange} value={quantAvailable} style={{ marginLeft: '-20px' }}
                                   onChange={e =>
                                     setEdit({
                                       type: 'field',
-                                      fieldName: 'venue',
+                                      fieldName: 'quantAvailable',
                                       payload: e.currentTarget.value,
                                     })
 
                                   }
                                   required />
                               </Grid>
+                              <Grid item xs={6}>
+                                  <Field as={TextField}  label='Price' name="price" onInput={props.handleChange} value={price} style={{ marginLeft: '-20px' }}
+                                    onChange={e =>
+                                      setEdit({
+                                        type: 'field',
+                                        fieldName: 'price',
+                                        payload: e.currentTarget.value,
+                                      })
 
+                                    }
+                                    required />
+                                </Grid>
+                                <Grid item xs={6}>
+                                  {productTags.map((tag, i) => (
+                                    <span key={i}>
+                                    <Field as={TextField} label='Product Tags' name="productTags" required value={tag.tag } error={props.errors.productTags && props.touched.productTags}   onInput={props.handleChange}
+                                         onChange={(e) =>
+                                           setEdit({
+                                               type: 'field',
+                                               fieldName: 'productTags',
+                                               payload: e.currentTarget.value,
+                                             })
+                                           }
+                                     />
 
+                                    </span>
+                                  ))}
+
+                                    </Grid>
 
                               <Grid item xs={12}>
-                                <Field as={TextField} label='Description' name="description" required value={description} style={{ marginLeft: '10px', width: '500px' }}
+                                <Field as={TextField} label='Product Description' name="productDesc" required value={productDesc} style={{ marginLeft: '10px', width: '500px' }}
                                   required onInput={props.handleChange}
                                   InputLabelProps={{
                                     shrink: true,
@@ -234,7 +247,7 @@ const EditProduct = (props) => {
                                   onChange={(e) =>
                                     setEdit({
                                       type: 'field',
-                                      fieldName: 'description',
+                                      fieldName: 'productDesc',
                                       payload: e.currentTarget.value,
                                     })}
                                 />

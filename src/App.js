@@ -10,6 +10,7 @@ import InventoryManagement from './Components/InventoryManagement';
 import OrderManagement from './Components/OrderManagement';
 import VendorReports from './Components/VendorReports';
 import VendorVerification from './Components/VendorVerification';
+import DisplayImage from './Components/DisplayImage';
 
 function App() {
   return (
@@ -27,6 +28,7 @@ function App() {
         <Route path="/orderManagement" element={<OrderManagement/>} />
         <Route path="/vendorReports" element={<VendorReports/>} />
         <Route path="/vendorVerification" element={<VendorVerification/>} />
+        <Route path="/displayImage" element={<DisplayImage/>} />
         </Routes>
 
     </Router>

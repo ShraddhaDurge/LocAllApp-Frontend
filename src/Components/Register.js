@@ -20,6 +20,7 @@ const Register = () => {
     const [success, setSuccess] = useState(false);
     const [mesg, setMesg] = useState('');
     const [open, setOpen] = useState(false);
+    const [isOpened, setIsOpened] = useState(false);
 
     const initialValues = {
         username: '',
@@ -216,6 +217,7 @@ const Register = () => {
                   // user in with confirmationResult.confirm(code).
                   window.confirmationResult = confirmationResult;
                   console.log("OTP has been sent")
+                  setIsOpened(true)
                   // ...
                 }).catch((error) => {
                   // Error; SMS not sent
@@ -305,11 +307,15 @@ const Register = () => {
 
                                                     <Field as={TextField} style = {{width: 150}} label='Phone no.' size="small" className={classes.textField} variant="outlined" name='phoneno' pattern="[789]{1}[0-9]{9}" required error={props.errors.phoneno && props.touched.phoneno}
                                                          value={props.values.phoneno} onChange={props.handleChange} helperText={<ErrorMessage name='phoneno' />} InputProps={{endAdornment: (<FieldIcon name="phone" />),}} />
-                                                         <Button variant='outlined' onClick={handleGetOtp(props.values.phoneno)}>Get OTP</Button>
+                                                         <Button variant='outlined' onClick={handleGetOtp(props.values.phoneno)} style={{ borderRadius:100, marginTop:'5px',backgroundColor: "#199bf1",color: '#FFFFFF'}}>Get OTP</Button>
+                                                    {isOpened && (
+                                                            <div>
+                                                              <Field as={TextField} style = {{width: 150}} label='Enter OTP' size="small" className={classes.textField} variant="outlined" name='otp' pattern="[789]{1}[0-9]{9}" required error={props.errors.otp && props.touched.otp}
+                                                               value={props.values.otp} onChange={props.handleChange} helperText={<ErrorMessage name='otp' />} />
+                                                               <Button onClick={handleVerifyOtp(props.values.otp)} variant='outlined' style={{ borderRadius:100, marginTop:'5px',backgroundColor: "#199bf1",color: '#FFFFFF'}} >Verify</Button>
+                                                            </div>
+                                                          )}
 
-                                                    <Field as={TextField} style = {{width: 150}} label='Enter OTP' size="small" className={classes.textField} variant="outlined" name='otp' pattern="[789]{1}[0-9]{9}" required error={props.errors.otp && props.touched.otp}
-                                                     value={props.values.otp} onChange={props.handleChange} helperText={<ErrorMessage name='otp' />} />
-                                                     <Button onClick={handleVerifyOtp(props.values.otp)} variant='outlined' >Verify</Button>
 
                                                      <Field as={TextField} fullWidth label='Password' type='password' size="small" className={classes.textField} variant="outlined" required error={props.errors.password && props.touched.password}
                                                         value={props.values.password} onChange={props.handleChange} name='password' helperText={<ErrorMessage name='password' />} InputProps={{endAdornment: (<FieldIcon name="password" />),}} />

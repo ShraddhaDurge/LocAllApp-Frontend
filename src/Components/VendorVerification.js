@@ -1,21 +1,11 @@
 import { React, useState, Fragment, Component } from 'react';
-import { useNavigate } from 'react-router-dom';
-//import { Redirect } from 'react-router-dom';
-//import { useNavigation } from '@react-navigation/native';
+import { Link } from 'react-router-dom';
 import { Grid, Typography, TextField, Button, makeStyles, Box, Card, CardContent } from '@material-ui/core';
 import { Form, Formik, ErrorMessage, Field, FieldArray } from 'formik';
 import * as Yup from 'yup';
 import Snackbar from '@material-ui/core/Snackbar';
 import axios from 'axios';
-import IconButton from '@material-ui/core/IconButton';
-import CloseIcon from '@material-ui/icons/Close';
-import background1 from './bg1.jpg';
-import StoreIcon from '@mui/icons-material/Store';
-import CategoryIcon from '@mui/icons-material/Category';
-import HomeIcon from '@mui/icons-material/Home';
-import PinDropIcon from '@mui/icons-material/PinDrop';
-import DocumentScannerIcon from '@mui/icons-material/DocumentScanner';
-import UploadGstCertificate from "./UploadGstCertificate";
+
 
 
 class VendorVerification extends Component{
@@ -28,12 +18,12 @@ class VendorVerification extends Component{
 		};
 	};
 
+	state = { isOpen: false };
 
-
-
-
-
-
+  handleShowDialog = () => {
+    this.setState({ isOpen: !this.state.isOpen });
+    console.log('cliked');
+  };
 
 	// ComponentDidMount is used to execute the code
 	componentDidMount() {
@@ -43,27 +33,22 @@ class VendorVerification extends Component{
 							this.setState({
 									items: json,
 									DataisLoaded: true,
-
 							});
-
 					})
 	}
+
 	render() {
 			const { DataisLoaded, items } = this.state;
 			//const navigation = useNavigation();
 			if (!DataisLoaded) return <div>
 					<h1> Pleses wait some time.... </h1> </div> ;
 
-  		const onSubmit = (values, props) => {
 
-				console.log("CHECKED VENDORS ON THIS PAGE")
-				this.props.history.push('/adminHome');
+			const show = license => e => {
+				localStorage.setItem('image info', JSON.stringify(license));
+				this.props.history.push('/displayImage');
 			}
 
-			const goBack = () => {
-				this.props.history.push('/adminHome');
-				//navigation('/adminHome', { replace: true })
-			}
 			const acceptVendor = business_id => e => {
             		console.log("Business id: "+business_id)
             		console.log("Status: Accepted")
@@ -74,30 +59,27 @@ class VendorVerification extends Component{
             				console.log(response.data)
             				console.log(response.status)
             				if (res === 200) {
-            						setSuccess(true);
-            						setMesg(response.data.message);
-            						setOpen(true);
-            						navigate('/adminHome', { replace:true })
+            						//setSuccess(true);
+            						//setMesg(response.data.message);
+            						//setOpen(true);
+            						//navigate('/adminHome', { replace:true })
             						console.log("accepted")
-
             				}
 
             		})
             		.catch((error) => {
             				if (error.response.status === 400) {
             						console.log(error.response.data.message);
-            						setOpen(true);
-            						setMesg(error.response.data.message);
-
-
+            						//setOpen(true);
+            						//setMesg(error.response.data.message);
             				}
             				else {
-            						setOpen(true);
-            						setMesg("Something went wrong");
+            						//setOpen(true);
+            						//setMesg("Something went wrong");
             						console.log(error)
             				}
             		});
-
+					window.location.reload()
             };
 
             const rejectVendor = business_id => e => {
@@ -135,21 +117,22 @@ class VendorVerification extends Component{
             					console.log(error)
             			}
             	});
-
+				window.location.reload()
             };
 
 			return (
 			<div className = "App">
 				<div>
       		<h1>Welcome to Vendor Verification!</h1><br /><br />
-      		<input type="button" onClick={goBack} value="Back to Home Page" />
+
     		</div>
 
-					<h1> Fetch data from an api in react </h1>  {
+					{
 
-						<Formik onSubmit={onSubmit}>
+						<Formik>
 							{(props) => (
 								<Form>
+									<center>
 									<div className="Table">
 									<table>
 									    <tbody>
@@ -178,37 +161,31 @@ class VendorVerification extends Component{
                                                                     ))}
                                                       </td>
 													<td>{ item.gstin }</td>
-													<td>< img src={`data:image/png;base64,${item.license}`} height='100px' width='100px'/></td>
+													<td>
+													<Link to="/displayImage" className="btn btn-primary">
+													<img src={`data:image/png;base64,${item.license}`} width={200}  onClick={show(item.license)} />
+													</Link>
+													</td>
 
 													<td>
 													<button type="button" onClick={acceptVendor(item.business_id)}> Accept </button>
 													<button type="button" onClick={rejectVendor(item.business_id)}> Deny </button>
-
 													</td>
-
-
 												</tr>
 											)
 										})}
 										</tbody>
 									</table>
 									</div>
-									<center>
-                    <Button type='submit'>Submit</Button>
-                  </center>
+                 				 	</center>
 								</Form>
           		)}
 			 </Formik>
 
-
-
 					}
+					<button><Link to="/adminHome" className="btn btn-primary">Back to Home Page</Link></button>
 			</div>
-
-
-
 			);
-
 	}
 }
 export default VendorVerification;

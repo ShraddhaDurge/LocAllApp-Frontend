@@ -28,7 +28,7 @@ export default function UploadProductImage(props) {
             isOpen: false
         });
         setFileName(null);
-        navigate('/login', { replace: true })
+        navigate('/inventoryManagement', { replace: true })
     };
 
 
@@ -37,18 +37,17 @@ export default function UploadProductImage(props) {
         const file = JSON.parse(localStorage.getItem("files"));
         fd.append('file', selectedFile);
         console.log({ selectedFile })
-        const businessInfo = JSON.parse(localStorage.getItem("businessInfo"));
-        const bid = businessInfo.business_id;
-
+        const pid = JSON.parse(localStorage.getItem("productId"));
+        console.log(pid);
         const config = {
             headers: {
                 'content-type': 'multipart/form-data'
             }
         }
-        console.log(bid);
+
 
         axios({
-            url:`http://localhost:8088/vendor/uploadBusinessLicense/${bid}`,
+            url:`http://localhost:8088/product/uploadProductImage/${pid}`,
             method: 'post',
             data: fd,
             config
@@ -59,7 +58,7 @@ export default function UploadProductImage(props) {
                     // alert("Remainders sent successfully")
                     setNotify({
                         isOpen: true,
-                        mesg: "Document uploaded successfully!"
+                        mesg: "Product Image uploaded successfully!"
                     })
                     setFileName(null);
                 }
@@ -106,7 +105,7 @@ export default function UploadProductImage(props) {
                     direction="row"
                     alignItems="center"
                 >
-                    <Button onClick={handleClick} color="primary" variant="contained">Upload License<PublishSharpIcon /></Button>
+                    <Button onClick={handleClick} color="primary" variant="contained">Upload Image<PublishSharpIcon /></Button>
                     &nbsp;&nbsp;{fileName}
                     <input
                         type="file"

@@ -20,8 +20,7 @@ const Login = ({ handleChange }) => {
     const [notify, setNotify] = useState({ isOpen: false, mesg: '' });
     const initialValues = {
         email: '',
-        password: '',
-        remember: false
+        password: ''
     }
     const useStyles = makeStyles({
         card: {
@@ -107,50 +106,50 @@ const Login = ({ handleChange }) => {
     })
     let navigate = useNavigate();
     const onSubmit = (values, props) => {
-        const user = {
+        const loguser = {
             email: values.email,
             password: btoa(values.password.split('').reverse().join(''))
         }
 
-        axios.post("http://localhost:8088/user/login", user)
+        axios.post("http://localhost:8088/user/login", loguser)
             .then((response) => {
                 var res = response.status;
                 console.log(response.data)
                 console.log(response.status)
-                if (res === 200) {
-
-
-                    if(response.data.role==='customer') {
-
-                        const jwt = response.data
+                console.log(response.data.role)
+                if(res === 200){
+                    if(response.data.role ==='customer'){
+                        const jwt = response.data.user
                         localStorage.setItem('myInfo', JSON.stringify(jwt));
                         const dataInfo = JSON.parse(localStorage.getItem("myInfo"))
                         console.log(dataInfo.role)
                         navigate('/customerHome', { replace: true })
-                    }
-                    else if(response.data.user.role==='vendor'){
-                        const busi = response.data;
+                    }else if(response.data.role ==='admin'){
+                         console.log(response.data.user.email)
+                         const jwt = response.data.user
+                         localStorage.setItem('myInfo', JSON.stringify(jwt));
+                         const dataInfo = JSON.parse(localStorage.getItem("myInfo"))
+                         console.log(dataInfo.role)
+                         navigate('/adminHome', { replace: true })
+                         }
+                    else if(response.data.role ==='vendor'){
+                        console.log(response.data.business.user)
+                        console.log(response.data.business.user.role)
+                        const busi = response.data.business;
                         localStorage.setItem('businessInfo', JSON.stringify(busi));
                         const businessInfo = JSON.parse(localStorage.getItem("businessInfo"))
                         console.log(businessInfo.user.role)
                         console.log(businessInfo.businessName)
                         navigate('/vendorHome', { replace: true })
                     }
-                    else if(response.data.role==='admin'){
-                        const jwt = response.data
-                        localStorage.setItem('myInfo', JSON.stringify(jwt));
-                        const dataInfo = JSON.parse(localStorage.getItem("myInfo"))
-                        console.log(dataInfo.role)
-                        navigate('/adminHome', { replace: true })
-                    }
-                    else
-                    {
-                        navigate('/', { replace: false })
+                    else {
+                        navigate('/', { replace: true })
                     }
                 }
 
             })
             .catch((error) => {
+                console.log(error)
                 if (error.response.status === 400) {
                     console.log(error.response.data);
                     setNotify({

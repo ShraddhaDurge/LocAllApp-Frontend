@@ -11,7 +11,7 @@ import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } 
 import axios from 'axios';
 
 function editPage(edit, action) {
-  const dataInfo = JSON.parse(localStorage.getItem("myEdit"))
+  const productInfo = JSON.parse(localStorage.getItem("productInfo"))
   // const info=JSON.parse(localStorage.getItem("myInfo"))
 
   switch (action.type) {
@@ -24,13 +24,11 @@ function editPage(edit, action) {
 
     case 'success': {
       return {
-        event_id: dataInfo.event_id,
-        name: dataInfo.name,
-        event_type: "Weekend event",
-        description: dataInfo.description,
-        venue: dataInfo.venue
-
-
+        productName: productInfo.productName,
+        quantAvailable: productInfo.quantAvailable,
+        price: productInfo.price,
+        productTags: productInfo.productTags,
+        productDesc: productInfo.productDesc
       };
     }
     case 'error': {
@@ -56,62 +54,59 @@ const MenuProps = {
 };
 const DeleteProduct = (props) => {
 
-  const dataInfo1 = JSON.parse(localStorage.getItem("myEdit"))
   const marginTop = { marginTop: '10px', marginBottom: '8px', width: '100px' }
+  const tags = {tag:''};
   const initialValues = {
-    event_id: " ",
-    name: " ",
-    event_type: "Weekend event",
-    description: " ",
-    venue: " ",
-    start_time: " ",
-    end_time: " "
-  }
+          productName: '',
+          quantAvailable: '',
+          price: '',
+          productTags: [tags],
+          productDesc: ''
+      }
   const [notify, setNotify] = React.useState({ isOpen: false, mesg: '' });
-  const [wevent, setWevent] = useState([])
-  const [dele, setDelete] = useReducer(editPage, initialValues);
-  const { event_id, name, venue, description, event_type } = dele;
-  const event = "Weekend event"
-  const [eventId, setEventId] = React.useState();
-  const { delep, setDeletep } = props;
+  const [productList, setProductList] = useState([])
+  const [edit, setEdit] = useReducer(editPage, initialValues);
+  const {productName, quantAvailable,price,productTags,productDesc} = edit;
+  const [productId, setProductId] = React.useState();
+  const { dele, setDelete } = props;
   const formStyle = { textAlign: 'center' }
+  const [tagArrays] = useState([]);
   const handleClose = () => {
-    setDeletep({
-      dele: false
+    setDelete({
+      isOp: false
     });
 
   };
+   const businessInfo=JSON.parse(localStorage.getItem("businessInfo"))
+   const bid = businessInfo.business_id
   React.useEffect(() => {
-    axios.get('/account/events/getEventsList/true/Weekend event')
+    axios.get(`http://localhost:8088/product/getList/${bid}`)
       .then(response => {
         console.log(response)
-        console.log(response.data[0].event_id)
-        setWevent(response.data)
+        console.log(response.data[0].productName)
+        setProductList(response.data)
 
       })
       .catch(err => {
         console.log(err)
-
-
       })
-  }, [event])
+  },[bid])
 
   const handleChange = (event) => {
-    const evid = event.target.value;
-    localStorage.setItem('editeventId', JSON.stringify(evid));
-    const editid = JSON.parse(localStorage.getItem("editeventId"));
-    axios.get(`/account/events/${editid}`)
+    const productId = event.target.value;
+    localStorage.setItem('editProductId', JSON.stringify(productId));
+    const editid = JSON.parse(localStorage.getItem("editProductId"));
+    axios.get(`http://localhost:8088/product/${editid}`)
       .then(response => {
         console.log(response)
-        console.log(response.data);
-        const pro = response.data
-        localStorage.setItem('myEdit', JSON.stringify(pro))
-        setDelete({ type: 'success' })
+        console.log(response.data)
+        localStorage.setItem('productInfo', JSON.stringify(response.data))
+        setEdit({ type: 'success' })
 
       })
       .catch(err => {
         console.log(err)
-        setDelete({ type: 'error' })
+        setEdit({ type: 'error' })
 
 
       })
@@ -122,17 +117,10 @@ const DeleteProduct = (props) => {
 
   const onSubmit = async (e) => {
     e.preventDefault();
-    const user = {
+    const pid = JSON.parse(localStorage.getItem("productId"));
+            console.log(pid);
 
-      event_id,
-      name,
-      event_type,
-      description,
-      venue
-
-    }
-
-    axios.post("/account/admin/updateEvents", user)
+    axios.delete(`http://localhost:8088/product/delete/${pid}`)
       .then((response) => {
         var res = response.status;
 
@@ -140,26 +128,18 @@ const DeleteProduct = (props) => {
         if (res === 200) {
           setNotify({
             isOpen: true,
-            mesg: "Saved Changes Successfully!"
+            mesg: "Product Deleted Successfully!"
           })
         }
 
       })
       .catch((error) => {
-        if (error.response.status === 400) {
-          console.log(error.response.data.message);
-          setNotify({
-            isOpen: true,
-            mesg: "Something Went Wrong!"
-          })
-        }
-        else {
           setNotify({
             isOpen: true,
             mesg: "Something Went Wrong!"
           })
           console.log(error)
-        }
+
       });
   }
 
@@ -168,12 +148,12 @@ const DeleteProduct = (props) => {
     <Fragment>
       <Dialog
         width='xl'
-//        open={delep.OpenDelete}
+        open={dele.isOp}
         onClose={handleClose}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >    <center>
-          <DialogTitle id="past-event-dialog-title">Edit Events</DialogTitle>
+          <DialogTitle id="delete-product-dialog-title">Delete Product</DialogTitle>
           </center>
         <DialogContent >
 
@@ -194,48 +174,47 @@ const DeleteProduct = (props) => {
                               <InputLabel id="demo-simple-select-outlined-label">Product Name</InputLabel>
                               <Select
                                 labelId="demo-simple-select-outlined-label"
-                                id="demo-event-name"
+                                id="demo-product-name"
                                 label="Product Name"
-                                value={eventId}
+                                value={productId}
                                 onChange={handleChange}
 
                                 MenuProps={MenuProps}
                               >
-                                {wevent.map((eve) => (
-                                  <MenuItem key={eve.event_id} value={eve.event_id} >
-                                    {eve.name}
+                                {productList.map((prod) => (
+                                  <MenuItem key={prod.productId} value={prod.productId} >
+                                    {prod.productName}
                                   </MenuItem>
                                 ))}
                               </Select>
                               </FormControl></Grid>
 
                               <Grid item xs={6}>
-                                <Field as={TextField}  label='Venue' name="venue" onInput={props.handleChange} value={venue} style={{ marginLeft: '-20px' }}
-                                  onChange={e =>
-                                    setDelete({
-                                      type: 'field',
-                                      fieldName: 'venue',
-                                      payload: e.currentTarget.value,
-                                    })
+                                <Field as={TextField}  label='Quantity Available' name="quantAvailable" onInput={props.handleChange} value={quantAvailable} style={{ marginLeft: '-20px' }}
+                                 disabled required />
+                              </Grid>
+                              <Grid item xs={6}>
+                                  <Field as={TextField}  label='Price' name="price" onInput={props.handleChange} value={price} style={{ marginLeft: '-20px' }}
+                                    disabled
+                                    required />
+                                </Grid>
+                              <Grid item xs={6}>
+                              {productTags.map((tag, i) => (
+                                <span key={i}>
+                                <Field as={TextField} label='Product Tags' name="productTags" required value={tag.tag } disabled />
 
-                                  }
-                                  required />
+                                </span>
+                              ))}
+
                               </Grid>
 
 
-
                               <Grid item xs={12}>
-                                <Field as={TextField} label='Description' name="description" required value={description} style={{ marginLeft: '10px', width: '500px' }}
-                                  required onInput={props.handleChange}
+                                <Field as={TextField} label='Product Description' name="productDesc" required value={productDesc} style={{ marginLeft: '10px', width: '500px' }}
+                                  required disabled
                                   InputLabelProps={{
                                     shrink: true,
                                   }}
-                                  onChange={(e) =>
-                                    setDelete({
-                                      type: 'field',
-                                      fieldName: 'description',
-                                      payload: e.currentTarget.value,
-                                    })}
                                 />
                               </Grid>
 
@@ -245,7 +224,7 @@ const DeleteProduct = (props) => {
 
                             <Box ml={30}>
                               <Button type='submit' color='primary' disabled={props.isSubmitting}
-                                style={marginTop} onClick={onSubmit}>{props.isSubmitting ? "Loading" : "Edit"}</Button>
+                                style={marginTop} onClick={onSubmit}>{props.isSubmitting ? "Loading" : "Delete"}</Button>
                               <Button onClick={handleClose} color="primary" >
                                 Close
                               </Button>

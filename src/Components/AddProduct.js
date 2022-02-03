@@ -1,7 +1,7 @@
 import { React, Fragment } from 'react'
 import { Avatar, Button, Grid, TextField, Box } from '@material-ui/core'
 import AddBoxIcon from '@material-ui/icons/AddBox';
-import { Form, Formik, Field, ErrorMessage } from 'formik';
+import { Form, Formik, Field, ErrorMessage,FieldArray } from 'formik';
 import axios from 'axios';
 import { useState } from 'react';
 import Snack from './Snackbar';
@@ -20,11 +20,13 @@ const AddProduct = (props) => {
     //const btnStyle = { margin: '10px 5px 10px auto', display: 'flex', justify: 'space-between', alignItems: 'right' }
     const formStyle = { textAlign: 'center' }
     const marginTop = { marginTop: '10px', marginBottom: '10px' }
+    const tags = {tag:''};
+
     const initialValues = {
         productName: '',
         quantAvailable: '',
         price: '',
-        productImage: '',
+        productTags: [tags],
         productDesc: ''
     }
 
@@ -45,23 +47,24 @@ const AddProduct = (props) => {
     };
     const onSubmit = (values, props) => {
 
+
         const Product = {
-            name: values.eventName,
-            event_type: values.eventType,
-            description: values.eventDescription,
-            venue: values.eventVenue,
-            start_time: values.startTime,
-            end_time: values.endTime
+            productName: values.productName,
+            quantAvailable: values.quantAvailable,
+            price: values.price,
+            productTags: values.productTags,
+            productDesc: values.productDesc
         }
 
+        const businessInfo=JSON.parse(localStorage.getItem("businessInfo"))
+        const id = businessInfo.business_id
         console.log(Product)
-//        axios.post("http://localhost:8081/account/admin/addEvents", Event)
-            axios.post("http://localhost:8088/product/addProduct", Product)
+            axios.post(`http://localhost:8088/product/add/${id}`, Product)
             .then((response) => {
                 var resp = response.status;
                 console.log(response.data);
 
-                localStorage.setItem('productId', JSON.stringify(response.data.productId));
+                localStorage.setItem('productId', JSON.stringify(response.data.product.productId));
                 console.log(response.status)
                 if (resp === 200) {
                     setSuccess(true);
@@ -106,13 +109,13 @@ const AddProduct = (props) => {
 
     }
 
-    const eventSchema = Yup.object().shape({
+    const productSchema = Yup.object().shape({
         productName: Yup.string()
             .matches(/[a-zA-Z][a-zA-Z\s]+/, "Event Name must be alphabetical..")
             .required,
-        eventType: Yup.string().required,
-        eventDescription: Yup.string().required,
-        eventVenue: Yup.string().required
+        quantAvailable: Yup.string().required,
+        price: Yup.string().required,
+        productDesc: Yup.string().required
     });
 
 
@@ -132,7 +135,7 @@ const AddProduct = (props) => {
 
                     <DialogContent >
                         <Box mr={10}>
-                            <Formik initialValues={initialValues} eventSchema={eventSchema} onSubmit={onSubmit}>
+                            <Formik initialValues={initialValues} eventSchema={productSchema} onSubmit={onSubmit}>
 
                                 {(props) => (
                                     <Form style={formStyle}>
@@ -152,18 +155,49 @@ const AddProduct = (props) => {
 
                                                 <Grid item xs={6}>
 
-                                                    <Field as={TextField} fullWidth label='Type' name='eventType' value={props.values.eventType}
-                                                        onChange={props.handleChange} placeholder="Enter the type of Event" required />
+                                                    <Field as={TextField} fullWidth label='Quantity Available' name='quantAvailable' value={props.values.quantAvailable}
+                                                        onChange={props.handleChange} placeholder="Enter the product quantity available" required />
 
                                                 </Grid>
-                                                <Grid item xs={12}>
-                                                    <Field as={TextField} id="standard-textarea" fullWidth label='Description' name='eventDescription' value={props.values.eventDescription}
-                                                        onChange={props.handleChange} placeholder="Enter the Description of Event" multiline required />
+
+
+                                                <Grid item xs={6}>
+                                                    <Field as={TextField} fullWidth label='Price' name='price' value={props.values.price}
+                                                        onChange={props.handleChange} placeholder="Enter the price of product" required />
                                                 </Grid>
 
+
+                                                <Grid item xs={6}>
+                                                <FieldArray name="productTags">
+                                                  {({ push, remove }) => (
+                                                    <Fragment>
+                                                      {props.values.productTags.map((_, index) => (
+                                                        <Grid container item key={index} >
+                                                              <Grid >
+                                                                    <Field as={TextField} fullWidth label='Product tags' required error={props.errors.tag && props.touched.tag}
+                                                                          value={props.values.tag} onChange={props.handleChange} helperText={<ErrorMessage name='tag' />}name={`productTags.${index}.tag`}/>
+                                                                </Grid>
+                                                            <Grid >
+                                                                <Button size="small" disabled={props.isSubmitting} variant="contained" onClick={() => remove(index)}>
+                                                                Delete
+                                                                </Button>
+                                                            </Grid>
+                                                            <Grid item>
+                                                                <Button size="small" disabled={props.isSubmitting} variant="contained" onClick={() => push(tags)}>
+                                                                  Add Tag
+                                                                </Button>
+                                                              </Grid>
+                                                         </Grid>
+                                                      ))}
+                                                </Fragment>
+                                              )}
+                                            </FieldArray>
+                                            </Grid>
+
+
                                                 <Grid item xs={12}>
-                                                    <Field as={TextField} fullWidth label='Venue' name='eventVenue' value={props.values.eventVenue}
-                                                        onChange={props.handleChange} placeholder="Enter the Venue of Event" required />
+                                                    <Field as={TextField} id="standard-textarea" fullWidth label='Product Description' name='productDesc' value={props.values.productDesc}
+                                                        onChange={props.handleChange} placeholder="Enter the Description of product" multiline required />
                                                 </Grid>
 
                                             </Grid>
@@ -171,7 +205,7 @@ const AddProduct = (props) => {
                                         </div>
                                         <Grid container justify="flex-end">
                                             <Button type='submit' color='primary'  disabled={props.isSubmitting}
-                                                style={marginTop} >{props.isSubmitting ? "Loading" : "Create"}</Button>&nbsp;&nbsp;&nbsp;
+                                                style={marginTop} >{props.isSubmitting ? "Loading" : "Add"}</Button>&nbsp;&nbsp;&nbsp;
                                             <Button onClick={handleClose} color="primary" >
                                                Close
                                             </Button>
