@@ -74,10 +74,10 @@ class VendorVerification extends Component{
             				console.log(response.data)
             				console.log(response.status)
             				if (res === 200) {
-            						//setSuccess(true);
-            						//setMesg(response.data.message);
-            						//setOpen(true);
-            						//navigate('/adminHome', { replace:true })
+            						setSuccess(true);
+            						setMesg(response.data.message);
+            						setOpen(true);
+            						navigate('/adminHome', { replace:true })
             						console.log("accepted")
 
             				}
@@ -86,14 +86,14 @@ class VendorVerification extends Component{
             		.catch((error) => {
             				if (error.response.status === 400) {
             						console.log(error.response.data.message);
-            					//	setOpen(true);
-            						//setMesg(error.response.data.message);
-            					//	props.resetForm()
+            						setOpen(true);
+            						setMesg(error.response.data.message);
+
 
             				}
             				else {
-            						//setOpen(true);
-            						//setMesg("Something went wrong");
+            						setOpen(true);
+            						setMesg("Something went wrong");
             						console.log(error)
             				}
             		});
@@ -184,65 +184,6 @@ class VendorVerification extends Component{
 													<button type="button" onClick={acceptVendor(item.business_id)}> Accept </button>
 													<button type="button" onClick={rejectVendor(item.business_id)}> Deny </button>
 
-														{/*
-													<RadioGroup
-														row
-														aria-labelledby="demo-row-radio-buttons-group-label"
-														name="row-radio-buttons-group"
-													>
-													<div className="status-control">
-														<input
-																id="pending"
-																type="radio"
-																value="pending"
-																name='status'
-																onChange={props.handleChange}
-																defaultChecked={props.values.status=== "pending"}
-																checked
-															/>
-															<label
-																className="status-control-label"
-																htmlFor="pending"
-															>
-																Pending
-															</label>
-													</div>
-
-													<div className="status-control">
-														<input
-																id="accepted"
-																type="radio"
-																value="accepted"
-																name='status'
-																onChange={props.handleChange}
-																defaultChecked={props.values.status=== "accepted"}
-															/>
-														<label
-															className="status-control-label"
-															htmlFor="accepted"
-															>
-																Accepted
-														</label>
-													</div>
-
-													<div className="status-control">
-														<input
-																id="declined"
-																type="radio"
-																value="declined"
-																name='status'
-																onChange={props.handleChange}
-																defaultChecked={props.values.status=== "declined"}
-															/>
-															<label
-																className="status-control-label"
-																htmlFor="declined"
-															>
-																Declined
-															</label>
-													</div>
-													</RadioGroup>
-													*/}
 													</td>
 
 
@@ -257,12 +198,14 @@ class VendorVerification extends Component{
                   </center>
 								</Form>
           		)}
-						</Formik>
+			 </Formik>
 
 
 
 					}
 			</div>
+
+
 
 			);
 
