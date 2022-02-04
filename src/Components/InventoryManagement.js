@@ -51,7 +51,7 @@ const handleDialogue = () => {
           canDelete= false;
           setNotify({
               isOpen: true,
-               mesg: "Vendor is not verified!"
+               mesg: "Please try again after getting verified!"
             })
        }
     setDelete({
@@ -67,7 +67,7 @@ const handleDialogue = () => {
             canAdd= false;
             setNotify({
                 isOpen: true,
-                 mesg: "Vendor is not verified!"
+                 mesg: "Please try again after getting verified!"
               })
          }
     setAdd({
@@ -82,7 +82,7 @@ const handleDialogue = () => {
         canEdit= false;
         setNotify({
             isOpen: true,
-             mesg: "Vendor is not verified!"
+             mesg: "Please try again after getting verified!"
           })
      }
     setEditp({
