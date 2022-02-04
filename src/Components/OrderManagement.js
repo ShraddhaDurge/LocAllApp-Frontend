@@ -100,7 +100,7 @@ const OrderManagement=()=>{
         <Paper elevation={20} style={paperStyle}>
             <Grid align='center' style={{padding:"30px 10px"}}>
 
-                <Typography variant='h6' color="textSecondary" align="center">Order Management</Typography>
+                <Typography variant='h5' color="textSecondary" align="center">Order Management</Typography>
             </Grid>
             <br/>
            {/* <Formik initialValues={initialValues} onSubmit={onSubmit}>

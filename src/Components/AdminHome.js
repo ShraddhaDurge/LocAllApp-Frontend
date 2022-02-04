@@ -9,12 +9,12 @@ const useStyles = makeStyles((theme) => ({
 }));
 const AdminHome=()=>{
     const paperStyle={padding :'0px 20px 0px 20px',width:800, height:520, margin: 'auto' }
-    const gridStyle={backgroundColor: '#E3F2FD',height:528 ,margin:"0px 0px",padding :'20px 0px'}
+    const gridStyle={backgroundColor: '#E3F2FD',height:'96vh', padding:'20px 0px 0px 0px'}
 
     let navigate = useNavigate();
 
   const verifyVendors = () => {
-    navigate('/vendorverification', {replace: true})
+    navigate('/vendorVerification', {replace: true})
   };
   const handleLogout = () => {
       navigate('/', {replace: true})
@@ -31,7 +31,7 @@ const AdminHome=()=>{
         <Paper elevation={20} style={paperStyle}>
             <Grid align='center' style={{padding:"30px 10px"}}>
 
-                <Typography variant='h6' color="textSecondary" align="center">Admin Homepage</Typography>
+                <Typography variant='h5' color="textSecondary" align="center">Admin Homepage</Typography>
             </Grid>
             <br/>
 

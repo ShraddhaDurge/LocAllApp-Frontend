@@ -101,7 +101,7 @@ const handleDialogue = () => {
         <Paper elevation={20} style={paperStyle}>
             <Grid align='center' style={{padding:"30px 10px"}}>
 
-                <Typography variant='h6' color="textSecondary" align="center">Inventory Management</Typography>
+                <Typography variant='h5' color="textSecondary" align="center">Inventory Management</Typography>
             </Grid>
             <br/>
 

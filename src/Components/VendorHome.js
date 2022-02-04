@@ -145,7 +145,7 @@ const VendorHome=()=>{
         <Paper elevation={20} style={paperStyle}>
             <Grid align='center' style={{padding:"30px 10px"}}>
 
-                <Typography variant='h6' color="textSecondary" align="center">Vendor Homepage</Typography>
+                <Typography variant='h5' color="textSecondary" align="center">Vendor Homepage</Typography>
             </Grid>
             <br/>
             <Formik initialValues={initialValues} onSubmit={onSubmit}>
