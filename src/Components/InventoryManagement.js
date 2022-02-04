@@ -28,47 +28,69 @@ const InventoryManagement=()=>{
     const crudButtonStyle= { margin: '20px' }
     const root= {marginLeft: '3px'}
     const [notify, setNotify] = React.useState({ isOpen: false, mesg: '' });
-
-
+    const [mesg, setMesg] = useState('');
+    const [open, setOpen] = useState(false);
     const [success,setSuccess]=useState(false);
-    const [mesg,setMesg]=useState('');
-    const [open, setOpen] =useState(false);
     const [dele, setDelete] = React.useState({ isOp: false });
     const [add, setAdd] = React.useState({ open: false });
     const [editp, setEditp] = React.useState({ openEdit: false });
-
+    const info2=JSON.parse(localStorage.getItem("businessInfo"))
+;
     let navigate = useNavigate();
 
 const handleDialogue = () => {
     setOpen(true);
   };
   const handleClose = () => {
+
     setOpen(false);
   };
   const deleteProduct = () => {
+  var canDelete=true;
+       if(info2.status === 'Pending'){
+          canDelete= false;
+          setNotify({
+              isOpen: true,
+               mesg: "Vendor is not verified!"
+            })
+       }
     setDelete({
-      isOp: true
+      isOp: canDelete
 
     })
 
   };
 
   const addProduct = () => {
+    var canAdd=true;
+         if(info2.status === 'Pending'){
+            canAdd= false;
+            setNotify({
+                isOpen: true,
+                 mesg: "Vendor is not verified!"
+              })
+         }
     setAdd({
-      open: true
+            open: canAdd
 
     })
   };
 
   const editProduct = () => {
+  var canEdit=true;
+     if(info2.status === 'Pending'){
+        canEdit= false;
+        setNotify({
+            isOpen: true,
+             mesg: "Vendor is not verified!"
+          })
+     }
     setEditp({
-      openEdit: true
+      openEdit: canEdit
 
     })
   };
 
-    const info1=JSON.parse(localStorage.getItem("myInfo"))
-    const info2=JSON.parse(localStorage.getItem("businessInfo"))
     return(
 
         <Grid>
@@ -87,7 +109,7 @@ const handleDialogue = () => {
 
                       <Grid item xs={6} style={{margin:'10px 10px 10px 180px'}} >
                         <Paper style={crudButtonStyle} style={{backgroundColor:'#009BFF', height:50}}>
-                          <Typography gutterBottom variant="body1" color="Black" align="center" onClick={addProduct} style={{ cursor: 'pointer', padding:'10px 10px' }}>
+                          <Typography gutterBottom variant="body1" color="Black" align="center"onClick={addProduct}  style={{ cursor: 'pointer', padding:'10px 10px' }}>
                             Add Product
                           </Typography></Paper>
 

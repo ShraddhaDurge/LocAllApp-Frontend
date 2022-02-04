@@ -171,7 +171,7 @@ const VendorHome=()=>{
                         <Grid item xs={6}>
                             <Field as={TextField} label='Business Name' name="businessName" required  value={info2.businessName}
                             error={props.errors.businessName && props.touched.businessName} onInput={props.handleChange}
-
+                            disabled={info2.status === "Pending" ? true : false}
                             onChange={e=>
                               setMyprofile({
                                   type: 'field',
@@ -186,6 +186,7 @@ const VendorHome=()=>{
                         <Grid item xs={6}>
                             <Field as={TextField}  label='Business Category'  name="businessCategory" required value={info2.businessCategory}
                             error={props.errors.businessCategory && props.touched.businessCategory}  onInput={props.handleChange}
+                            disabled={info2.status === "Pending" ? true : false}
                             onChange={(e) =>
                               setMyprofile({
                                   type: 'field',
@@ -199,6 +200,7 @@ const VendorHome=()=>{
                         <Grid item xs={12}>
                             <Field as={TextField} label='Address' name="address" required fullWidth value={address}
                             error={props.errors.address && props.touched.address} required   onInput={props.handleChange}
+                            disabled={info2.status === "Pending" ? true : false}
                             onChange={(e) =>
                               setMyprofile({
                                   type: 'field',
@@ -214,6 +216,7 @@ const VendorHome=()=>{
                                       <span key={i}>
                                       <Field as={TextField} label='Serviceable Pincodes' name="pincodes" required value={pincode.pincode
                                       }error={props.errors.pincodes && props.touched.pincodes}   onInput={props.handleChange}
+                                      disabled={info2.status === "Pending" ? true : false}
                                      onChange={(e) =>
                                        setMyprofile({
                                            type: 'field',

@@ -36,6 +36,7 @@ const VendorSidebar = () => {
 
   const handleInventory = () => {
 //         setAnchorEl(null);
+
           navigate('/inventoryManagement', { replace: true })
       };
 
