@@ -14,6 +14,7 @@ import { FaList, FaRegHeart } from "react-icons/fa";
 import { FiHome, FiLogOut, FiArrowLeftCircle, FiArrowRightCircle } from "react-icons/fi";
 import { RiPencilLine } from "react-icons/ri";
 import { BiCog } from "react-icons/bi";
+import logo from './logo1.png';
 
 
 //import sidebar css from react-pro-sidebar module and our custom css
@@ -68,7 +69,7 @@ const handleHome = () => {
           <SidebarHeader>
           <div className="logotext">
               {/* small and big change using menucollapse state */}
-              <p>{menuCollapse ? "Logo" : "LocAll"}</p>
+              <p>{menuCollapse ? <img src={logo} alt="logo" height="60" width="270" align="center" /> : <img src={logo} alt="logo" height="60" width="270" align="center" />}</p>
             </div>
             <div className="closemenu" onClick={menuIconClick}>
                 {/* changing menu collapse icon on click */}

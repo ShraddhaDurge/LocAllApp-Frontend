@@ -121,20 +121,14 @@ const VendorHome=()=>{
             else{
                 // alert("Something went wrong")
                    setOpen(true);
-                    setMesg("Something went wrong");}
-            console.log(error)
+                   setMesg("Something went wrong");}
+                   console.log(error)
+                   window.location.reload()
         });
 
     }
     const handleClose = (event, reason) => {
-      if(success)
-      {
           setOpen(false);
-      }
-      else{
-          setOpen(false);
-
-      }
   };
     const info2=JSON.parse(localStorage.getItem("businessInfo"))
     return(
@@ -236,7 +230,7 @@ const VendorHome=()=>{
                         </Grid >
                         </div>
                         <Button type='submit' color='primary' variant="contained" onClick={onSubmit}
-                            style={btnstyle} disabled={props.isSubmitting}
+                            style={btnstyle} disabled={props.isSubmitting} disabled={info2.status === "Pending" ? true : false}
                             fullWidth>{props.isSubmitting ? "Loading" : "Submit"}</Button>
 
                     </Form>

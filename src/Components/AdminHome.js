@@ -2,6 +2,7 @@ import {React} from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Grid, Paper,Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
+import logo from './logo1.png';
 
 const useStyles = makeStyles((theme) => ({
   gridItem: {border: '1px solid lightgray', borderRadius: '20px', backgroundColor: '#Faf0e6', marginTop: '1px', width: 300, marginLeft: '30px'},
@@ -30,6 +31,9 @@ const AdminHome=()=>{
 
         <Paper elevation={20} style={paperStyle}>
             <Grid align='center' style={{padding:"30px 10px"}}>
+                 <img src={logo} alt="logo" height="60" width="270" align="center" />
+             </Grid>
+             <Grid align='center' style={{padding:"5px 0px"}}>
 
                 <Typography variant='h5' color="textSecondary" align="center">Admin Homepage</Typography>
             </Grid>
@@ -50,8 +54,8 @@ const AdminHome=()=>{
                             Support and feedback
                           </Typography></Paper>
                       </Grid>
-                      <Grid item xs={3} style={{margin:'130px 10px 10px 280px'}}>
-                          <Paper style={{margin: '20px', backgroundColor:'#81C784', height:50}}>
+                      <Grid item xs={3} style={{margin:'130px 0px 0px 280px'}}>
+                          <Paper style={{ backgroundColor:'#81C784', height:50}}>
                             <Typography gutterBottom variant="body1" color="Black" align="center" onClick={handleLogout} style={{ cursor: 'pointer', padding:'10px 10px' }}>
                               Logout
                             </Typography></Paper>

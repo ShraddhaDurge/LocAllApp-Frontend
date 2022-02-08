@@ -37,8 +37,8 @@ export default function UploadGstCertificate(props) {
         const file = JSON.parse(localStorage.getItem("files"));
         fd.append('file', selectedFile);
         console.log({ selectedFile })
-        const businessInfo = JSON.parse(localStorage.getItem("businessInfo"));
-        const bid = businessInfo.business_id;
+        const busiInfo = JSON.parse(localStorage.getItem("busiInfo"));
+        const bid = busiInfo.business_id;
 
         const config = {
             headers: {
@@ -99,7 +99,7 @@ export default function UploadGstCertificate(props) {
             aria-labelledby="alert-dialog-title"
             aria-describedby="alert-dialog-description"
         >
-            <DialogTitle id="add image">Upload GSTIN Certificate in PNG/JPG/PDF Format</DialogTitle>
+            <DialogTitle id="add image">Upload GSTIN Certificate in PNG/JPGFormat</DialogTitle>
             <DialogContent>
                 <Grid
                     container

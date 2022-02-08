@@ -14,6 +14,7 @@ import LockIcon from '@mui/icons-material/Lock';
 import PersonIcon from '@mui/icons-material/Person';
 import PhoneIcon from '@mui/icons-material/Phone';
 import firebase from './firebase';
+import logo from './LocAll (8).png';
 
 const Register = () => {
 
@@ -75,6 +76,7 @@ const Register = () => {
                     setOpen(true);
                     setMesg("Something went wrong");
                     console.log(error)
+                    window.location.reload()
                 }
             });
 
@@ -121,7 +123,7 @@ const Register = () => {
             height: "420px",
             position: 'center',
             borderRadius: '20px',
-            marginTop : '30px' ,
+            marginTop : '10px' ,
             backgroundColor: '#f3f0ff',
         }
         , divScroll: {
@@ -144,7 +146,7 @@ const Register = () => {
             borderSizing: 'border-box',
         }
         , buttonr: {
-                      width: '115px',
+                      width: '200px',
                       borderRadius: '20px',
                       border: '1px solid #FFFFFF',
                       backgroundColor: "#ECE5E2",
@@ -272,18 +274,16 @@ const Register = () => {
             <Box ml={40}  mt={6} align="center" >
                 <Grid container spacing={3} align="center">
                     <Grid item xs={12} sm={6} md={6}>
+                        <img src={logo} alt="logo" height="60" width="270" align="center" style={{ margin:"0px 180px" }} />
+
                         <Card style={{ minwidth: 200 }} className={classes.grid}>
                             <CardContent>
                                 <Grid container spacing={5}>
                                     <Grid item xs={6}  className={classes.card}>
-                                        <br></br>
-                                        <br></br>
-                                        <br></br>
+                                        <Typography variant='h6' style={{ color: "#ECE5E2",marginTop:"100px"  }} >Already a member?</Typography>
 
-                                        <Typography variant='h6' style={{ color: "#ECE5E2" }} >Already a member?</Typography>
-                                        <br></br>
                                         <Typography variant='subtitle1' style={{ color: "#ECE5E2" }}>Sign in and see what's new since your last visit</Typography>
-                                        <br />
+
                                         <center>
                                             <Button type='submit' variant="contained"  className={classes.buttonr}
                                                 onClick={Login}>Login</Button>

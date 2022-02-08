@@ -14,6 +14,7 @@ import HomeIcon from '@mui/icons-material/Home';
 import PinDropIcon from '@mui/icons-material/PinDrop';
 import DocumentScannerIcon from '@mui/icons-material/DocumentScanner';
 import UploadGstCertificate from "./UploadGstCertificate";
+import logo from './LocAll (8).png';
 
 const BusinessRegister = () => {
 
@@ -61,6 +62,8 @@ const BusinessRegister = () => {
                 console.log(response.status)
                 if (res === 200) {
                     setSuccess(true);
+                     localStorage.setItem('busiInfo', JSON.stringify(response.data.business));
+                    const userid = userInfo.user.id;
                     setMesg(response.data.message);
                     setOpen(true);
                      setImgdialog({
@@ -82,6 +85,7 @@ const BusinessRegister = () => {
                     setOpen(true);
                     setMesg("Something went wrong");
                     console.log(error)
+                    props.resetForm()
                 }
             });
 
@@ -112,7 +116,7 @@ const BusinessRegister = () => {
             height: "420px",
             position: 'center',
             borderRadius: '20px',
-            marginTop : '30px' ,
+            marginTop : '10px' ,
             backgroundColor: '#f3f0ff'
 
         },
@@ -216,22 +220,14 @@ const BusinessRegister = () => {
             <Box ml={40}  mt={6} align="center" >
                 <Grid container spacing={3} align="center">
                     <Grid item xs={12} sm={6} md={6}>
+                     <img src={logo} alt="logo" height="60" width="270" align="center" style={{ margin:"0px 180px" }} />
+
                         <Card style={{ minwidth: 200 }} className={classes.grid}>
                             <CardContent>
                                 <Grid container spacing={5}>
                                     <Grid item xs={6}  className={classes.card}>
-                                        <br></br>
-                                        <br></br>
-                                        <br></br>
+                                    <Typography variant='subtitle1' style={{ color: "#ECE5E2",marginTop:"100px"  }} >Register your business here!</Typography>
 
-                                        <Typography variant='h6' style={{ color: "#ECE5E2" }} >Already a member?</Typography>
-                                        <br></br>
-                                        <Typography variant='subtitle1' style={{ color: "#ECE5E2" }}>Sign in and see what's new since your last visit</Typography>
-
-                                        <center>
-                                            <Button type='submit' variant="contained"  className={classes.buttonr}
-                                                onClick={Login}>Login</Button>
-                                        </center>
                                     </Grid>
                                     <Grid item xs={6} className={classes.divScroll}>
                                         <center>

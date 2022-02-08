@@ -44,6 +44,8 @@ const AddProduct = (props) => {
             open: false
         });
 
+        window.location.reload()
+
     };
     const onSubmit = (values, props) => {
 
@@ -103,6 +105,8 @@ const AddProduct = (props) => {
                         mesg: "Something went wrong!"
                     })
                     console.log(error)
+                    props.resetForm()
+
                 }
             });
 

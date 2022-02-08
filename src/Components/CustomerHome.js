@@ -2,6 +2,7 @@ import {React} from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Grid, Paper,Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
+import logo from './logo1.png';
 
 const useStyles = makeStyles((theme) => ({
   gridItem: {border: '1px solid lightgray', borderRadius: '20px', backgroundColor: '#Faf0e6', marginTop: '1px', width: 300, marginLeft: '30px'},
@@ -26,9 +27,10 @@ const CustomerHome=()=>{
 
 
         <Paper elevation={20} style={paperStyle}>
-            <Grid align='center' style={{padding:"30px 10px"}}>
-
-                <Typography variant='h5' color="textSecondary" align="center">Customer Homepage</Typography>
+            <Grid align='center' style={{padding:"20px 10px"}}>
+                <img src={logo} alt="logo" height="60" width="270" align="center" />
+                <br/>
+                <Typography variant='h5' color="textSecondary" align="center" >Customer Homepage</Typography>
             </Grid>
             <br/>
 

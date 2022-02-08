@@ -75,7 +75,7 @@ const DeleteProduct = (props) => {
     setDelete({
       isOp: false
     });
-
+    window.location.reload()
   };
    const businessInfo=JSON.parse(localStorage.getItem("businessInfo"))
    const bid = businessInfo.business_id

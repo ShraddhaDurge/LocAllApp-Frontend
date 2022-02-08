@@ -8,6 +8,7 @@ import Snack from './Snackbar';
 import background1 from './bg1.jpg';
 import EmailIcon from '@mui/icons-material/Email';
 import LockIcon from '@mui/icons-material/Lock';
+import logo from './LocAll (8).png';
 
 const Login = ({ handleChange }) => {
 
@@ -36,7 +37,7 @@ const Login = ({ handleChange }) => {
             height: "420px",
             position: 'center',
             borderRadius: '20px',
-            marginTop : '30px' ,
+            marginTop : '10px' ,
             backgroundColor: '#f3f0ff'
 
         }
@@ -64,7 +65,7 @@ const Login = ({ handleChange }) => {
             fontWeight: 'bold',
             //padding: '12px 45px',
             letterSpacing: '1px',
-            marginTop: '80px',
+            marginTop: '70px',
             '&:hover': {
                 backgroundColor: "#9B8583 ",
             },
@@ -121,29 +122,21 @@ const Login = ({ handleChange }) => {
                     if(response.data.role ==='customer'){
                         const jwt = response.data.user
                         localStorage.setItem('myInfo', JSON.stringify(jwt));
-                        const dataInfo = JSON.parse(localStorage.getItem("myInfo"))
-                        console.log(dataInfo.role)
                         navigate('/customerHome', { replace: true })
                     }else if(response.data.role ==='admin'){
-                         console.log(response.data.user.email)
                          const jwt = response.data.user
                          localStorage.setItem('myInfo', JSON.stringify(jwt));
-                         const dataInfo = JSON.parse(localStorage.getItem("myInfo"))
-                         console.log(dataInfo.role)
                          navigate('/adminHome', { replace: true })
                          }
                     else if(response.data.role ==='vendor'){
                         console.log(response.data.business.user)
-                        console.log(response.data.business.user.role)
+                        localStorage.setItem('myInfo', JSON.stringify(response.data.business.user));
                         const busi = response.data.business;
                         localStorage.setItem('businessInfo', JSON.stringify(busi));
-                        const businessInfo = JSON.parse(localStorage.getItem("businessInfo"))
-                        console.log(businessInfo.user.role)
-                        console.log(businessInfo.businessName)
                         navigate('/vendorHome', { replace: true })
                     }
                     else {
-                        navigate('/', { replace: true })
+                        console.log("No such role exists!")
                     }
                 }
 
@@ -164,6 +157,7 @@ const Login = ({ handleChange }) => {
                         mesg: "Something went wrong"
                     })
                     console.log(error)
+                    props.resetForm()
                 }
             });
     }
@@ -178,17 +172,17 @@ const Login = ({ handleChange }) => {
         <Box  >
             <Box ml={40} mt={6} align='right'>
                 <Grid container spacing={3} align="center">
+
                     <Grid item xs={12} sm={6} md={6}>
+                        <img src={logo} alt="logo" height="60" width="270" align="center" style={{ margin:"0px 180px" }} />
                         <Card style={{ minwidth: 200 }} className={classes.grid}>
                             <CardContent>
                                 <Grid container spacing={5}>
                                     <Grid item xs={6} className={classes.card}>
-                                        <br></br>
-                                        <br></br>
-                                        <br></br>
-                                        <Typography variant='h6'  style={{ color: "#ECE5E2" }} >Not yet a member?</Typography>
-                                        <br></br>
-                                        <br></br>
+
+
+                                        <Typography variant='h6'  style={{ color: "#ECE5E2",marginTop:"100px"  }} >Not yet a member?</Typography>
+
                                         <Typography variant='subtitle1'  style={{ color: "#ECE5E2" }}>Sign up and discover what we can do for you</Typography>
 
                                         <center>
