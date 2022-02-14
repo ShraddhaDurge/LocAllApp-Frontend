@@ -194,7 +194,8 @@ const EditProduct = (props) => {
                                   </MenuItem>
                                 ))}
                               </Select>
-                              </FormControl></Grid>
+                              </FormControl>
+                              </Grid>
 
                               <Grid item xs={6}>
                                 <Field as={TextField}  label='Quantity Available' name="quantAvailable" onInput={props.handleChange} value={quantAvailable} style={{ marginLeft: '-20px' }}

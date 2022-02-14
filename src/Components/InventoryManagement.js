@@ -13,12 +13,14 @@ import VendorSidebar from "./VendorSidebar";
 import DeleteProduct from "./DeleteProduct";
 import AddProduct from "./AddProduct";
 import EditProduct from "./EditProduct";
+import ViewAllProducts from "./ViewAllProducts";
 
 const useStyles = makeStyles((theme) => ({
   gridItem: {border: '1px solid lightgray', borderRadius: '20px', backgroundColor: '#Faf0e6', marginTop: '1px', width: 300, marginLeft: '30px'},
   grid: { margin: 5 }
 }));
 const InventoryManagement=()=>{
+
     const paperStyle={padding :'0px 20px 0px 20px',width:800, height:520, margin:"0px 360px"}
     const headStyle={margin:0,fontFamily:'san-serif',color:'blue'}
     const btnstyle = { margin:'20px auto',display:'flex',justifyContent:'center',alignItems:'center', width:'30%',height:'20%', backgroundColor: '#2196F3'}
@@ -34,8 +36,8 @@ const InventoryManagement=()=>{
     const [dele, setDelete] = React.useState({ isOp: false });
     const [add, setAdd] = React.useState({ open: false });
     const [editp, setEditp] = React.useState({ openEdit: false });
-    const info2=JSON.parse(localStorage.getItem("businessInfo"))
-;
+    const [viewAllP, setViewAllP] = React.useState({ openViewAll: false });
+    const info2=JSON.parse(localStorage.getItem("businessInfo"));
     let navigate = useNavigate();
 
 const handleDialogue = () => {
@@ -91,6 +93,21 @@ const handleDialogue = () => {
     })
   };
 
+  const viewAllProducts = () => {
+    var canViewAllProducts=true;
+       if(info2.status === 'Pending'){
+        canViewAllProducts= false;
+          setNotify({
+              isOpen: true,
+               mesg: "Please try again after getting verified!"
+            })
+       }
+      setViewAllP({
+        openViewAll: canViewAllProducts
+
+      })
+    };
+
     return(
 
         <Grid>
@@ -126,18 +143,26 @@ const handleDialogue = () => {
                             Delete Product
                           </Typography></Paper>
                       </Grid>
+                      <Grid item xs={6} style={{margin:'10px 10px 10px 180px'}}>
+                        <Paper className={crudButtonStyle} style={{backgroundColor:'#009BFF', height:50}}>
+                          <Typography gutterBottom variant="body1" color="Black" align="center" onClick={viewAllProducts} style={{ cursor: 'pointer', padding:'10px 10px' }}>
+                            View All Products
+                          </Typography></Paper>
+                      </Grid>
                       </Grid>
         </Paper>
         <Snack
                       notify={notify}
                       setNotify={setNotify}
-                      />
+         />
               <DeleteProduct dele={dele}
                 setDelete={setDelete} />
               <AddProduct add={add}
                 setAdd={setAdd} />
               <EditProduct editp={editp}
                 setEditp={setEditp} />
+             <ViewAllProducts viewAllP={viewAllP}
+                setViewAllP={setViewAllP} />
     </Grid>
     </Grid>
 )

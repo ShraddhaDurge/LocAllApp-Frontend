@@ -1,7 +1,7 @@
 import React,{ useState, useEffect, useReducer,Fragment} from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Grid, Paper, TextField, Button,Typography } from '@material-ui/core';
-import { Formik, Form, Field, ErrorMessage } from 'formik';
+import { Formik, Form, Field, ErrorMessage, FieldArray } from 'formik';
 import * as Yup from 'yup';
 import axios from 'axios';
 import { makeStyles } from '@material-ui/core/styles';
@@ -12,14 +12,14 @@ import CloseIcon from '@material-ui/icons/Close';
 import VendorSidebar from "./VendorSidebar";
 
 
-function businessProfile(action) {
-    const businessInfo=JSON.parse(localStorage.getItem("businessInfo"))
+function businessProfile(myprofile,action) {
+    const businessInfo=JSON.parse(localStorage.getItem("myBusinessProfile"))
     const myInfo=JSON.parse(localStorage.getItem("myInfo"))
 
     switch (action.type) {
         case 'field': {
             return {
-              ...businessInfo,
+              ...myprofile,
               [action.fieldName]: action.payload,
             };
           }
@@ -34,19 +34,18 @@ function businessProfile(action) {
         address: businessInfo.address,
         pincodes: businessInfo.pincodes,
         gstin: businessInfo.gstin,
-        //            license: values.license
         businessStatus:businessInfo.status
         };
       }
       case 'error': {
         return {
-          ...businessInfo,
+          ...myprofile,
 
         };
       }
 
       default:
-        return businessInfo;
+        return myprofile;
     }
   }
   const useStyles=makeStyles(theme=>({
@@ -66,6 +65,7 @@ const VendorHome=()=>{
     const myInfo=JSON.parse(localStorage.getItem("myInfo"))
     const businessInfo=JSON.parse(localStorage.getItem("businessInfo"))
     const classes=useStyles();
+    const pins = {pincode:''};
 
     const initialValues = {
         username: myInfo.username,
@@ -84,20 +84,36 @@ const VendorHome=()=>{
     const [success,setSuccess]=useState(false);
     const [mesg,setMesg]=useState('');
     const [open, setOpen] =useState(false);
+    const userid = myInfo.id
+    useEffect(()=>{
+
+            axios.get(`http://localhost:8088/vendor/getBusiness/${userid}`)
+            .then(res=>{
+                console.log(res)
+                const pro=res.data
+               localStorage.setItem('myBusinessProfile',JSON.stringify(pro))
+               setMyprofile({ type: 'success' })
+            })
+            .catch(err=>{
+                console.log(err)
+                setMyprofile({ type: 'error' })
+
+            })
+        },[userid])
 
     let navigate = useNavigate();
     const onSubmit = async (e) => {
         e.preventDefault();
-        const newBusiness = {
+        const business = {
             businessName,
             businessCategory,
             address,
-            pincodes,
-            gstin
+            pincodes:pincodes
         };
 
-        console.log(newBusiness)
-        axios.post("/account/saveBusinessProfile", newBusiness)
+        console.log(business)
+
+        axios.post(`http://localhost:8088/vendor/updateBusiness/${userid}`, business)
         .then((response) => {
             var res = response.status;
 
@@ -123,14 +139,17 @@ const VendorHome=()=>{
                    setOpen(true);
                    setMesg("Something went wrong");}
                    console.log(error)
-                   window.location.reload()
+//                   window.location.reload()
         });
 
     }
     const handleClose = (event, reason) => {
           setOpen(false);
+           window.location.reload()
   };
     const info2=JSON.parse(localStorage.getItem("businessInfo"))
+
+
     return(
         <Grid>
         <VendorSidebar/>
@@ -163,7 +182,7 @@ const VendorHome=()=>{
                         </Grid>
 
                         <Grid item xs={6}>
-                            <Field as={TextField} label='Business Name' name="businessName" required  value={info2.businessName}
+                            <Field as={TextField} label='Business Name' name="businessName" required  value={businessName}
                             error={props.errors.businessName && props.touched.businessName} onInput={props.handleChange}
                             disabled={info2.status === "Pending" ? true : false}
                             onChange={e=>
@@ -178,7 +197,7 @@ const VendorHome=()=>{
                         </Grid>
 
                         <Grid item xs={6}>
-                            <Field as={TextField}  label='Business Category'  name="businessCategory" required value={info2.businessCategory}
+                            <Field as={TextField}  label='Business Category'  name="businessCategory" required value={businessCategory}
                             error={props.errors.businessCategory && props.touched.businessCategory}  onInput={props.handleChange}
                             disabled={info2.status === "Pending" ? true : false}
                             onChange={(e) =>
@@ -193,7 +212,7 @@ const VendorHome=()=>{
 
                         <Grid item xs={12}>
                             <Field as={TextField} label='Address' name="address" required fullWidth value={address}
-                            error={props.errors.address && props.touched.address} required   onInput={props.handleChange}
+                            error={props.errors.address && props.touched.address} onInput={props.handleChange}
                             disabled={info2.status === "Pending" ? true : false}
                             onChange={(e) =>
                               setMyprofile({
@@ -203,25 +222,57 @@ const VendorHome=()=>{
                                 })
                               } helperText={<ErrorMessage name="address" />}/>
                         </Grid>
-
-
-                        <Grid item xs={6}>
+                        {/*<Grid item xs={6}>
+                                    Serviceable Pincodes:
+                                    <br/>
                                     {info2.pincodes.map((pincode, i) => (
-                                      <span key={i}>
-                                      <Field as={TextField} label='Serviceable Pincodes' name="pincodes" required value={pincode.pincode
-                                      }error={props.errors.pincodes && props.touched.pincodes}   onInput={props.handleChange}
-                                      disabled={info2.status === "Pending" ? true : false}
-                                     onChange={(e) =>
-                                       setMyprofile({
-                                           type: 'field',
-                                           fieldName: 'pincodes',
-                                           payload: e.currentTarget.value,
-                                         })
-                                       } helperText={<ErrorMessage name="pincodes" />}/>
-
-                                      </span>
+                                      <span key={i}>   {pincode.pincode}         </span>
                                     ))}
-                        </Grid>
+                                    <Button size="small" variant="contained" disabled={info2.status === "Pending" ? true : false} >Edit Pincodes </Button>
+                        </Grid> */}
+
+                      <FieldArray
+                           name="Pincodes"
+                           render={arrayHelpers => (
+                             <div>
+                               {info2.pincodes && info2.pincodes.length > 0 ? (
+                                 info2.pincodes.map((pincode, index) => (
+                                   <div key={index}>
+                                     <Field as={TextField} label='Serviceable Pincodes' required name={`pincodes.${index}.pincode`}
+                                     onInput={props.handleChange}
+                                     onChange={(e) =>
+                                           setMyprofile({
+                                               type: 'field',
+                                               fieldName: 'pincodes',
+                                               payload: e.currentTarget.value,
+                                             })
+                                           }
+                                           />
+                                     <button
+                                       type="button"
+                                       onClick={() => arrayHelpers.remove(index)} // remove a friend from the list
+                                     >
+                                       -
+                                     </button>
+                                     <button
+                                       type="button"
+                                       onClick={() => arrayHelpers.insert(index, '')} // insert an empty string at a position
+                                     >
+                                       +
+                                     </button>
+                                   </div>
+                                 ))
+                               ) : (
+                                 <button type="button" onClick={() => arrayHelpers.push('')}>
+                                   {/* show this when user has removed all friends from the list */}
+                                   Add a Pincode
+                                 </button>
+                               )}
+
+                             </div>
+                           )}
+                        />
+
                         <Grid item xs={6}>
                             <Field as={TextField} label='gstin' name="businessName" required  value={info2.gstin}
                             error={props.errors.gstin && props.touched.gstin} onInput={props.handleChange} disabled/>
