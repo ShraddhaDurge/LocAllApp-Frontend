@@ -11,6 +11,7 @@ import OrderManagement from './Components/OrderManagement';
 import VendorReports from './Components/VendorReports';
 import VendorVerification from './Components/VendorVerification';
 import DisplayImage from './Components/DisplayImage';
+import CustomerProfile from './Components/CustomerProfile';
 
 function App() {
   return (
@@ -29,6 +30,7 @@ function App() {
         <Route path="/vendorReports" element={<VendorReports/>} />
         <Route path="/vendorVerification" element={<VendorVerification/>} />
         <Route path="/displayImage" element={<DisplayImage/>} />
+        <Route path="/customerProfile" element={<CustomerProfile/>} />
         </Routes>
 
     </Router>

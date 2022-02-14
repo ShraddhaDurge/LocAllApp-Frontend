@@ -120,19 +120,16 @@ const Login = ({ handleChange }) => {
                 console.log(response.data.role)
                 if(res === 200){
                     if(response.data.role ==='customer'){
-                        const jwt = response.data.user
-                        localStorage.setItem('myInfo', JSON.stringify(jwt));
+                        localStorage.setItem('myInfo', JSON.stringify(response.data.user));
                         navigate('/customerHome', { replace: true })
                     }else if(response.data.role ==='admin'){
-                         const jwt = response.data.user
-                         localStorage.setItem('myInfo', JSON.stringify(jwt));
+                         localStorage.setItem('myInfo', JSON.stringify(response.data.user));
                          navigate('/adminHome', { replace: true })
                          }
                     else if(response.data.role ==='vendor'){
                         console.log(response.data.business.user)
                         localStorage.setItem('myInfo', JSON.stringify(response.data.business.user));
-                        const busi = response.data.business;
-                        localStorage.setItem('businessInfo', JSON.stringify(busi));
+                        localStorage.setItem('businessInfo', JSON.stringify(response.data.business));
                         navigate('/vendorHome', { replace: true })
                     }
                     else {
