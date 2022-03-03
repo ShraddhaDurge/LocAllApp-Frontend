@@ -5,7 +5,7 @@ import { Form, Formik, ErrorMessage, Field, FieldArray } from 'formik';
 import * as Yup from 'yup';
 import Snackbar from '@material-ui/core/Snackbar';
 import axios from 'axios';
-import logo from './logo1.png';
+import logo from '../Images/logo1.png';
 
 class VendorVerification extends Component{
 

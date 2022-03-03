@@ -6,7 +6,7 @@ import * as Yup from 'yup';
 import axios from 'axios';
 import { makeStyles } from '@material-ui/core/styles';
 //import Footer from "./Footer";
-import Snack from './Snackbar';
+import Snack from '../Snackbar';
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
 import VendorSidebar from "./VendorSidebar";
@@ -120,32 +120,32 @@ const handleDialogue = () => {
 
                 <Typography variant='h5' color="textSecondary" align="center">Inventory Management</Typography>
             </Grid>
-            <br/>
 
             <Grid container spacing={1} style={crudButtonStyle}>
 
-                      <Grid item xs={6} style={{margin:'10px 10px 10px 180px'}} >
-                        <Paper style={crudButtonStyle} style={{backgroundColor:'#009BFF', height:50}}>
-                          <Typography gutterBottom variant="body1" color="Black" align="center"onClick={addProduct}  style={{ cursor: 'pointer', padding:'10px 10px' }}>
-                            Add Product
-                          </Typography></Paper>
+                      <Grid item xs={4} style={{margin:'10px 10px 10px 70px'}} >
+                        <Paper style={crudButtonStyle} style={{backgroundColor:'#F48FB1', height:150, width: 250}}>
+                              <Typography gutterBottom variant="body1"  color="Black" align="center" onClick={addProduct}  style={{ fontSize:18, cursor: 'pointer', padding:'60px 0px'}}>
+                                Add Product
+                              </Typography>
+                        </Paper>
 
                       </Grid>
-                      <Grid item xs={6} style={{margin:'10px 10px 10px 180px'}}>
-                        <Paper style={crudButtonStyle} style={{backgroundColor:'#009BFF', height:50}}>
-                          <Typography gutterBottom variant="body1" color="Black" align="center" onClick={editProduct} style={{ cursor: 'pointer', padding:'10px 10px' }}>
+                      <Grid item xs={4} style={{margin:'10px 10px 10px 70px'}}>
+                        <Paper style={crudButtonStyle} style={{backgroundColor:'#CE93D8', height:150, width: 250}}>
+                          <Typography gutterBottom variant="body1" color="Black" align="center" onClick={editProduct} style={{ fontSize:18, cursor: 'pointer', padding:'60px 10px' }}>
                             Edit Product
                           </Typography></Paper>
                       </Grid>
-                      <Grid item xs={6} style={{margin:'10px 10px 10px 180px'}}>
-                        <Paper className={crudButtonStyle} style={{backgroundColor:'#009BFF', height:50}}>
-                          <Typography gutterBottom variant="body1" color="Black" align="center" onClick={deleteProduct} style={{ cursor: 'pointer', padding:'10px 10px' }}>
+                      <Grid item xs={4} style={{margin:'10px 10px 10px 70px'}}>
+                        <Paper className={crudButtonStyle} style={{backgroundColor:'#80CBC4', height:150, width: 250}}>
+                          <Typography gutterBottom variant="body1" color="Black" align="center" onClick={deleteProduct} style={{ fontSize:18,cursor: 'pointer', padding:'60px 10px' }}>
                             Delete Product
                           </Typography></Paper>
                       </Grid>
-                      <Grid item xs={6} style={{margin:'10px 10px 10px 180px'}}>
-                        <Paper className={crudButtonStyle} style={{backgroundColor:'#009BFF', height:50}}>
-                          <Typography gutterBottom variant="body1" color="Black" align="center" onClick={viewAllProducts} style={{ cursor: 'pointer', padding:'10px 10px' }}>
+                      <Grid item xs={4} style={{margin:'10px 10px 10px 70px'}}>
+                        <Paper className={crudButtonStyle} style={{backgroundColor:'#FFE082', height:150, width: 250}}>
+                          <Typography gutterBottom variant="body1" color="Black" align="center" onClick={viewAllProducts} style={{ fontSize:18,cursor: 'pointer', padding:'60px 10px' }}>
                             View All Products
                           </Typography></Paper>
                       </Grid>

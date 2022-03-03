@@ -2,7 +2,7 @@ import {React} from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Grid, Paper,Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import logo from './logo1.png';
+import logo from '../Images/logo1.png';
 
 const useStyles = makeStyles((theme) => ({
   gridItem: {border: '1px solid lightgray', borderRadius: '20px', backgroundColor: '#Faf0e6', marginTop: '1px', width: 300, marginLeft: '30px'},

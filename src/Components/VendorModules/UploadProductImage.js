@@ -7,15 +7,15 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import PublishSharpIcon from '@material-ui/icons/PublishSharp';
 import axios from 'axios';
 import { Button, Grid } from '@material-ui/core'
-import Snack from './Snackbar';
+import Snack from '../Snackbar';
 import { useNavigate } from 'react-router-dom';
 
-export default function UploadGstCertificate(props) {
+export default function UploadProductImage(props) {
 
     const [notify, setNotify] = React.useState({ isOpen: false, mesg: '' });
     const [selectedFile, setSelectedFile] = React.useState(null);
     const [fileName, setFileName] = React.useState(null);
-
+    const [isUploaded, setIsUploaded] = React.useState(false);
 
     const hiddenFileInput = React.useRef(null);
 
@@ -28,7 +28,7 @@ export default function UploadGstCertificate(props) {
             isOpen: false
         });
         setFileName(null);
-        navigate('/login', { replace: true })
+        navigate('/inventoryManagement', { replace: true })
     };
 
 
@@ -37,18 +37,18 @@ export default function UploadGstCertificate(props) {
         const file = JSON.parse(localStorage.getItem("files"));
         fd.append('file', selectedFile);
         console.log({ selectedFile })
-        const busiInfo = JSON.parse(localStorage.getItem("busiInfo"));
-        const bid = busiInfo.business_id;
 
+        const pid = JSON.parse(localStorage.getItem("productId"));
+        console.log(pid);
         const config = {
             headers: {
                 'content-type': 'multipart/form-data'
             }
         }
-        console.log(bid);
+
 
         axios({
-            url:`http://localhost:8088/vendor/uploadBusinessLicense/${bid}`,
+            url:`http://localhost:8088/product/uploadProductImage/${pid}`,
             method: 'post',
             data: fd,
             config
@@ -59,9 +59,10 @@ export default function UploadGstCertificate(props) {
                     // alert("Remainders sent successfully")
                     setNotify({
                         isOpen: true,
-                        mesg: "Document uploaded successfully!"
+                        mesg: "Product Image uploaded successfully!"
                     })
                     setFileName(null);
+                    setIsUploaded(true);
                 }
 
             })
@@ -99,27 +100,28 @@ export default function UploadGstCertificate(props) {
             aria-labelledby="alert-dialog-title"
             aria-describedby="alert-dialog-description"
         >
-            <DialogTitle id="add image">Upload GSTIN Certificate in PNG/JPGFormat</DialogTitle>
+            <DialogTitle id="add image">Upload product image in PNG/JPG format</DialogTitle>
             <DialogContent>
                 <Grid
                     container
                     direction="row"
                     alignItems="center"
                 >
-                    <Button onClick={handleClick} color="primary" variant="contained">Upload License<PublishSharpIcon /></Button>
+                    <Button onClick={handleClick} color="primary" variant="contained">Upload Image<PublishSharpIcon /></Button>
                     &nbsp;&nbsp;{fileName}
                     <input
                         type="file"
                         ref={hiddenFileInput}
                         onChange={fileSelectedHandler}
-                        style={{ display: 'none' }} />
+                        style={{ display: 'none' }}
+                        required />
 
                 </Grid>
 
             </DialogContent>
 
             <DialogActions>
-                <Button onClick={handleClose} color="primary">
+                <Button onClick={handleClose} color="primary" disabled={isUploaded === false ? true : false }>
                     Close
                 </Button>
                 <Button onClick={handleSubmit} color="primary">

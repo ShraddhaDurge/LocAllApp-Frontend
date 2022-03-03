@@ -4,7 +4,7 @@ import AddBoxIcon from '@material-ui/icons/AddBox';
 import { Form, Formik, Field, ErrorMessage } from 'formik';
 import axios from 'axios';
 import { useState } from 'react';
-import Snack from './Snackbar';
+import Snack from '../Snackbar';
 import { useNavigate } from 'react-router-dom';
 import { IconButton } from '@material-ui/core';
 import CloseIcon from '@material-ui/icons/Close';
@@ -95,9 +95,9 @@ const ViewAllProducts = (props) => {
                 aria-labelledby="alert-dialog-title"
                 aria-describedby="alert-dialog-description"
             >    <center>
-                    <DialogTitle id="past-event-dialog-title" textAlign="center" style={{backgroundColor:"#81C784"}}>Product Inventory</DialogTitle>
+                    <DialogTitle id="past-event-dialog-title" textAlign="center" style={{backgroundColor:"#9FA8DA"}}>Product Inventory</DialogTitle>
 
-                    <DialogContent style={{backgroundColor:"#81C784", alignItems:"center"}} >
+                    <DialogContent style={{backgroundColor:"#9FA8DA", alignItems:"center"}} >
                         <Box >
                         {isLoading ? (
                         <div className='spinner-border text-primary' role='status'>

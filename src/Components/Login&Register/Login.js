@@ -4,11 +4,11 @@ import { Grid, TextField, Button, Typography, Link, makeStyles, CardContent, Car
 import { Formik , Form, Field, ErrorMessage } from 'formik'
 import * as Yup from 'yup'
 import axios from 'axios';
-import Snack from './Snackbar';
-import background1 from './bg1.jpg';
+import Snack from '../Snackbar';
+import background1 from '../Images/bg1.jpg';
 import EmailIcon from '@mui/icons-material/Email';
 import LockIcon from '@mui/icons-material/Lock';
-import logo from './LocAll (8).png';
+import logo from '../Images/LocAll (8).png';
 
 const Login = ({ handleChange }) => {
 
@@ -33,7 +33,7 @@ const Login = ({ handleChange }) => {
             backgroundRepeat: 'no-repeat'
         }
         , grid: {
-            width: "600px",
+            width: "650px",
             height: "420px",
             position: 'center',
             borderRadius: '20px',
@@ -167,7 +167,7 @@ const Login = ({ handleChange }) => {
     return (
 
         <Box  >
-            <Box ml={40} mt={6} align='right'>
+            <Box ml={40} mt={3} align='right'>
                 <Grid container spacing={3} align="center">
 
                     <Grid item xs={12} sm={6} md={6}>

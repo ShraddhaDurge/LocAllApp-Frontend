@@ -2,12 +2,10 @@ import React, { useState, useEffect, useReducer, Fragment } from 'react';
 import { Grid, Paper, Box, Button, Card, CardContent, Select, NativeSelect, MenuItem, InputLabel, FormControl, FormHelperText, Tooltip, Typography, TextField, AppBar, IconButton, Toolbar, makeStyles } from '@material-ui/core';
 import { ArrowBack, Home, Menu } from '@material-ui/icons';
 import { Formik, Form, Field, ErrorMesage } from 'formik';
-//import Homebar from "./Homebar";
-//import Footer from './Footer';
-import Snack from './Snackbar';
+import Snack from '../Snackbar';
 //import Dropdown from 'react-dropdown';
 import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@material-ui/core';
-
+import UploadProductImage from "./UploadProductImage";
 import axios from 'axios';
 
 function editPage(edit, action) {
@@ -52,7 +50,7 @@ const MenuProps = {
     },
   },
 };
-const DeleteProduct = (props) => {
+const EditProduct = (props) => {
 
   const marginTop = { marginTop: '10px', marginBottom: '8px', width: '100px' }
   const tags = {tag:''};
@@ -68,12 +66,12 @@ const DeleteProduct = (props) => {
   const [edit, setEdit] = useReducer(editPage, initialValues);
   const {productName, quantAvailable,price,productTags,productDesc} = edit;
   const [productId, setProductId] = React.useState();
-  const { dele, setDelete } = props;
+  const { editp, setEditp } = props;
+  const [imgdialog, setImgdialog] = useState({ isOp: false });
   const formStyle = { textAlign: 'center' }
-  const [tagArrays] = useState([]);
   const handleClose = () => {
-    setDelete({
-      isOp: false
+    setEditp({
+      openEdit: false
     });
     window.location.reload()
   };
@@ -119,8 +117,16 @@ const DeleteProduct = (props) => {
     e.preventDefault();
     const pid = JSON.parse(localStorage.getItem("productId"));
             console.log(pid);
+   const Product = {
+       productId:pid,
+       productName,
+       quantAvailable,
+       price,
+       productTags,
+       productDesc
+   }
 
-    axios.delete(`http://localhost:8088/product/delete/${pid}`)
+    axios.post("http://localhost:8088/product/update", Product)
       .then((response) => {
         var res = response.status;
 
@@ -128,7 +134,11 @@ const DeleteProduct = (props) => {
         if (res === 200) {
           setNotify({
             isOpen: true,
-            mesg: "Product Deleted Successfully!"
+            mesg: "Saved Changes Successfully!"
+          })
+          setImgdialog({
+              isOp: true
+
           })
         }
 
@@ -148,12 +158,12 @@ const DeleteProduct = (props) => {
     <Fragment>
       <Dialog
         width='xl'
-        open={dele.isOp}
+        open={editp.openEdit}
         onClose={handleClose}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >    <center>
-          <DialogTitle id="delete-product-dialog-title">Delete Product</DialogTitle>
+          <DialogTitle id="edit-product-dialog-title">Edit Product</DialogTitle>
           </center>
         <DialogContent >
 
@@ -187,34 +197,63 @@ const DeleteProduct = (props) => {
                                   </MenuItem>
                                 ))}
                               </Select>
-                              </FormControl></Grid>
+                              </FormControl>
+                              </Grid>
 
                               <Grid item xs={6}>
                                 <Field as={TextField}  label='Quantity Available' name="quantAvailable" onInput={props.handleChange} value={quantAvailable} style={{ marginLeft: '-20px' }}
-                                 disabled required />
+                                  onChange={e =>
+                                    setEdit({
+                                      type: 'field',
+                                      fieldName: 'quantAvailable',
+                                      payload: e.currentTarget.value,
+                                    })
+
+                                  }
+                                  required />
                               </Grid>
                               <Grid item xs={6}>
                                   <Field as={TextField}  label='Price' name="price" onInput={props.handleChange} value={price} style={{ marginLeft: '-20px' }}
-                                    disabled
+                                    onChange={e =>
+                                      setEdit({
+                                        type: 'field',
+                                        fieldName: 'price',
+                                        payload: e.currentTarget.value,
+                                      })
+
+                                    }
                                     required />
                                 </Grid>
-                              <Grid item xs={6}>
-                              {productTags.map((tag, i) => (
-                                <span key={i}>
-                                <Field as={TextField} label='Product Tags' name="productTags" required value={tag.tag } disabled />
+                                <Grid item xs={6}>
+                                  {productTags.map((tag, i) => (
+                                    <span key={i}>
+                                    <Field as={TextField} label='Product Tags' name="productTags" required value={tag.tag } error={props.errors.productTags && props.touched.productTags}   onInput={props.handleChange}
+                                         onChange={(e) =>
+                                           setEdit({
+                                               type: 'field',
+                                               fieldName: 'productTags',
+                                               payload: e.currentTarget.value,
+                                             })
+                                           }
+                                     />
 
-                                </span>
-                              ))}
+                                    </span>
+                                  ))}
 
-                              </Grid>
-
+                                    </Grid>
 
                               <Grid item xs={12}>
                                 <Field as={TextField} label='Product Description' name="productDesc" required value={productDesc} style={{ marginLeft: '10px', width: '500px' }}
-                                  required disabled
+                                  required onInput={props.handleChange}
                                   InputLabelProps={{
                                     shrink: true,
                                   }}
+                                  onChange={(e) =>
+                                    setEdit({
+                                      type: 'field',
+                                      fieldName: 'productDesc',
+                                      payload: e.currentTarget.value,
+                                    })}
                                 />
                               </Grid>
 
@@ -224,7 +263,7 @@ const DeleteProduct = (props) => {
 
                             <Box ml={30}>
                               <Button type='submit' color='primary' disabled={props.isSubmitting}
-                                style={marginTop} onClick={onSubmit}>{props.isSubmitting ? "Loading" : "Delete"}</Button>
+                                style={marginTop} onClick={onSubmit}>{props.isSubmitting ? "Loading" : "Edit"}</Button>
                               <Button onClick={handleClose} color="primary" >
                                 Close
                               </Button>
@@ -242,6 +281,8 @@ const DeleteProduct = (props) => {
                 notify={notify}
                 setNotify={setNotify}
               />
+              <UploadProductImage imgdialog={imgdialog}
+                 setImgdialog={setImgdialog} />
           </Grid>
         </DialogContent>
       </Dialog>
@@ -252,4 +293,4 @@ const DeleteProduct = (props) => {
 }
 
 
-      export default DeleteProduct;
+      export default EditProduct;

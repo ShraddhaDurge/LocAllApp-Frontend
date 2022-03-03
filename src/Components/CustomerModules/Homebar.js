@@ -22,9 +22,10 @@ import List from '@material-ui/core/List';
 import PropTypes from 'prop-types';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import useScrollTrigger from '@material-ui/core/useScrollTrigger';
-import logo from './logo1.png';
+import logo from '../Images/logo1.png';
 //import SearchBar from "material-ui-search";
 import useAutocomplete from '@mui/material/useAutocomplete';
+import Image from '../Images/2593108.png';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -128,7 +129,7 @@ export default function MenuAppBar(props) {
 
         <CssBaseline />
         <ElevationScroll {...props}>
-          <AppBar style={{ height: 60, backgroundColor: '#199bf1' }}>
+          <AppBar style={{ height: 60, backgroundImage: `url(${Image})`}}>
 
             <Toolbar>
               <Typography variant="h6" className={classes.title}>

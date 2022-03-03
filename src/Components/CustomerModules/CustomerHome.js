@@ -2,7 +2,7 @@ import {React} from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Grid, Paper,Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import logo from './logo1.png';
+import logo from '../Images/logo1.png';
 import Homebar from "./Homebar";
 
 const CustomerHome=()=>{

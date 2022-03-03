@@ -1,17 +1,18 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import './App.css';
-import Login from './Components/Login';
-import Register from './Components/Register';
-import BusinessRegister from './Components/BusinessRegister';
-import VendorHome from './Components/VendorHome';
-import AdminHome from './Components/AdminHome';
-import CustomerHome from './Components/CustomerHome';
-import InventoryManagement from './Components/InventoryManagement';
-import OrderManagement from './Components/OrderManagement';
-import VendorReports from './Components/VendorReports';
-import VendorVerification from './Components/VendorVerification';
-import DisplayImage from './Components/DisplayImage';
-import CustomerProfile from './Components/CustomerProfile';
+import Login from './Components/Login&Register/Login';
+import Register from './Components/Login&Register/Register';
+import BusinessRegister from './Components/Login&Register/BusinessRegister';
+import VendorHome from './Components/VendorModules/VendorHome';
+import AdminHome from './Components/AdminModules/AdminHome';
+import CustomerHome from './Components/CustomerModules/CustomerHome';
+import InventoryManagement from './Components/VendorModules/InventoryManagement';
+import OrderManagement from './Components/VendorModules/OrderManagement';
+import VendorReports from './Components/VendorModules/VendorReports';
+import VendorVerification from './Components/AdminModules/VendorVerification';
+import DisplayImage from './Components/AdminModules/DisplayImage';
+import CustomerProfile from './Components/CustomerModules/CustomerProfile';
+import VendorDisplayProduct from './Components/VendorModules/VendorDisplayProduct';
 
 function App() {
   return (
@@ -31,6 +32,8 @@ function App() {
         <Route path="/vendorVerification" element={<VendorVerification/>} />
         <Route path="/displayImage" element={<DisplayImage/>} />
         <Route path="/customerProfile" element={<CustomerProfile/>} />
+         <Route path="/vendorDisplayProduct" element={<VendorDisplayProduct/>} />
+
         </Routes>
 
     </Router>

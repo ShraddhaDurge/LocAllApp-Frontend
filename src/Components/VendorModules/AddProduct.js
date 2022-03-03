@@ -4,7 +4,7 @@ import AddBoxIcon from '@material-ui/icons/AddBox';
 import { Form, Formik, Field, ErrorMessage,FieldArray } from 'formik';
 import axios from 'axios';
 import { useState } from 'react';
-import Snack from './Snackbar';
+import Snack from '../Snackbar';
 import { useNavigate } from 'react-router-dom';
 import UploadProductImage from "./UploadProductImage";
 import { IconButton } from '@material-ui/core';

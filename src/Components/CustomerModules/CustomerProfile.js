@@ -6,7 +6,6 @@ import { Formik, Form, Field, ErrorMessage, FieldArray } from 'formik';
 import * as Yup from 'yup';
 import axios from 'axios';
 import { makeStyles } from '@material-ui/core/styles';
-//import Footer from "./Footer";
 import Snackbar from '@material-ui/core/Snackbar';
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
@@ -45,31 +44,15 @@ function customerProfile(myprofile,action) {
         return myprofile;
     }
   }
-  const useStyles=makeStyles(theme=>({
-  root:{
-    top:theme.spacing(9)
-  }
-}
-  ))
-const ITEM_HEIGHT = 48;
-const ITEM_PADDING_TOP = 8;
- const MenuProps = {
-     PaperProps: {
-       style: {
-         maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-         width: 250,
-       },
-     },
-}
+
 const CustomerProfile=()=>{
-    const paperStyle={padding :'0px 20px 0px 20px',width:800, padding:'50px' }
+    const paperStyle={padding :'20px', width:'150vh', height:'70vh', margin:"20px", align: 'center', position:'relative' }
     const headStyle={margin:0,fontFamily:'san-serif',color:'blue'}
-    const btnstyle = { margin:'20px auto',display:'flex',justifyContent:'center',alignItems:'center', width:'30%',height:'20%', backgroundColor: '#2196F3'}
+    const btnstyle = { margin:'50px auto',display:'flex',justifyContent:'center',alignItems:'center', width:'30%',height:'20%', backgroundColor: '#2196F3'}
     const imgstyle={height:100,width:180}
-    const gridStyle={backgroundColor: '#E3F2FD'}
+    const gridStyle={backgroundColor: '#E3F2FD', postion:'fixed', height:'86vh', overflow:'auto', margin:"0px"}
 
     const myInfo=JSON.parse(localStorage.getItem("myInfo"))
-    const classes=useStyles();
 
     const initialValues = {
         username: myInfo.username,
@@ -175,7 +158,7 @@ const CustomerProfile=()=>{
                 {(props) => (
                     <Form>
                     <div class="container">
-                   <Grid container spacing={2} className={classes.businessProf}>
+                   <Grid container spacing={2}>
                         <Grid item xs={4}>
                                 <Field as={TextField} label='Username' name="username" disabled value={myInfo.username}  required/>
                         </Grid>
@@ -256,7 +239,6 @@ const CustomerProfile=()=>{
         </Paper>
         </center>
         <Snackbar
-        className={classes.root}
         anchorOrigin={{
           vertical: 'top',
           horizontal: 'right',

@@ -8,13 +8,13 @@ import Snackbar from '@material-ui/core/Snackbar';
 import axios from 'axios';
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
-import background1 from './bg1.jpg';
+import background1 from '../Images/bg1.jpg';
 import EmailIcon from '@mui/icons-material/Email';
 import LockIcon from '@mui/icons-material/Lock';
 import PersonIcon from '@mui/icons-material/Person';
 import PhoneIcon from '@mui/icons-material/Phone';
-import firebase from './firebase';
-import logo from './LocAll (8).png';
+import firebase from '../firebase';
+import logo from '../Images/LocAll (8).png';
 
 const Register = () => {
 
@@ -22,6 +22,8 @@ const Register = () => {
     const [mesg, setMesg] = useState('');
     const [open, setOpen] = useState(false);
     const [isOpened, setIsOpened] = useState(false);
+    const [phoneVerify, setPhoneVerify] = useState(false);
+    const [buttonText, setButtonText] = useState("Get OTP");
 
     const initialValues = {
         username: '',
@@ -119,7 +121,7 @@ const Register = () => {
             backgroundRepeat: 'no-repeat',
         }
         , grid: {
-            width: "600px",
+            width: "650px",
             height: "420px",
             position: 'center',
             borderRadius: '20px',
@@ -220,11 +222,13 @@ const Register = () => {
                   window.confirmationResult = confirmationResult;
                   console.log("OTP has been sent")
                   setIsOpened(true)
+                  setPhoneVerify(true)
                   // ...
                 }).catch((error) => {
                   // Error; SMS not sent
                   // ...
                   console.log("SMS not sent")
+                  setPhoneVerify(false)
                 });
           }
 
@@ -236,7 +240,9 @@ const Register = () => {
             // User signed in successfully.
             const user = result.user;
             console.log(JSON.stringify(user))
-            //alert("User is verified")
+            setPhoneVerify(true)
+            setButtonText("Verified");
+            setIsOpened(false);
             setOpen(true);
             setMesg("User is verified");
             // ...
@@ -245,6 +251,7 @@ const Register = () => {
             // ...
             setOpen(true);
             setMesg("Wrong OTP! User not verified");
+            setPhoneVerify(false)
           });
         }
 
@@ -271,7 +278,7 @@ const Register = () => {
 
     return (
         <Box  >
-            <Box ml={40}  mt={6} align="center" >
+            <Box ml={40}  mt={3} align="center" >
                 <Grid container spacing={3} align="center">
                     <Grid item xs={12} sm={6} md={6}>
                         <img src={logo} alt="logo" height="60" width="270" align="center" style={{ margin:"0px 180px" }} />
@@ -304,13 +311,12 @@ const Register = () => {
                                                         onChange={props.handleChange} helperText={<ErrorMessage name='username' />} InputProps={{endAdornment: (<FieldIcon name="user" />),}} />
                                                     <Field as={TextField} fullWidth size="small" className={classes.textField} variant="outlined" label='Email Id' type='email' required error={props.errors.email && props.touched.email}
                                                         name='email' value={props.values.email} onChange={props.handleChange} helperText={<ErrorMessage name='email' />} InputProps={{endAdornment: (<FieldIcon name="email" />),}} />
-
-                                                    <Field as={TextField} style = {{width: 150}} label='Phone no.' size="small" className={classes.textField} variant="outlined" name='phoneno' pattern="[789]{1}[0-9]{9}" required error={props.errors.phoneno && props.touched.phoneno}
+                                                    <Field as={TextField} style = {{width: 170, marginRight:'5px '}} label='Phone no.' size="small" className={classes.textField} variant="outlined" name='phoneno' pattern="[789]{1}[0-9]{9}" required error={props.errors.phoneno && props.touched.phoneno}
                                                          value={props.values.phoneno} onChange={props.handleChange} helperText={<ErrorMessage name='phoneno' />} InputProps={{endAdornment: (<FieldIcon name="phone" />),}} />
-                                                         <Button variant='outlined' onClick={handleGetOtp(props.values.phoneno)} style={{ borderRadius:100, marginTop:'5px',backgroundColor: "#199bf1",color: '#FFFFFF'}}>Get OTP</Button>
+                                                         <Button variant='outlined' onClick={handleGetOtp(props.values.phoneno)} style={{ borderRadius:100, marginTop:'5px',backgroundColor: "#199bf1",color: '#FFFFFF'}} disabled={phoneVerify ? true : false}>{buttonText}</Button>
                                                     {isOpened && (
                                                             <div>
-                                                              <Field as={TextField} style = {{width: 150}} label='Enter OTP' size="small" className={classes.textField} variant="outlined" name='otp' pattern="[789]{1}[0-9]{9}" required error={props.errors.otp && props.touched.otp}
+                                                              <Field as={TextField} style = {{width: 170, marginRight:'5px '}} label='Enter OTP' size="small" className={classes.textField} variant="outlined" name='otp' pattern="[789]{1}[0-9]{9}" required error={props.errors.otp && props.touched.otp}
                                                                value={props.values.otp} onChange={props.handleChange} helperText={<ErrorMessage name='otp' />} />
                                                                <Button onClick={handleVerifyOtp(props.values.otp)} variant='outlined' style={{ borderRadius:100, marginTop:'5px',backgroundColor: "#199bf1",color: '#FFFFFF'}} >Verify</Button>
                                                             </div>
@@ -321,7 +327,6 @@ const Register = () => {
                                                         value={props.values.password} onChange={props.handleChange} name='password' helperText={<ErrorMessage name='password' />} InputProps={{endAdornment: (<FieldIcon name="password" />),}} />
                                                     <Field as={TextField} fullWidth size="small" className={classes.textField} variant="outlined" label='Confirm Password' type='password' required error={props.errors.confirmpassword && props.touched.confirmpassword}
                                                         value={props.values.confirmpassword} onChange={props.handleChange} name='confirmpassword' helperText={<ErrorMessage name='confirmpassword' />} InputProps={{endAdornment: (<FieldIcon name="password" />),}} />
-                                                    {/* <Button type='submit' variant='contained' color='primary' style={marginTop} align='center'>Register</Button> */}
                                                     <br></br>
                                                     <br></br>
                                                      <RadioGroup
@@ -364,7 +369,7 @@ const Register = () => {
                                                    </div>
                                                     </RadioGroup>
                                                     <center>
-                                                        <Button type='submit' variant="contained" disabled={props.isSubmitting}
+                                                        <Button type='submit' variant="contained" disabled={props.isSubmitting || phoneVerify === false}
                                                             className={classes.buttons} >{props.isSubmitting ? "Loading" : "Register"}</Button>
 
                                                     </center>

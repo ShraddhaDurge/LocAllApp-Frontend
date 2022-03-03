@@ -7,21 +7,21 @@ import Snackbar from '@material-ui/core/Snackbar';
 import axios from 'axios';
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
-import background1 from './bg1.jpg';
+import background1 from '../Images/bg1.jpg';
 import StoreIcon from '@mui/icons-material/Store';
 import CategoryIcon from '@mui/icons-material/Category';
 import HomeIcon from '@mui/icons-material/Home';
 import PinDropIcon from '@mui/icons-material/PinDrop';
 import DocumentScannerIcon from '@mui/icons-material/DocumentScanner';
 import UploadGstCertificate from "./UploadGstCertificate";
-import logo from './LocAll (8).png';
+import logo from '../Images/LocAll (8).png';
 
 const BusinessRegister = () => {
 
     const [success, setSuccess] = useState(false);
     const [mesg, setMesg] = useState('');
     const [open, setOpen] = useState(false);
-    const emptyPins = {pincode:''};
+    const emptyPins = {pincode:0,district:'', statename:''};
     const [imgdialog, setImgdialog] = useState({ isOp: false });
 
 
@@ -112,7 +112,7 @@ const BusinessRegister = () => {
             backgroundRepeat: 'no-repeat',
         }
         , grid: {
-            width: "600px",
+            width: "650px",
             height: "420px",
             position: 'center',
             borderRadius: '20px',
@@ -121,7 +121,7 @@ const BusinessRegister = () => {
 
         },
          divScroll: {
-                    width: "600px",
+                    width: "640px",
                     height: "455px",
                     position: 'center',
                     borderRadius: '20px',
@@ -170,6 +170,11 @@ const BusinessRegister = () => {
         pincodeButtons: {
             borderRadius: '20px',
             marginLeft: '20px',
+            backgroundColor: "#199bf1",
+            color: '#FFFFFF',
+            '&:hover': {
+                backgroundColor: "#5858FA",
+            }
         },
         textField: {
                      [`& fieldset`]:{
@@ -217,7 +222,7 @@ const BusinessRegister = () => {
 
     return (
         <Box  >
-            <Box ml={40}  mt={6} align="center" >
+            <Box ml={40}  mt={3} align="center" >
                 <Grid container spacing={3} align="center">
                     <Grid item xs={12} sm={6} md={6}>
                      <img src={logo} alt="logo" height="60" width="270" align="center" style={{ margin:"0px 180px" }} />
@@ -253,7 +258,7 @@ const BusinessRegister = () => {
                                                                                   value={props.values.pincode} onChange={props.handleChange} pattern="^[1-9][0-9]{5}$" helperText={<ErrorMessage name='pincode' />} InputProps={{endAdornment: (<FieldIcon name="pincode" />),}} name={`pincodes.${index}.pincode`}/>
                                                                         </Grid>
                                                                     <Grid >
-                                                                        <Button className={classes.pincodeButtons} size="small" disabled={props.isSubmitting} variant="contained" onClick={() => remove(index)}>
+                                                                        <Button className={classes.pincodeButtons} size="small" disabled={index===0} variant="contained" onClick={() => remove(index)}>
                                                                         Delete
                                                                         </Button>
                                                                     </Grid>
