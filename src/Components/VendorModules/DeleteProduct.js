@@ -26,7 +26,9 @@ function deletePage(deleteProduct, action) {
         quantAvailable: productInfo.quantAvailable,
         price: productInfo.price,
         productTags: productInfo.productTags,
-        productDesc: productInfo.productDesc
+        productDesc: productInfo.productDesc,
+        maxDiscount: productInfo.maxDiscount,
+        minProducts: productInfo.minProducts
       };
     }
     case 'error': {
@@ -55,16 +57,18 @@ const DeleteProduct = (props) => {
   const marginTop = { marginTop: '10px', marginBottom: '8px', width: '100px' }
   const tags = {tag:''};
   const initialValues = {
-          productName: '',
-          quantAvailable: '',
-          price: '',
-          productTags: [tags],
-          productDesc: ''
-      }
+        productName: '',
+        quantAvailable: '',
+        price: '',
+        productTags: [tags],
+        productDesc: '',
+        maxDiscount:0,
+        minProducts:0
+    }
   const [notify, setNotify] = React.useState({ isOpen: false, mesg: '' });
   const [productList, setProductList] = useState([])
   const [deleteProduct, setDeleteProduct] = useReducer(deletePage, initialValues);
-  const {productName, quantAvailable,price,productTags,productDesc} = deleteProduct;
+  const {productName, quantAvailable,price,productTags,productDesc, maxDiscount,minProducts} = deleteProduct;
   const [productId, setProductId] = React.useState();
   const { dele, setDelete } = props;
   const formStyle = { textAlign: 'center' }
@@ -168,7 +172,7 @@ const DeleteProduct = (props) => {
                         <Form style={formStyle}>
                           <Grid container spacing={2}>
                           <Grid item xs={6}>
-                            <FormControl alignItems="center" style={{ minWidth: 200, height: 80 }}>
+                            <FormControl alignItems="center" style={{ marginLeft: '-20px', minWidth: 195, height: 50 }}>
                               <InputLabel id="demo-simple-select-outlined-label">Product Name</InputLabel>
                               <Select
                                 labelId="demo-simple-select-outlined-label"
@@ -199,7 +203,7 @@ const DeleteProduct = (props) => {
                               <Grid item xs={6}>
                               {productTags.map((tag, i) => (
                                 <span key={i}>
-                                <Field as={TextField} label='Product Tags' name="productTags" required value={tag.tag } disabled />
+                                <Field as={TextField} label='Product Tags' name="productTags" required value={tag.tag } style={{ marginLeft: '-20px' }} disabled />
 
                                 </span>
                               ))}
@@ -208,7 +212,7 @@ const DeleteProduct = (props) => {
 
 
                               <Grid item xs={12}>
-                                <Field as={TextField} label='Product Description' name="productDesc" required value={productDesc} style={{ marginLeft: '10px', width: '500px' }}
+                                <Field as={TextField} fullWidth label='Product Description' name="productDesc" value={productDesc} style={{ marginLeft: '25px'}}
                                   required disabled
                                   InputLabelProps={{
                                     shrink: true,
@@ -216,7 +220,15 @@ const DeleteProduct = (props) => {
                                 />
                               </Grid>
 
+                              <Grid item xs={6}>
+                                  <Field as={TextField}  label='Maximum discount' name="maxDiscount" value={maxDiscount} style={{ marginLeft: '-20px' }}
+                                    required disabled />
+                                </Grid>
 
+                                <Grid item xs={6}>
+                                  <Field as={TextField}  label='Minimum products to avail discount' name="minProducts" value={minProducts} style={{ marginLeft: '-20px' }}
+                                    required disabled />
+                                </Grid>
 
                                   </Grid>
 

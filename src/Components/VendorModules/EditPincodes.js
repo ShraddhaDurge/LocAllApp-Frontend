@@ -55,12 +55,14 @@ const EditProduct = (props) => {
   const marginTop = { marginTop: '10px', marginBottom: '8px', width: '100px' }
   const tags = {tag:''};
   const initialValues = {
-          productName: '',
-          quantAvailable: '',
-          price: '',
-          productTags: [tags],
-          productDesc: ''
-      }
+        productName: '',
+        quantAvailable: '',
+        price: '',
+        productTags: [tags],
+        productDesc: '',
+        maxDiscount:0,
+        minProducts:0
+    }
   const [notify, setNotify] = React.useState({ isOpen: false, mesg: '' });
   const [productList, setProductList] = useState([])
   const [edit, setEdit] = useReducer(editPage, initialValues);

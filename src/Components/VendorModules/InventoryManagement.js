@@ -14,9 +14,8 @@ import DeleteProduct from "./DeleteProduct";
 import AddProduct from "./AddProduct";
 import EditProduct from "./EditProduct";
 import ViewAllProducts from "./ViewAllProducts";
-//import Image from '../Images/Inventory-Management-Web-Responsive-Banner_1320x500.jpg';
 import Image from '../Images/Inventory-Management2.jpg';
-
+//import Image from '../Images/Inventory5.png';
 const useStyles = makeStyles((theme) => ({
   gridItem: {border: '1px solid lightgray', borderRadius: '20px', backgroundColor: '#Faf0e6', marginTop: '1px', width: 300, marginLeft: '30px'},
   grid: { margin: 5 }
@@ -119,7 +118,7 @@ const handleDialogue = () => {
 
         <Paper elevation={20} style={paperStyle}>
             <Grid align='center'>
-                <Paper style={{backgroundColor:'#00BCD4', backgroundImage: `url(${Image})`, backgroundSize: "contain", backgroundRepeat: "no-repeat", height:120, widh:800, paddingTop:"80px", paddingLeft:"300px", marginBottom:"20px"}}>
+                <Paper style={{backgroundColor:'#00BCD4', backgroundImage: `url(${Image})`, backgroundSize: "contain", backgroundRepeat: "no-repeat", height:120, paddingTop:"80px", paddingLeft:"300px", marginBottom:"20px"}}>
                     <Typography variant='h5' color="textPrimary" align="center">Inventory Management</Typography>
                 </Paper>
             </Grid>

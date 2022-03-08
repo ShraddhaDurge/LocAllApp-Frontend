@@ -186,7 +186,7 @@ const EditProduct = (props) => {
                         <Form style={formStyle}>
                           <Grid container spacing={2}>
                           <Grid item xs={6}>
-                            <FormControl alignItems="center" style={{ minWidth: 200, height: 80 }}>
+                            <FormControl alignItems="left" style={{ marginLeft: '-20px', minWidth: 195, height: 50 }}>
                               <InputLabel id="demo-simple-select-outlined-label">Product Name</InputLabel>
                               <Select
                                 labelId="demo-simple-select-outlined-label"
@@ -233,7 +233,7 @@ const EditProduct = (props) => {
                                 <Grid item xs={6}>
                                   {productTags.map((tag, i) => (
                                     <span key={i}>
-                                    <Field as={TextField} label='Product Tags' name="productTags" required value={tag.tag} error={props.errors.productTags && props.touched.productTags} onInput={props.handleChange}
+                                    <Field as={TextField} label='Product Tags' name="productTags" required value={tag.tag} error={props.errors.productTags && props.touched.productTags} onInput={props.handleChange} style={{ marginLeft: '-20px' }}
                                          onChange={(e) =>
                                            setEdit({
                                                type: 'field',
@@ -277,7 +277,7 @@ const EditProduct = (props) => {
                               </Grid>
 
                               <Grid item xs={6}>
-                                <Field as={TextField}  label='Minimum number of products required to avail discount' name="minProducts" onInput={props.handleChange} value={minProducts} style={{ marginLeft: '-20px' }}
+                                <Field as={TextField}  label='Minimum products to avail discount' name="minProducts" onInput={props.handleChange} value={minProducts} style={{ marginLeft: '-20px' }}
                                   onChange={e =>
                                     setEdit({
                                       type: 'field',

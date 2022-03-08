@@ -53,7 +53,7 @@ const ViewAllProducts = (props) => {
     const bid = businessInfo.business_id
     React.useEffect(() => {
 
-        fetch(`http://localhost:8088/product/getList/${bid}`)
+      fetch(`http://localhost:8088/product/getList/${bid}`)
       .then((res) => res.json())
       .then((data) => setProductsList([...data]))
       .then(setisLoading(false));

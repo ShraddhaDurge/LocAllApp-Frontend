@@ -101,7 +101,10 @@ const AddProduct = (props) => {
         quantAvailable: Yup.string().required,
         price: Yup.string().required,
         productDesc: Yup.string().required,
-        maxDiscount: Yup.number().positive().required('Max discount is required').min(0, 'Min value 0').max(100, 'Max value is 100')
+        maxDiscount: Yup.number().min(0, 'Min value 0').max(100, 'Max value is 100').required,
+        minProducts: Yup.number().min(0, 'Min value 0').max(100, 'Max value is 100').required
+
+
     });
     const icons = {
       maxDiscount: PercentIcon
@@ -153,7 +156,7 @@ const AddProduct = (props) => {
                                                 </Grid>
 
                                                 <Grid item xs={6}>
-                                                    <Field as={TextField} fullWidth label='Price' name='price' value={props.values.price}
+                                                    <Field as={TextField} fullWidth label='Unit price / Cost per item' name='price' value={props.values.price}
                                                         onChange={props.handleChange} placeholder="Enter the price of product" required />
                                                 </Grid>
 
@@ -193,7 +196,7 @@ const AddProduct = (props) => {
                                                 </Grid>
 
                                                 <Grid item xs={6}>
-                                                    <Field as={TextField} fullWidth type="number" label='Minimum number of products required to avail discount' name='minProducts' value={props.values.minProducts}
+                                                    <Field as={TextField} fullWidth type="number" label='Minimum products to avail discount' name='minProducts' value={props.values.minProducts}
                                                         onChange={props.handleChange} placeholder="Enter the minimum number of products required to avail discount" required InputProps={{inputProps: { min: 0, max: 100 }}}/>
                                                 </Grid>
                                             </Grid>
