@@ -32,7 +32,10 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
   },
   menuButton: {
-    marginLeft: theme.spacing(5),
+    marginLeft: theme.spacing(1),
+    '&:hover':{
+            backgroundColor:"#C2185B",
+        },
   },
   title: {
     flexGrow: 1,
@@ -95,6 +98,7 @@ export default function MenuAppBar(props) {
     setAnchorEl(null);
   };
   let navigate = useNavigate();
+
   const handleSignout = () => {
     setAnchorEl(null);
     navigate('/', {replace: true})
@@ -117,6 +121,11 @@ export default function MenuAppBar(props) {
     navigate('/customerHome', {replace: true})
 
   };
+  const goToShoppingBasket = () => {
+      navigate('/shoppingBasket', {replace: true})
+
+    };
+
   const searchProduct = () => {
 
     };
@@ -129,11 +138,11 @@ export default function MenuAppBar(props) {
 
         <CssBaseline />
         <ElevationScroll {...props}>
-          <AppBar style={{ height: 60, backgroundImage: `url(${Image})`}}>
+          <AppBar style={{ height: 60, backgroundColor:"#FF7043"}}>
 
             <Toolbar>
-              <Typography variant="h6" className={classes.title}>
-                <img src={logo} alt="logo" height="50" width="200" align="center" />
+              <Typography variant="h6" className={classes.title}  >
+                <img src={logo} alt="logo" height="50" width="200" align="center" onClick={goHome} style={{cursor: 'pointer'}}/>
               </Typography>
 
               <input
@@ -150,13 +159,13 @@ export default function MenuAppBar(props) {
                       <HomeIcon/>
                     </IconButton></Tooltip>
                    <Tooltip title="Shopping Basket">
-                          <IconButton className={classes.menuButton} color="inherit" aria-label="Cart">
+                          <IconButton className={classes.menuButton} color="inherit" aria-label="Cart" onClick={goToShoppingBasket}>
                             <ShoppingBasketIcon/>
                           </IconButton></Tooltip>
 
                     <Button onClick={handleMenu} className={classes.menuButton} startIcon={<AccountCircleIcon />} endIcon={<ArrowDropDownIcon />}
                      size="large" style={{ fontSize: 15, textTransform: 'none', color: 'white' }} >
-                            <Typography >&nbsp;&nbsp;{dataInfo.username}</Typography>
+                            <Typography >&nbsp;&nbsp; Hello!, {dataInfo.username}</Typography>
                     </Button>
                   <StyledMenu
                     id="menu-appbar"

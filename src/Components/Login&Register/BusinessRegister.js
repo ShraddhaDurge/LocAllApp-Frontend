@@ -62,8 +62,7 @@ const BusinessRegister = () => {
                 console.log(response.status)
                 if (res === 200) {
                     setSuccess(true);
-                     localStorage.setItem('busiInfo', JSON.stringify(response.data.business));
-                    const userid = userInfo.user.id;
+                    localStorage.setItem('busiInfo', JSON.stringify(response.data.business));
                     setMesg(response.data.message);
                     setOpen(true);
                      setImgdialog({
@@ -97,9 +96,6 @@ const BusinessRegister = () => {
         else {
             setOpen(false);
         }
-    };
-    const Login = () => {
-        navigate('/', { replace: true })
     };
 
     const useStyles = makeStyles({
@@ -177,11 +173,14 @@ const BusinessRegister = () => {
             }
         },
         textField: {
-                     [`& fieldset`]:{
-                          borderRadius:100
-                        },
-                        marginTop:'5px'
-                 }
+             [`& fieldset`]:{
+                  borderRadius:100
+                },
+                marginTop:'5px'
+         },
+         gridStyle: {
+             overflow: 'hidden'
+         }
     });
 
     const icons = {
@@ -221,6 +220,7 @@ const BusinessRegister = () => {
     const classes = useStyles();
 
     return (
+        <Grid className={classes.gridStyle}>
         <Box  >
             <Box ml={40}  mt={3} align="center" >
                 <Grid container spacing={3} align="center">
@@ -312,6 +312,7 @@ const BusinessRegister = () => {
                 </Grid>
             </Box>
         </Box>
+        </Grid>
     )
 }
 

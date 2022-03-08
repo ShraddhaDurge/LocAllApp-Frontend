@@ -13,6 +13,8 @@ import VendorVerification from './Components/AdminModules/VendorVerification';
 import DisplayImage from './Components/AdminModules/DisplayImage';
 import CustomerProfile from './Components/CustomerModules/CustomerProfile';
 import VendorDisplayProduct from './Components/VendorModules/VendorDisplayProduct';
+import ProductDescription from './Components/CustomerModules/ProductDescription';
+import ShoppingBasket from './Components/CustomerModules/ShoppingBasket';
 
 function App() {
   return (
@@ -32,9 +34,10 @@ function App() {
         <Route path="/vendorVerification" element={<VendorVerification/>} />
         <Route path="/displayImage" element={<DisplayImage/>} />
         <Route path="/customerProfile" element={<CustomerProfile/>} />
-         <Route path="/vendorDisplayProduct" element={<VendorDisplayProduct/>} />
-
-        </Routes>
+        <Route path="/vendorDisplayProduct" element={<VendorDisplayProduct/>} />
+        <Route path="/productDescription" element={<ProductDescription/>} />
+       <Route path="/shoppingBasket" element={<ShoppingBasket/>} />
+      </Routes>
 
     </Router>
   );

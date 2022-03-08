@@ -1,6 +1,6 @@
 import { React, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Grid, TextField, Button, Typography, Link, makeStyles, CardContent, Card, Box } from '@material-ui/core'
+import { Grid, TextField, Button, Typography, makeStyles, CardContent, Card, Box } from '@material-ui/core'
 import { Formik , Form, Field, ErrorMessage } from 'formik'
 import * as Yup from 'yup'
 import axios from 'axios';
@@ -11,12 +11,6 @@ import LockIcon from '@mui/icons-material/Lock';
 import logo from '../Images/LocAll (8).png';
 
 const Login = ({ handleChange }) => {
-
-    const paperStyle = { padding: '30px 20px', width: 300, margin: "30px auto" }
-    const headStyle = { margin: 0, fontFamily: 'san-serif', color: 'blue' }
-    const gridStyle = { margin: '3px auto', padding: '5px auto' }
-    const btnstyle = { margin: '8px 0', backgroundColor: '#F9261B' }
-    const imgstyle = { height: 100, width: 180 }
 
     const [notify, setNotify] = useState({ isOpen: false, mesg: '' });
     const initialValues = {
@@ -38,7 +32,7 @@ const Login = ({ handleChange }) => {
             position: 'center',
             borderRadius: '20px',
             marginTop : '10px' ,
-            backgroundColor: '#f3f0ff'
+            backgroundColor: '#f3f0ff',
 
         }
         , box: {
@@ -46,9 +40,6 @@ const Login = ({ handleChange }) => {
             justify: 'center',
             direction: 'column',
             marginRight: '20px',
-            //display:'flex',
-            //marginLeft:'50%',
-            //position:'absolute'
             borderRadius: '20px',
             boxShadow: '0 14px 28px rgba(0,0,0,0.25),0 10px 10px rgba(0,0,0,0.22)',
             position: 'relative',
@@ -89,6 +80,9 @@ const Login = ({ handleChange }) => {
                  borderRadius:100
                },
                marginTop:'15px'
+        },
+        gridStyle: {
+            overflow: 'hidden'
         }
     });
     const icons = {
@@ -165,9 +159,9 @@ const Login = ({ handleChange }) => {
     const classes = useStyles();
 
     return (
-
+        <Grid className={classes.gridStyle}>
         <Box  >
-            <Box ml={40} mt={3} align='right'>
+            <Box ml={40} mt={3}>
                 <Grid container spacing={3} align="center">
 
                     <Grid item xs={12} sm={6} md={6}>
@@ -234,10 +228,8 @@ const Login = ({ handleChange }) => {
                     setNotify={setNotify}
                 />
             </Box>
-
-
         </Box>
-
+        </Grid>
     )
 }
 

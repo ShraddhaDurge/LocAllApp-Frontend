@@ -24,10 +24,10 @@ const ViewAllProducts = (props) => {
     let navigate = useNavigate();
 
     // const paperStyle = { padding: '20px 20px', width: 800, height: 460, margin: "30px auto" }
-    const headerStyle = { margin: 0 }
-    const avatarStyle = { backgroundColor: '' }
+//    const headerStyle = { margin: 0 }
+//    const avatarStyle = { backgroundColor: '' }
     //const btnStyle = { margin: '10px 5px 10px auto', display: 'flex', justify: 'space-between', alignItems: 'right' }
-    const formStyle = { textAlign: 'center' }
+//    const formStyle = { align: 'center' }
     const marginTop = { marginTop: '10px', marginBottom: '10px' }
     const [success, setSuccess] = useState(false);
     const [mesg, setMesg] = useState('');
@@ -115,15 +115,16 @@ const ViewAllProducts = (props) => {
                                     <CardMedia
                                     component="img"
                                     height="140"
-                                    image=""
+                                    image={`data:image/png;base64,${product.productImage}`}
                                     alt="img of product"
                                     />
+
                                     <CardContent>
                                         <table><tbody><tr>
                                     <Typography gutterBottom variant="h5" component="div">
                                         <td>Product:</td><td> {product.productName}</td>
                                     </Typography></tr>
-                                    <Typography variant="body2" color="text.secondary">
+                                    <Typography variant="body2" color="textSecondary">
                                        {/* <tr>
                                     <td>Description:</td><td> {product.productDesc}</td>
                                    </tr>*/} <tr>

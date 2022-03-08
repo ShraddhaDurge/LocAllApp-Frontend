@@ -14,6 +14,8 @@ import DeleteProduct from "./DeleteProduct";
 import AddProduct from "./AddProduct";
 import EditProduct from "./EditProduct";
 import ViewAllProducts from "./ViewAllProducts";
+//import Image from '../Images/Inventory-Management-Web-Responsive-Banner_1320x500.jpg';
+import Image from '../Images/Inventory-Management2.jpg';
 
 const useStyles = makeStyles((theme) => ({
   gridItem: {border: '1px solid lightgray', borderRadius: '20px', backgroundColor: '#Faf0e6', marginTop: '1px', width: 300, marginLeft: '30px'},
@@ -21,7 +23,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 const InventoryManagement=()=>{
 
-    const paperStyle={padding :'0px 20px 0px 20px',width:800, height:520, margin:"0px 360px"}
+    const paperStyle={width:800, height:520, margin:"0px 360px"}
     const headStyle={margin:0,fontFamily:'san-serif',color:'blue'}
     const btnstyle = { margin:'20px auto',display:'flex',justifyContent:'center',alignItems:'center', width:'30%',height:'20%', backgroundColor: '#2196F3'}
     const imgstyle={height:100,width:180}
@@ -116,36 +118,37 @@ const handleDialogue = () => {
 
 
         <Paper elevation={20} style={paperStyle}>
-            <Grid align='center' style={{padding:"30px 10px"}}>
-
-                <Typography variant='h5' color="textSecondary" align="center">Inventory Management</Typography>
+            <Grid align='center'>
+                <Paper style={{backgroundColor:'#00BCD4', backgroundImage: `url(${Image})`, backgroundSize: "contain", backgroundRepeat: "no-repeat", height:120, widh:800, paddingTop:"80px", paddingLeft:"300px", marginBottom:"20px"}}>
+                    <Typography variant='h5' color="textPrimary" align="center">Inventory Management</Typography>
+                </Paper>
             </Grid>
 
             <Grid container spacing={1} style={crudButtonStyle}>
 
-                      <Grid item xs={4} style={{margin:'10px 10px 10px 70px'}} >
-                        <Paper style={crudButtonStyle} style={{backgroundColor:'#F48FB1', height:150, width: 250}}>
-                              <Typography gutterBottom variant="body1"  color="Black" align="center" onClick={addProduct}  style={{ fontSize:18, cursor: 'pointer', padding:'60px 0px'}}>
+                      <Grid item xs={4} style={{margin:'5px 10px 10px 70px'}} >
+                        <Paper style={crudButtonStyle} style={{backgroundColor:'#F48FB1', height:120, width: 250}}>
+                              <Typography gutterBottom variant="body1"  color="Black" align="center" onClick={addProduct}  style={{ fontSize:18, cursor: 'pointer', padding:'50px 10px'}}>
                                 Add Product
                               </Typography>
                         </Paper>
 
                       </Grid>
-                      <Grid item xs={4} style={{margin:'10px 10px 10px 70px'}}>
-                        <Paper style={crudButtonStyle} style={{backgroundColor:'#CE93D8', height:150, width: 250}}>
-                          <Typography gutterBottom variant="body1" color="Black" align="center" onClick={editProduct} style={{ fontSize:18, cursor: 'pointer', padding:'60px 10px' }}>
+                      <Grid item xs={4} style={{margin:'5px 10px 10px 70px'}}>
+                        <Paper style={crudButtonStyle} style={{backgroundColor:'#CE93D8', height:120, width: 250}}>
+                          <Typography gutterBottom variant="body1" color="Black" align="center" onClick={editProduct} style={{ fontSize:18, cursor: 'pointer', padding:'50px 10px' }}>
                             Edit Product
                           </Typography></Paper>
                       </Grid>
-                      <Grid item xs={4} style={{margin:'10px 10px 10px 70px'}}>
-                        <Paper className={crudButtonStyle} style={{backgroundColor:'#80CBC4', height:150, width: 250}}>
-                          <Typography gutterBottom variant="body1" color="Black" align="center" onClick={deleteProduct} style={{ fontSize:18,cursor: 'pointer', padding:'60px 10px' }}>
+                      <Grid item xs={4} style={{margin:'5px 10px 10px 70px'}}>
+                        <Paper className={crudButtonStyle} style={{backgroundColor:'#80CBC4', height:120, width: 250}}>
+                          <Typography gutterBottom variant="body1" color="Black" align="center" onClick={deleteProduct} style={{ fontSize:18,cursor: 'pointer', padding:'50px 10px' }}>
                             Delete Product
                           </Typography></Paper>
                       </Grid>
-                      <Grid item xs={4} style={{margin:'10px 10px 10px 70px'}}>
-                        <Paper className={crudButtonStyle} style={{backgroundColor:'#FFE082', height:150, width: 250}}>
-                          <Typography gutterBottom variant="body1" color="Black" align="center" onClick={viewAllProducts} style={{ fontSize:18,cursor: 'pointer', padding:'60px 10px' }}>
+                      <Grid item xs={4} style={{margin:'5px 10px 10px 70px'}}>
+                        <Paper className={crudButtonStyle} style={{backgroundColor:'#FFE082', height:120, width: 250}}>
+                          <Typography gutterBottom variant="body1" color="Black" align="center" onClick={viewAllProducts} style={{ fontSize:18,cursor: 'pointer', padding:'50px 10px' }}>
                             View All Products
                           </Typography></Paper>
                       </Grid>

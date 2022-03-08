@@ -26,7 +26,9 @@ function editPage(edit, action) {
         quantAvailable: productInfo.quantAvailable,
         price: productInfo.price,
         productTags: productInfo.productTags,
-        productDesc: productInfo.productDesc
+        productDesc: productInfo.productDesc,
+        maxDiscount: productInfo.maxDiscount,
+        minProducts: productInfo.minProducts
       };
     }
     case 'error': {
@@ -59,16 +61,18 @@ const EditProduct = (props) => {
           quantAvailable: '',
           price: '',
           productTags: [tags],
-          productDesc: ''
+          productDesc: '',
+          maxDiscount:0,
+          minProducts:0
       }
   const [notify, setNotify] = React.useState({ isOpen: false, mesg: '' });
   const [productList, setProductList] = useState([])
   const [edit, setEdit] = useReducer(editPage, initialValues);
-  const {productName, quantAvailable,price,productTags,productDesc} = edit;
+  const {productName, quantAvailable,price,productTags,productDesc,maxDiscount,minProducts} = edit;
   const [productId, setProductId] = React.useState();
   const { editp, setEditp } = props;
   const [imgdialog, setImgdialog] = useState({ isOp: false });
-  const formStyle = { textAlign: 'center' }
+  const formStyle = { textAlign: 'center' , overflowX: "hidden"}
   const handleClose = () => {
     setEditp({
       openEdit: false
@@ -123,7 +127,9 @@ const EditProduct = (props) => {
        quantAvailable,
        price,
        productTags,
-       productDesc
+       productDesc,
+       maxDiscount,
+       minProducts
    }
 
     axios.post("http://localhost:8088/product/update", Product)
@@ -227,7 +233,7 @@ const EditProduct = (props) => {
                                 <Grid item xs={6}>
                                   {productTags.map((tag, i) => (
                                     <span key={i}>
-                                    <Field as={TextField} label='Product Tags' name="productTags" required value={tag.tag } error={props.errors.productTags && props.touched.productTags}   onInput={props.handleChange}
+                                    <Field as={TextField} label='Product Tags' name="productTags" required value={tag.tag} error={props.errors.productTags && props.touched.productTags} onInput={props.handleChange}
                                          onChange={(e) =>
                                            setEdit({
                                                type: 'field',
@@ -243,7 +249,7 @@ const EditProduct = (props) => {
                                     </Grid>
 
                               <Grid item xs={12}>
-                                <Field as={TextField} label='Product Description' name="productDesc" required value={productDesc} style={{ marginLeft: '10px', width: '500px' }}
+                                <Field as={TextField} fullWidth label='Product Description' name="productDesc" required value={productDesc} style={{ marginLeft: '25px' }}
                                   required onInput={props.handleChange}
                                   InputLabelProps={{
                                     shrink: true,
@@ -257,6 +263,31 @@ const EditProduct = (props) => {
                                 />
                               </Grid>
 
+                              <Grid item xs={6}>
+                                <Field as={TextField}  label='Maximum discount' name="maxDiscount" onInput={props.handleChange} value={maxDiscount} style={{ marginLeft: '-20px' }}
+                                  onChange={e =>
+                                    setEdit({
+                                      type: 'field',
+                                      fieldName: 'maxDiscount',
+                                      payload: e.currentTarget.value,
+                                    })
+
+                                  }
+                                  required />
+                              </Grid>
+
+                              <Grid item xs={6}>
+                                <Field as={TextField}  label='Minimum number of products required to avail discount' name="minProducts" onInput={props.handleChange} value={minProducts} style={{ marginLeft: '-20px' }}
+                                  onChange={e =>
+                                    setEdit({
+                                      type: 'field',
+                                      fieldName: 'minProducts',
+                                      payload: e.currentTarget.value,
+                                    })
+
+                                  }
+                                  required />
+                              </Grid>
 
 
                                   </Grid>

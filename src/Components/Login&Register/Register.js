@@ -174,12 +174,15 @@ const Register = () => {
             width: '260px'
 
         },
-                 textField: {
-                     [`& fieldset`]:{
-                          borderRadius:100
-                        },
-                        marginTop:'5px'
-                 }
+         textField: {
+             [`& fieldset`]:{
+                  borderRadius:100
+                },
+                marginTop:'5px'
+         },
+         gridStyle: {
+             overflow: 'hidden'
+         }
     });
 
     const icons = {
@@ -277,6 +280,7 @@ const Register = () => {
 
 
     return (
+        <Grid className={classes.gridStyle}>
         <Box  >
             <Box ml={40}  mt={3} align="center" >
                 <Grid container spacing={3} align="center">
@@ -404,6 +408,7 @@ const Register = () => {
                 </Grid>
             </Box>
         </Box>
+        </Grid>
     )
 }
 

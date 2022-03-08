@@ -1,25 +1,16 @@
 import { React, Fragment } from 'react'
-import { Avatar, Button, Grid, TextField, Box } from '@material-ui/core'
-import AddBoxIcon from '@material-ui/icons/AddBox';
+import { Button, Grid, TextField, Box } from '@material-ui/core'
 import { Form, Formik, Field, ErrorMessage,FieldArray } from 'formik';
 import axios from 'axios';
 import { useState } from 'react';
 import Snack from '../Snackbar';
-import { useNavigate } from 'react-router-dom';
 import UploadProductImage from "./UploadProductImage";
-import { IconButton } from '@material-ui/core';
-import CloseIcon from '@material-ui/icons/Close';
 import * as Yup from 'yup';
 import { Dialog, DialogTitle, DialogContent } from '@material-ui/core';
-
+import PercentIcon from '@mui/icons-material/Percent';
 
 const AddProduct = (props) => {
-    // const paperStyle = { padding: '20px 20px', width: 800, height: 460, margin: "30px auto" }
-    const headerStyle = { margin: 0 }
-    const avatarStyle = { backgroundColor: '' }
-    //const btnStyle = { margin: '10px 5px 10px auto', display: 'flex', justify: 'space-between', alignItems: 'right' }
-    const formStyle = { textAlign: 'center' }
-    const marginTop = { marginTop: '10px', marginBottom: '10px' }
+   const formStyle = { textAlign: 'center' }
     const tags = {tag:''};
 
     const initialValues = {
@@ -27,17 +18,14 @@ const AddProduct = (props) => {
         quantAvailable: '',
         price: '',
         productTags: [tags],
-        productDesc: ''
+        productDesc: '',
+        maxDiscount: 0,
+        minProducts: 0
     }
 
-    const [success, setSuccess] = useState(false);
-    const [mesg, setMesg] = useState('');
-    const [open, setOpen] = useState(false);
     const [notify, setNotify] = useState({ isOpen: false, mesg: '' });
     const [imgdialog, setImgdialog] = useState({ isOp: false });
     const { add, setAdd } = props;
-
-    let navigate = useNavigate();
 
     const handleClose = () => {
         setAdd({
@@ -48,14 +36,14 @@ const AddProduct = (props) => {
 
     };
     const onSubmit = (values, props) => {
-
-
         const Product = {
             productName: values.productName,
             quantAvailable: values.quantAvailable,
             price: values.price,
             productTags: values.productTags,
-            productDesc: values.productDesc
+            productDesc: values.productDesc,
+            maxDiscount: values.maxDiscount,
+            minProducts: values.minProducts
         }
 
         const businessInfo=JSON.parse(localStorage.getItem("businessInfo"))
@@ -69,9 +57,6 @@ const AddProduct = (props) => {
                 localStorage.setItem('productId', JSON.stringify(response.data.product.productId));
                 console.log(response.status)
                 if (resp === 200) {
-                    setSuccess(true);
-                    setMesg(response.data.message);
-                    setOpen(true);
                     setNotify({
                         isOpen: true,
                         mesg: "Product Added Successfully!"
@@ -89,8 +74,6 @@ const AddProduct = (props) => {
             .catch((error) => {
                 if (error.status.response === 400) {
                     console.log(error.response.data.message);
-                    setOpen(true);
-                    setMesg(error.response.data.message);
                     setNotify({
                         isOpen: true,
                         mesg: "Product Already Exist!"
@@ -98,8 +81,6 @@ const AddProduct = (props) => {
                     props.resetForm()
                 }
                 else {
-                    setOpen(true);
-                    setMesg("Something went wrong");
                     setNotify({
                         isOpen: true,
                         mesg: "Something went wrong!"
@@ -119,8 +100,17 @@ const AddProduct = (props) => {
             .required,
         quantAvailable: Yup.string().required,
         price: Yup.string().required,
-        productDesc: Yup.string().required
+        productDesc: Yup.string().required,
+        maxDiscount: Yup.number().positive().required('Max discount is required').min(0, 'Min value 0').max(100, 'Max value is 100')
     });
+    const icons = {
+      maxDiscount: PercentIcon
+    };
+
+    const FieldIcon = ({ name }) => {
+      const Icon = icons[name];
+      return Icon ? (<Icon />) : null;
+    };
 
 
 
@@ -139,7 +129,7 @@ const AddProduct = (props) => {
 
                     <DialogContent >
                         <Box mr={10}>
-                            <Formik initialValues={initialValues} eventSchema={productSchema} onSubmit={onSubmit}>
+                            <Formik initialValues={initialValues} productSchema={productSchema} onSubmit={onSubmit}>
 
                                 {(props) => (
                                     <Form style={formStyle}>
@@ -154,22 +144,18 @@ const AddProduct = (props) => {
                                                         onInput={props.handleChange}
                                                         pattern="[Aa-Zz]"
                                                         helperText={<ErrorMessage name='productName' />}
-                                                        onChange={props.handleChange} placeholder="Enter the name of product" required />
+                                                        onChange={props.handleChange} placeholder="Enter the name of product"/>
                                                 </Grid>
 
                                                 <Grid item xs={6}>
-
                                                     <Field as={TextField} fullWidth label='Quantity Available' name='quantAvailable' value={props.values.quantAvailable}
                                                         onChange={props.handleChange} placeholder="Enter the product quantity available" required />
-
                                                 </Grid>
-
 
                                                 <Grid item xs={6}>
                                                     <Field as={TextField} fullWidth label='Price' name='price' value={props.values.price}
                                                         onChange={props.handleChange} placeholder="Enter the price of product" required />
                                                 </Grid>
-
 
                                                 <Grid item xs={6}>
                                                 <FieldArray name="productTags">
@@ -197,19 +183,27 @@ const AddProduct = (props) => {
                                               )}
                                             </FieldArray>
                                             </Grid>
-
-
                                                 <Grid item xs={12}>
                                                     <Field as={TextField} id="standard-textarea" fullWidth label='Product Description' name='productDesc' value={props.values.productDesc}
                                                         onChange={props.handleChange} placeholder="Enter the Description of product" multiline required />
                                                 </Grid>
+                                                 <Grid item xs={6}>
+                                                    <Field as={TextField} fullWidth type="number" label='Maximum discount' name='maxDiscount' value={props.values.maxDiscount}
+                                                        onChange={props.handleChange} placeholder="Enter the maximum discount allowed for product" required InputProps={{endAdornment: (<FieldIcon name="maxDiscount" />), fontSize:"small",inputProps: { min: 0, max: 100 }}} />
+                                                </Grid>
 
+                                                <Grid item xs={6}>
+                                                    <Field as={TextField} fullWidth type="number" label='Minimum number of products required to avail discount' name='minProducts' value={props.values.minProducts}
+                                                        onChange={props.handleChange} placeholder="Enter the minimum number of products required to avail discount" required InputProps={{inputProps: { min: 0, max: 100 }}}/>
+                                                </Grid>
                                             </Grid>
 
+
                                         </div>
-                                        <Grid container justify="flex-end">
-                                            <Button type='submit' color='primary'  disabled={props.isSubmitting}
-                                                style={marginTop} >{props.isSubmitting ? "Loading" : "Add"}</Button>&nbsp;&nbsp;&nbsp;
+                                        <Grid container justify="flex-end" style={{marginTop:"10px"}}>
+                                            <Button type='submit' color='primary'  disabled={props.isSubmitting}>
+                                                {props.isSubmitting ? "Loading" : "Add"}
+                                            </Button>&nbsp;&nbsp;&nbsp;
                                             <Button onClick={handleClose} color="primary" >
                                                Close
                                             </Button>
