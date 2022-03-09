@@ -156,7 +156,7 @@ const AddProduct = (props) => {
                                                 </Grid>
 
                                                 <Grid item xs={6}>
-                                                    <Field as={TextField} fullWidth label='Unit price / Cost per item' name='price' value={props.values.price}
+                                                    <Field as={TextField} fullWidth label='Price per Unit' name='price' value={props.values.price}
                                                         onChange={props.handleChange} placeholder="Enter the price of product" required />
                                                 </Grid>
 

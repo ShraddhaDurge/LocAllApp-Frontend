@@ -7,10 +7,10 @@ import { makeStyles } from '@material-ui/core/styles';
 import Snackbar from '@material-ui/core/Snackbar';
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
-import VendorSidebar from "./VendorSidebar";
 import Image from '../Images/2593164.png';
 import VerifiedIcon from '@mui/icons-material/Verified';
 import PendingActionsIcon from '@mui/icons-material/PendingActions';
+import VendorSidebar from './VendorSidebar.js'
 
 function businessProfile(myprofile,action) {
     const businessInfo=JSON.parse(localStorage.getItem("myBusinessProfile"))
@@ -174,15 +174,10 @@ const VendorHome=()=>{
 
     return(
         <Grid>
-        <VendorSidebar/>
+        <VendorSidebar />
         <Grid style={gridStyle}>
 
         <Paper elevation={20} style={paperStyle} >
-           {/* <Grid align='center' style={{padding:"30px 10px 10px 10px"}}>
-
-                <Typography variant='h5' color="textSecondary" align="center">Vendor Homepage</Typography>
-            </Grid>
-            */}
             <Paper style={{backgroundImage: `url(${Image})`, backgroundSize: "cover", backgroundRepeat: "no-repeat", height:120, widh:800, padding:"60px 0px 0px 90px", marginBottom:"20px"}}>
               <Typography gutterBottom variant="h5" fontFamily="Segoe UI" color="textPrimary">
                 Hello @{info2.user.username}! <FieldIcon name={info2.status} />

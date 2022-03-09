@@ -219,7 +219,7 @@ const EditProduct = (props) => {
                                   required />
                               </Grid>
                               <Grid item xs={6}>
-                                  <Field as={TextField}  label='Price' name="price" onInput={props.handleChange} value={price} style={{ marginLeft: '-20px' }}
+                                  <Field as={TextField}  label='Price per Unit' name="price" onInput={props.handleChange} value={price} style={{ marginLeft: '-20px' }}
                                     onChange={e =>
                                       setEdit({
                                         type: 'field',

@@ -6,6 +6,7 @@ import * as Yup from 'yup';
 import Snackbar from '@material-ui/core/Snackbar';
 import axios from 'axios';
 import logo from '../Images/logo1.png';
+import Snack from '../Snackbar';
 
 class VendorVerification extends Component{
 
@@ -15,12 +16,18 @@ class VendorVerification extends Component{
 				items: [],
 				DataisLoaded: false
 		};
+//		this.notify = {
+//                isOpen: false,
+//                mesg: " "
+//		};
 	};
 
-	state = { isOpen: false };
+	state = { isOp: false };
+//	notify = {isOpen: false};
 
   handleShowDialog = () => {
-    this.setState({ isOpen: !this.state.isOpen });
+    this.setState({ isOp: !this.state.isOp });
+//    this.setNotify({ isOpen: false })
     console.log('cliked');
   };
 
@@ -46,7 +53,7 @@ class VendorVerification extends Component{
 			const statustxtstyle={color:'#FFF', hover: "#000", textDecoration: 'none', cursor: 'pointer'}
 			const acceptbtnstyle = { margin:'20px auto', padding:'4px',display:'flex',justifyContent:'center',alignItems:'center', width:'30%',height:'20%', backgroundColor: '#77DD77'}
 			const denybtnstyle = { margin:'20px auto', padding:'4px',display:'flex',justifyContent:'center',alignItems:'center', width:'30%',height:'20%', backgroundColor: '#FF6961'}
-
+//            const {isOpen, mesg} = this.notify;
 
 
 			if (!DataisLoaded) {
@@ -89,10 +96,10 @@ class VendorVerification extends Component{
             				console.log(response.data)
             				console.log(response.status)
             				if (res === 200) {
-//            						setSuccess(true);
-//            						setMesg(response.data.message);
-//            						setOpen(true);
-            						//navigate('/adminHome', { replace:true })
+//            						this.setNotify({
+//                                          isOpen: true,
+//                                          mesg: "Vendor verified Successfully!"
+//                                      });
             						console.log("accepted")
             				}
 
@@ -100,12 +107,16 @@ class VendorVerification extends Component{
             		.catch((error) => {
             				if (error.response.status === 400) {
             						console.log(error.response.data.message);
-//            						setOpen(true);
-//            						setMesg(error.response.data.message);
+//            						this.setNotify({
+//                                      isOpen: true,
+//                                      mesg: error.response.data.message
+//                                  })
             				}
             				else {
-//            						setOpen(true);
-//            						setMesg("Something went wrong");
+//            				this.setNotify({
+//                                      isOpen: true,
+//                                      mesg: "Something went wrong"
+//                                  })
             						console.log(error)
             				}
             		});
@@ -124,10 +135,10 @@ class VendorVerification extends Component{
             			console.log(response.data)
             			console.log(response.status)
             			if (res === 200) {
-//            					setSuccess(true);
-//            					setMesg(response.data.message);
-//            					setOpen(true);
-            					//navigate('/adminHome', { replace:true })
+//                        this.setNotify({
+//                                          isOpen: true,
+//                                          mesg: "Vendor verified Successfully!"
+//                                      })
             					console.log("accepted successfully!")
 
             			}
@@ -136,14 +147,18 @@ class VendorVerification extends Component{
             	.catch((error) => {
             			if (error.response.status === 400) {
             					console.log(error.response.data.message);
-//            					setOpen(true);
-//            					setMesg(error.response.data.message);
+//            					this.setNotify({
+//                                  isOpen: true,
+//                                  mesg: error.response.data.message
+//                              })
 //            					props.resetForm()
 
             			}
             			else {
-//            					setOpen(true);
-//            					setMesg("Something went wrong");
+//            					this.setNotify({
+//                                      isOpen: true,
+//                                      mesg: "Something went wrong"
+//                                  })
             					console.log(error)
             			}
             	});

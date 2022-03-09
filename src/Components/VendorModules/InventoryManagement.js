@@ -16,13 +16,9 @@ import EditProduct from "./EditProduct";
 import ViewAllProducts from "./ViewAllProducts";
 import Image from '../Images/Inventory-Management2.jpg';
 //import Image from '../Images/Inventory5.png';
-const useStyles = makeStyles((theme) => ({
-  gridItem: {border: '1px solid lightgray', borderRadius: '20px', backgroundColor: '#Faf0e6', marginTop: '1px', width: 300, marginLeft: '30px'},
-  grid: { margin: 5 }
-}));
 const InventoryManagement=()=>{
 
-    const paperStyle={width:800, height:520, margin:"0px 360px"}
+    const paperStyle={width:800, height:520, marginLeft:"390px", overflow:'hidden', align: 'center', position: 'relative'}
     const headStyle={margin:0,fontFamily:'san-serif',color:'blue'}
     const btnstyle = { margin:'20px auto',display:'flex',justifyContent:'center',alignItems:'center', width:'30%',height:'20%', backgroundColor: '#2196F3'}
     const imgstyle={height:100,width:180}
