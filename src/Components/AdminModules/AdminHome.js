@@ -43,20 +43,20 @@ const AdminHome=()=>{
 
                       <Grid item xs={4} style={{margin:'10px 10px 10px 90px'}} >
                         <Paper style={{margin: '20px', backgroundColor:'#009BFF', height:50}}>
-                          <Typography gutterBottom variant="body1" color="Black" align="center"onClick={verifyVendors}  style={{ cursor: 'pointer', padding:'10px 10px' }}>
+                          <Typography gutterBottom variant="body1" color="textPrimary" align="center"onClick={verifyVendors}  style={{ cursor: 'pointer', padding:'10px 10px' }}>
                             Vendor Verification
                           </Typography></Paper>
 
                       </Grid>
                       <Grid item xs={4} style={{margin:'10px 10px 10px 30px'}}>
                         <Paper style={{margin: '20px', backgroundColor:'#009BFF', height:50}}>
-                          <Typography gutterBottom variant="body1" color="Black" align="center" style={{ cursor: 'pointer', padding:'10px 10px' }}>
+                          <Typography gutterBottom variant="body1" color="textPrimary" align="center" style={{ cursor: 'pointer', padding:'10px 10px' }}>
                             Support and feedback
                           </Typography></Paper>
                       </Grid>
                       <Grid item xs={3} style={{margin:'130px 0px 0px 280px'}}>
                           <Paper style={{ backgroundColor:'#81C784', height:50}}>
-                            <Typography gutterBottom variant="body1" color="Black" align="center" onClick={handleLogout} style={{ cursor: 'pointer', padding:'10px 10px' }}>
+                            <Typography gutterBottom variant="body1" color="textPrimary" align="center" onClick={handleLogout} style={{ cursor: 'pointer', padding:'10px 10px' }}>
                               Logout
                             </Typography></Paper>
                         </Grid>
