@@ -10,14 +10,23 @@ import Snackbar from '@material-ui/core/Snackbar';
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
 import Homebar from "./Homebar";
+import Image from '../Images/15.png';
+import CustomerSidebar from "./CustomerSidebar";
+import { ThemeProvider,createMuiTheme } from '@material-ui/core/styles';
 
-function customerProfile(myprofile,action) {
+const theme = createMuiTheme({
+ typography: {
+   fontFamily: ['"Montserrat"', 'Open Sans','Chilanka','cursive'].join(',')
+  }
+})
+
+function customerProfile(myProfile,action) {
     const customerProfile=JSON.parse(localStorage.getItem("customerProfile"))
     const myInfo=JSON.parse(localStorage.getItem("myInfo"))
     switch (action.type) {
         case 'field': {
             return {
-              ...myprofile,
+              ...myProfile,
               [action.fieldName]: action.payload,
             };
           }
@@ -35,22 +44,27 @@ function customerProfile(myprofile,action) {
       }
       case 'error': {
         return {
-          ...myprofile,
+          ...myProfile,
 
         };
       }
 
       default:
-        return myprofile;
+        return myProfile;
     }
   }
 
+   const useStyles=makeStyles(theme=>({
+        root:{
+          top:theme.spacing(9)
+        }
+      }
+    ))
+
 const CustomerProfile=()=>{
-    const paperStyle={padding :'20px', width:'150vh', height:'70vh', margin:"20px", align: 'center', position:'relative' }
-    const headStyle={margin:0,fontFamily:'san-serif',color:'blue'}
-    const btnstyle = { margin:'50px auto',display:'flex',justifyContent:'center',alignItems:'center', width:'30%',height:'20%', backgroundColor: '#2196F3'}
-    const imgstyle={height:100,width:180}
-    const gridStyle={backgroundColor: '#E3F2FD', postion:'fixed', height:'86vh', overflow:'auto', margin:"0px"}
+    const paperStyle={width:'160vh', height:'80vh', alignItems:'center'}
+    const btnstyle = { margin:'20px auto',display:'flex',justifyContent:'center',alignItems:'center', width:'30%',height:'20%', backgroundColor: '#5E35B1'}
+//    const gridStyle={height:'86vh',margin:"0px 0px",padding :'0px 0px'}
 
     const myInfo=JSON.parse(localStorage.getItem("myInfo"))
 
@@ -64,10 +78,9 @@ const CustomerProfile=()=>{
         billingPincode:''
     }
 
-    const [myprofile, setMyprofile] = useReducer(customerProfile, initialValues);
-    const {username,phoneno,email,billingAddress,shippingAddress,shippingPincode,billingPincode} = myprofile;
+    const [myProfile, setMyProfile] = useReducer(customerProfile, initialValues);
+    const {username,phoneno,email,billingAddress,shippingAddress,shippingPincode,billingPincode} = myProfile;
      const [pincodeList, setPincodeList] = useState([])
-//     const [pincodeStateList, setPincodeStateList] = useState([])
 
     const [success,setSuccess]=useState(false);
     const [mesg,setMesg]=useState('');
@@ -79,11 +92,11 @@ const CustomerProfile=()=>{
             .then(res=>{
                 console.log(res)
                localStorage.setItem('customerProfile',JSON.stringify(res.data))
-               setMyprofile({ type: 'success' })
+               setMyProfile({ type: 'success' })
             })
             .catch(err=>{
                 console.log(err)
-                setMyprofile({ type: 'error' })
+                setMyProfile({ type: 'error' })
 
             })
         },[userid])
@@ -146,36 +159,39 @@ const CustomerProfile=()=>{
     return(
         <Grid>
         <Homebar />
-        <Grid style={gridStyle}>
+        <Grid style={{padding:"10px"}}>
         <center>
-        <Paper elevation={20} style={paperStyle}>
-            <Grid align='center' >
 
-                <Typography variant='h5' color="textSecondary" align="center">Customer Profile</Typography>
+        <Paper elevation={20} style={paperStyle}>
+             <ThemeProvider theme={theme}>
+            <Paper style={{ backgroundImage: `url(${Image})`, backgroundSize: "contain",backgroundRepeat: "no-repeat", backgroundColor:"#63C6FF", alignItems:"center", height:"180px"}} >
+                 <Grid style={{paddingTop:"50px", alignItems:"center"}}>
+
+                     <Typography gutterBottom variant="h4" fontFamily="Segoe UI" color="primary">
+                          Welcome, @{myInfo.username}!
+                       </Typography>
+                       <Typography gutterBottom color="textSecondary">
+                           {myInfo.email}
+                           <br />
+                           +91{myInfo.phoneno}
+                       </Typography>
+                </Grid>
+                 </Paper>
+
+            <Grid align='center' style={{padding:"25px"}}>
+                   <Typography variant='h5' color="textSecondary" >Address Information</Typography>
             </Grid>
-            <br/>
             <Formik initialValues={initialValues} onSubmit={onSubmit}>
                 {(props) => (
                     <Form>
                     <div class="container">
                    <Grid container spacing={2}>
-                        <Grid item xs={4}>
-                                <Field as={TextField} label='Username' name="username" disabled value={myInfo.username}  required/>
-                        </Grid>
-                        <Grid item xs={4}>
-                            <Field as={TextField} label='Phone Number' name="phoneno" disabled value={myInfo.phoneno}  required />
-                        </Grid>
-
-                        <Grid item xs={4}>
-                            <Field as={TextField} label='Email Id' name="email" disabled value={myInfo.email} required/>
-                        </Grid>
-
-                        <Grid item xs={8} style={{paddingLeft:'35px'}}>
+                        <Grid item xs={8} style={{paddingLeft:'100px'}}>
                             <Field as={TextField} label='Billing Address' name="billingAddress" fullWidth required value={billingAddress}
                             error={props.errors.billingAddress && props.touched.billingAddress} onInput={props.handleChange}
 
                             onChange={(e) =>
-                              setMyprofile({
+                              setMyProfile({
                                   type: 'field',
                                   fieldName: 'billingAddress',
                                   payload: e.currentTarget.value,
@@ -188,7 +204,7 @@ const CustomerProfile=()=>{
                             error={props.errors.billingPincode && props.touched.billingPincode} onInput={props.handleChange}
 
                             onChange={(e) =>
-                              setMyprofile({
+                              setMyProfile({
                                   type: 'field',
                                   fieldName: 'billingPincode',
                                   payload: e.currentTarget.value,
@@ -197,12 +213,12 @@ const CustomerProfile=()=>{
 
                         </Grid>
 
-                        <Grid item xs={8} style={{paddingLeft:'35px'}}>
+                        <Grid item xs={8} style={{paddingLeft:'100px'}}>
                             <Field as={TextField} label='Shipping Address' name="shippingAddress" fullWidth required value={shippingAddress}
                             error={props.errors.shippingAddress && props.touched.shippingAddress} onInput={props.handleChange}
 
                             onChange={(e) =>
-                              setMyprofile({
+                              setMyProfile({
                                   type: 'field',
                                   fieldName: 'shippingAddress',
                                   payload: e.currentTarget.value,
@@ -216,7 +232,7 @@ const CustomerProfile=()=>{
                             error={props.errors.shippingPincode && props.touched.shippingPincode} onInput={props.handleChange}
 
                             onChange={(e) =>
-                              setMyprofile({
+                              setMyProfile({
                                   type: 'field',
                                   fieldName: 'shippingPincode',
                                   payload: e.currentTarget.value,
@@ -235,7 +251,7 @@ const CustomerProfile=()=>{
                     </Form>
                 )}
             </Formik>
-
+         </ThemeProvider >
         </Paper>
         </center>
         <Snackbar
@@ -257,7 +273,7 @@ const CustomerProfile=()=>{
         }
         />
 
-        {/*<Footer/>*/}
+
     </Grid>
     </Grid>
 )

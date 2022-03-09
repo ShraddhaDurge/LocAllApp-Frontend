@@ -15,11 +15,12 @@ import RemoveIcon from "@material-ui/icons/Remove";
 
 const useStyles=makeStyles({
 card:{
-    backgroundColor:"#EF9A9A",
+    backgroundColor:"#81D4FA",
     width:"1000px",
     height:"450px",
     padding:"auto auto",
-    margin:"10px 80px"
+    margin:"10px 80px",
+    boxShadow: '0 14px 28px rgba(0,0,0,0.25),0 10px 10px rgba(0,0,0,0.22)'
 }
 ,button:{
     color:"primary",
@@ -99,8 +100,10 @@ const ProductDescription = (props) => {
                              </Grid>
                             <Grid item xs={4} style={{ margin:'0px auto', padding:'20px 50px', align:"center"}}>
                                <br></br>
-                               <Typography gutterBottom variant="h3" component="div">
+                               <Typography gutterBottom variant="h3" component="div" color="primary" >
+                                    <b>
                                     {productInfo.productName}
+                                    </b>
                                </Typography>
                                <Typography display="inline" gutterBottom variant="h5" component="div">
                                    <CurrencyRupeeIcon/>{productInfo.price} &nbsp;
@@ -110,7 +113,9 @@ const ProductDescription = (props) => {
                                   </Typography>
                               <br/>
                               <br/>
-                              <br/>
+                              <Typography gutterBottom variant="h6" component="div" color="textSecondary">
+                              Product Description:
+                               </Typography>
                               <Typography gutterBottom variant="h6" component="div">
                                     {productInfo.productDesc}
                                </Typography>

@@ -34,7 +34,7 @@ const useStyles = makeStyles((theme) => ({
   menuButton: {
     marginLeft: theme.spacing(1),
     '&:hover':{
-            backgroundColor:"#C2185B",
+            backgroundColor:"#0277BD",
         },
   },
   title: {
@@ -138,7 +138,7 @@ export default function MenuAppBar(props) {
 
         <CssBaseline />
         <ElevationScroll {...props}>
-          <AppBar style={{ height: 60, backgroundColor:"#FF7043"}}>
+          <AppBar style={{ height: 60, backgroundColor:"#81D4FA"}}>
 
             <Toolbar>
               <Typography variant="h6" className={classes.title}  >
@@ -165,7 +165,7 @@ export default function MenuAppBar(props) {
 
                     <Button onClick={handleMenu} className={classes.menuButton} startIcon={<AccountCircleIcon />} endIcon={<ArrowDropDownIcon />}
                      size="large" style={{ fontSize: 15, textTransform: 'none', color: 'white' }} >
-                            <Typography >&nbsp;&nbsp; Hello!, {dataInfo.username}</Typography>
+                            <Typography >Hello, {dataInfo.username}</Typography>
                     </Button>
                   <StyledMenu
                     id="menu-appbar"
