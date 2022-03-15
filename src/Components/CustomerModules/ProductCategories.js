@@ -61,9 +61,9 @@ const ProductCategories=()=>{
     return(
 
         <Grid>
-            <Typography variant='h5' color="textSecondary" align="center" >Product Categories</Typography>
-
-
+            <Typography variant='h5' color="primary" align="center" >Product Categories</Typography>
+            <br />
+            <br />
             <Carousel responsive={responsive}>
 
                         {isLoading ? (
@@ -77,7 +77,7 @@ const ProductCategories=()=>{
                             return(
                                 <div class="container">
 
-                                <Card sx={{ maxWidth: 400, alignItems:"center", margin:"10px"}} key={product.id}>
+                                <Card sx={{ maxWidth: 400, alignItems:"center", margin:"10px",backgroundColor:"#FFCCBC"}} key={product.id}>
                                 <CardActionArea onClick={productDescription(product)}>
                                     <CardMedia
                                     component="img"
@@ -88,7 +88,7 @@ const ProductCategories=()=>{
                                     <CardContent>
                                         <table><tbody><tr>
                                     <Typography gutterBottom variant="h5" component="div">
-                                        <td>Product:</td><td> {product.productName}</td>
+                                        <td> {product.productName}</td>
                                     </Typography></tr>
                                     <Typography variant="body2" color="text.secondary">
                                        {/* <tr>

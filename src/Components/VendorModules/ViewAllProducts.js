@@ -122,7 +122,7 @@ const ViewAllProducts = (props) => {
                                     <CardContent>
                                         <table><tbody><tr>
                                     <Typography gutterBottom variant="h5" component="div">
-                                        <td>Product:</td><td> {product.productName}</td>
+                                        <td> {product.productName}</td>
                                     </Typography></tr>
                                     <Typography variant="body2" color="textSecondary">
                                        {/* <tr>

@@ -1,4 +1,4 @@
-import React,{ useState, useEffect, useReducer,Fragment} from 'react';
+import {React, useState, useEffect, useReducer,Fragment} from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Grid, Paper, TextField, Button,Typography } from '@material-ui/core';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
@@ -26,14 +26,14 @@ const InventoryManagement=()=>{
     const gridItem= {border: '1px solid lightgray', borderRadius: '20px', backgroundColor: '#Faf0e6', marginTop: '1px', width: 300, marginLeft: '30px'}
     const crudButtonStyle= { margin: '20px' }
     const root= {marginLeft: '3px'}
-    const [notify, setNotify] = React.useState({ isOpen: false, mesg: '' });
+    const [notify, setNotify] = useState({ isOpen: false, mesg: "" });
     const [mesg, setMesg] = useState('');
     const [open, setOpen] = useState(false);
     const [success,setSuccess]=useState(false);
-    const [dele, setDelete] = React.useState({ isOp: false });
-    const [add, setAdd] = React.useState({ open: false });
-    const [editp, setEditp] = React.useState({ openEdit: false });
-    const [viewAllP, setViewAllP] = React.useState({ openViewAll: false });
+    const [dele, setDelete] = useState({ isOp: false });
+    const [add, setAdd] = useState({ open: false });
+    const [editp, setEditp] = useState({ openEdit: false });
+    const [viewAllP, setViewAllP] = useState({ openViewAll: false });
     const info2=JSON.parse(localStorage.getItem("businessInfo"));
     let navigate = useNavigate();
 

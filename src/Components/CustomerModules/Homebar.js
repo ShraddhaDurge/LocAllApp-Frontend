@@ -102,7 +102,7 @@ export default function MenuAppBar(props) {
   const handleSignout = () => {
     setAnchorEl(null);
     navigate('/', {replace: true})
-
+    localStorage.clear();
   };
 
   const handleProfile = () => {

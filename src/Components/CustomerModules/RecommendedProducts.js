@@ -62,9 +62,10 @@ const RecommendedProducts=()=>{
 
         <Grid>
 
-            <Typography variant='h5' color="textSecondary" align="center" >Top picks for you</Typography>
+            <Typography variant='h5' color="primary" align="center" >Top picks for you</Typography>
 
-
+            <br />
+            <br />
             <Carousel responsive={responsive}>
 
                         {isLoading ? (
@@ -78,7 +79,7 @@ const RecommendedProducts=()=>{
                             return(
                                 <div class="container">
 
-                                <Card sx={{ maxWidth: 400, alignItems:"center", margin:"10px"}} key={product.id}>
+                                <Card sx={{ maxWidth: 400, alignItems:"center", margin:"10px",backgroundColor:"#D1C4E9"}} key={product.id}>
                                 <CardActionArea onClick={productDescription(product)}>
                                     <CardMedia
                                     component="img"
@@ -89,7 +90,7 @@ const RecommendedProducts=()=>{
                                     <CardContent>
                                         <table><tbody><tr>
                                     <Typography gutterBottom variant="h5" component="div">
-                                        <td>Product:</td><td> {product.productName}</td>
+                                        <td> {product.productName}</td>
                                     </Typography></tr>
                                     <Typography variant="body2" color="text.secondary">
                                        {/* <tr>

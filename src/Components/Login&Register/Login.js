@@ -9,10 +9,12 @@ import background1 from '../Images/bg1.jpg';
 import EmailIcon from '@mui/icons-material/Email';
 import LockIcon from '@mui/icons-material/Lock';
 import logo from '../Images/LocAll (8).png';
+import VendorLogin from './VendorLogin';
 
 const Login = ({ handleChange }) => {
 
     const [notify, setNotify] = useState({ isOpen: false, mesg: '' });
+    const [roleDialog, setRoleDialog] = useState({ isOp: false });
     const initialValues = {
         email: '',
         password: ''
@@ -124,7 +126,8 @@ const Login = ({ handleChange }) => {
                         console.log(response.data.business.user)
                         localStorage.setItem('myInfo', JSON.stringify(response.data.business.user));
                         localStorage.setItem('businessInfo', JSON.stringify(response.data.business));
-                        navigate('/vendorHome', { replace: true })
+//                        navigate('/vendorHome', { replace: true })
+                        setRoleDialog({ isOp: true })
                     }
                     else {
                         console.log("No such role exists!")
@@ -182,11 +185,11 @@ const Login = ({ handleChange }) => {
                                         </center>
                                     </Grid>
                                     <Grid item xs={6} className={classes.grid}>
-                                    <br></br>
+                                    <br/>
                                         <center>
                                             <Typography variant='h5' style={{ color: "#199bf1" }} >Login</Typography>
                                         </center>
-                                        <br></br>
+                                        <br/>
                                         <Formik initialValues={initialValues} onSubmit={onSubmit} validationSchema={validationSchema}>
                                             {(props) => (
                                                 <Form>
@@ -206,27 +209,18 @@ const Login = ({ handleChange }) => {
                                                 </Form>
                                             )}
                                         </Formik>
-                                        <br></br>
-
-                                        <Snack
-                                            notify={notify}
-                                            setNotify={setNotify}
-                                        />
                                     </Grid>
                                 </Grid>
                             </CardContent>
                         </Card>
                     </Grid>
-
-
-
-
-
                 </Grid>
                 <Snack
                     notify={notify}
                     setNotify={setNotify}
                 />
+                  <VendorLogin roleDialog={roleDialog}
+                       setRoleDialog={setRoleDialog} />
             </Box>
         </Box>
         </Grid>

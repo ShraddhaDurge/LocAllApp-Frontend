@@ -96,9 +96,7 @@ const DeleteProduct = (props) => {
 
   const handleChange = (event) => {
     const productId = event.target.value;
-    localStorage.setItem('deleteProductId', JSON.stringify(productId));
-    const deleteId = JSON.parse(localStorage.getItem("deleteProductId"));
-    axios.get(`http://localhost:8088/product/${deleteId}`)
+    axios.get(`http://localhost:8088/product/${productId}`)
       .then(response => {
         console.log(response)
         console.log(response.data)
@@ -118,9 +116,9 @@ const DeleteProduct = (props) => {
 
 
   const onSubmit = async (e) => {
-    e.preventDefault();
-    const pid = JSON.parse(localStorage.getItem("productId"));
-            console.log(pid);
+    const prod = JSON.parse(localStorage.getItem("productInfo"));
+    const pid = prod.productId
+    console.log(pid);
 
     axios.delete(`http://localhost:8088/product/delete/${pid}`)
       .then((response) => {

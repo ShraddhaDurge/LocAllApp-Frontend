@@ -1,168 +1,140 @@
-import React,{useState,useEffect} from 'react';
-import {Grid, Card, Box, Button, CardContent, CardMedia, Typography, makeStyles} from '@material-ui/core';
-import axios from 'axios';
-import { Formik, Form, Field, ErrorMesage } from 'formik';
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
+import { Grid, Paper,Typography,Button } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
+import logo from '../Images/logo1.png';
 import Homebar from "./Homebar";
-//import Footer from './Footer';
-import Snack from '../Snackbar';
-import CurrencyRupeeIcon from '@mui/icons-material/CurrencyRupee';
-import Image from '../Images/2593108.png';
-import ButtonGroup from "@material-ui/core/ButtonGroup";
-import Badge from "@material-ui/core/Badge";
-import ShoppingBasketIcon from '@mui/icons-material/ShoppingBasket';
-import AddIcon from "@material-ui/icons/Add";
-import RemoveIcon from "@material-ui/icons/Remove";
+import { Dialog, DialogTitle, DialogContent } from '@material-ui/core';
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
+import CardMedia from '@mui/material/CardMedia';
+import { CardActionArea } from '@mui/material';
+import { useState } from 'react';
+import logo1 from '../Images/LocAll (8).png';
+import axios from 'axios';
 
-const useStyles=makeStyles({
-card:{
-    backgroundColor:"#EF9A9A",
-    width:"1000px",
-    height:"450px",
-    padding:"auto auto",
-    margin:"10px 80px"
-}
-,button:{
-    color:"primary",
-    '&:hover':{
-        backgroundColor:"#2471A3",
-    },
-    marginTop:"20px",
+import 'react-multi-carousel/lib/styles.css';
 
-}
-});
+const ShoppingBasket=()=>{
 
-const initialValues = {
-          quantSelected: 0
-      }
+    let navigate = useNavigate();
 
-const ShoppingBasket = (props) => {
+     const handleLogout = () => {
+      navigate('/', {replace: true})
+     };
 
-    const headStyle = {margin:'0', color:'#6200EE'}
-    const [notify,setNotify]=useState({isOpen:false,mesg:''});
-    const [itemCount, setItemCount] = React.useState(1);
+      const customerProfile = () => {
+         navigate('/customerProfile', {replace: true})
+      };
 
-    const myInfo = JSON.parse(localStorage.getItem("myInfo"))
-    const userid=myInfo.id;
-    useEffect(()=>{
-        axios.get(`http://localhost:8088/customer/getBasket/8`)
-        .then(res=>{
-            console.log(res)
-            localStorage.setItem('myBasket',JSON.stringify(res.data))
-            console.log(res.data.basketItems)
-        })
-        .catch(err=>{
-            console.log(err)
-        })
-    },[userid])
+      const productDescription = product => e =>  {
+        localStorage.setItem("productInfo", JSON.stringify(product));
+        navigate('/productDescription', {replace: true})
+     };
 
-    const myBasket = JSON.parse(localStorage.getItem("myBasket"))
-    const onSubmit = (values, props) => {
+      const [productsList, setProductsList] = useState([]);
+      const [totalPrice, setTotalPrice] = React.useState(0);
+      const [isLoading, setisLoading] = useState(true)
+      const [isEmpty, setIsEmpty] = useState(true)
+      const paperStyle={padding :'20px', width:'80%', margin:"20px", align: 'center', position:'relative'}
+      //const payButton={padding:'5px', align:'center'}
 
-        const productId = myBasket.productId
+      const myInfo=JSON.parse(localStorage.getItem("myInfo"))
+      const userid = myInfo.id;
+      React.useEffect(() => {
+        axios.get(`http://localhost:8088/customer/getBasket/${userid}`)
+      .then((res) => {
+             console.log(res.data.basketItems)
+             setProductsList([...res.data.basketItems])
+             setTotalPrice(res.data.totalCost)
 
-        const Order = {
-            productId: productId,
-            quantSelected: itemCount
-            }
+             })
+      .then(setisLoading(false));
+      console.log(productsList);
+    }, [userid]);
 
-        const dataInfo = JSON.parse(localStorage.getItem("myInfo"))
-        const custId = dataInfo.id;
-        axios.post(`http://localhost:8088/customer/addToBasket/${custId}`, Order)
-        .then((response) => {
-            var res=response.status
-            console.log(response)
-            console.log(response.status)
-            if (res === 200) {
-                setNotify({
-                    isOpen:true,
-                    mesg:"Added to basket"
-                })
-            }
-        })
-        .catch((error) => {
-            if (error.response.status === 400) {
-                setNotify({
-                    isOpen:true,
-                    mesg:error.response.message
-                })
-
-            }
-            else{
-            console.log(error)
-            setNotify({
-                isOpen:true,
-                mesg:"Something went wrong!"
-            })}
-        });
-    };
-
-    const classes=useStyles();
     return(
-        <Box>
-            <Homebar/>
-      <Box m={5}>
+        <html style={{height:'100%'}}>
+					<style>{`
+					    table{
+					        table-layout: fixed;
+					    }
+						th, td{
+							padding: 20px;
+							max-width: 250px;
+							width: 150px;
+							text-align: left;
+						}
+					`}</style>
+				<body style={{height:'100vh'}}>
+        <Grid>
+        <Homebar />
 
-            <Grid container  spacing={6} >
+            <br/><br/>
+            <center>
+            <Paper elevation={20} style={paperStyle}>
+                <h2>Your Shopping Basket</h2>
+                <hr/>
+                <Grid>
+                <Grid item xs={8}>
 
-                <Grid item xs={12} sm={6} md={6}>
-                    <Card className={classes.card}>
-                          <CardContent>
-                          <Grid container spacing={5}>
-                             <Grid item xs={6} style={{ margin:'0px 0px', padding:'0px 0px'}}>
-                             </Grid>
-                            <Grid item xs={4} style={{ margin:'0px auto', padding:'20px 50px', align:"center"}}>
-                               <br></br>
-                               <Typography gutterBottom variant="h3" component="div">
-                              </Typography>
-                               <Typography display="inline" gutterBottom variant="h5" component="div">
-                                   </Typography>
-                                   <Typography display="inline" gutterBottom variant="subtitle1" component="div">
-                                       per item
-                                  </Typography>
+                <table>
+                <tr>
+                <th />
+                <th>Product</th>
+                <th>Quantity</th>
+                <th>Price</th>
+                <th>Discounted Price</th>
+                </tr>
+
+                {isLoading ? (
+                        <div className='spinner-border text-primary' role='status'>
+                        {' '}
+                        <span className='sr-only'><h2>No Items in Basket</h2></span>{' '}
+                        </div>
+                    ) : (
 
 
-                             <Typography gutterBottom variant="h6" component="div">
-                                  <Badge color="secondary" badgeContent={itemCount}>
-                                            <ShoppingBasketIcon />{" "}
-                                          </Badge>
-                                          <ButtonGroup>
-                                            <Button
-                                              onClick={() => {
-                                                setItemCount(Math.max(itemCount - 1, 0));
-                                              }}
-                                            >
-                                              {" "}
-                                              <RemoveIcon fontSize="small" />
-                                            </Button>
-                                            <Button
-                                              onClick={() => {
-                                                setItemCount(itemCount + 1);
-                                              }}
-                                            >
-                                              {" "}
-                                              <AddIcon fontSize="small" />
-                                            </Button>
-                                          </ButtonGroup>
+				productsList.map(product => {
+                            return(
+                                <tr key={product.basketId}>
+                                    <td><img src={`data:image/png;base64,${product.product.productImage}`} width={150} onClick={productDescription(product.product)} style={{cursor: 'pointer'}} /></td>
+                                    <td>{product.product.productName}</td>
+                                    <td>{product.quantSelected}</td>
+                                    <td>Rs. {product.product.price}</td>
+                                    <td>Rs. {product.discountedPrice}</td>
+                                </tr>
 
-                              </Typography>
+                               )
+				})
 
-                                <Button type='submit'  variant="contained" color="primary" disabled={props.isSubmitting}
-                                className={classes.button} onClick={onSubmit} >{props.isSubmitting ? "Loading" : "Add to basket"}&nbsp;&nbsp;&nbsp;&nbsp;  <ShoppingBasketIcon /></Button>
 
-                                </Grid>
-                            </Grid>
-                          </CardContent>
-                    </Card>
+                )}
+
+                </table>
+
+                </Grid>
+                <hr/>
+                <Grid item xs={5} color="secondary" style={{ padding:"10px", backgroundColor: '#E3F2FD'}}>
+                <h4>Sub Total =  Rs. {totalPrice}</h4>
+
+                <h4>Shipping  =  Rs. 0</h4>
+                <hr/>
+                <h3>Total Price = Rs. {totalPrice}</h3>
+                <br/>
+                <Button color="primary" variant="contained" >Proceed to payment</Button>
+
+                </Grid>
                 </Grid>
 
-            </Grid>
-            <Snack
-              notify={notify}
-              setNotify={setNotify}
-              />
-      </Box>
-    </Box>
-    )
+
+            </Paper>
+            </center>
+    </Grid>
+    </body>
+    </html>
+)
+
 }
 
 export default ShoppingBasket;

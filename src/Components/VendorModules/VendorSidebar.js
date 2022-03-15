@@ -60,6 +60,7 @@ const handleHome = () => {
  const handleLogout= () => {
 //            setAnchorEl(null);
             navigate('/', { replace: true })
+            localStorage.clear();
         };
   return (
     <>

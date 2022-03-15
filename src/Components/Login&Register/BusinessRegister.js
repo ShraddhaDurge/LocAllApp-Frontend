@@ -90,12 +90,7 @@ const BusinessRegister = () => {
 
     }
     const handleClose = (event, reason) => {
-        if (success) {
-            setOpen(false);
-        }
-        else {
-            setOpen(false);
-        }
+         setOpen(false);
     };
 
     const useStyles = makeStyles({

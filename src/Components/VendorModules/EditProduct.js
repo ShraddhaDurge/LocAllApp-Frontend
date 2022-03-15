@@ -96,8 +96,8 @@ const EditProduct = (props) => {
 
   const handleChange = (event) => {
     const productId = event.target.value;
-    localStorage.setItem('editProductId', JSON.stringify(productId));
-    const editid = JSON.parse(localStorage.getItem("editProductId"));
+    localStorage.setItem('productId', JSON.stringify(productId));
+    const editid = JSON.parse(localStorage.getItem("productId"));
     axios.get(`http://localhost:8088/product/${editid}`)
       .then(response => {
         console.log(response)

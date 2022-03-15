@@ -19,9 +19,9 @@ import { HashLink as Link } from 'react-router-hash-link';
 import MostPopularProducts from "./MostPopularProducts";
 import ProductCategories from "./ProductCategories";
 import RecommendedProducts from "./RecommendedProducts";
-import { ThemeProvider,createMuiTheme } from '@material-ui/core/styles';
+import { ThemeProvider,createTheme } from '@material-ui/core/styles';
 
-const theme = createMuiTheme({
+const theme = createTheme({
  typography: {
    fontFamily: ['"Montserrat"', 'Open Sans','Chilanka','cursive'].join(',')
   }
@@ -75,7 +75,6 @@ const CustomerHome=()=>{
       .then((res) => res.json())
       .then((data) => setProductsList([...data]))
       .then(setisLoading(false));
-
       console.log(productsList);
     }, []);
     return(
@@ -88,7 +87,7 @@ const CustomerHome=()=>{
 
              <Grid container spacing={5}>
              <Grid item xs={6} >
-                 <img src={Image} alt="welcome" height="470" />
+                 <img src={Image} alt="welcome" height="480" />
              </Grid>
                <Grid item xs={6} style={{paddingTop:"80px", alignItems:"center"}}>
                 <Typography variant='h3' color="textPrimary" > &nbsp;&nbsp;&nbsp;Welcome to LocALL!</Typography>
@@ -101,7 +100,7 @@ const CustomerHome=()=>{
 
             </Grid>
              </Paper>
-             <div class="shop" id="shop" >
+             <div class="shop" id="shop">
              <br/><br/><br/>
                 <RecommendedProducts />
                 <br/><br/>

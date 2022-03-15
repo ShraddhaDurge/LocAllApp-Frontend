@@ -12,9 +12,9 @@ import CloseIcon from '@material-ui/icons/Close';
 import Homebar from "./Homebar";
 import Image from '../Images/15.png';
 import CustomerSidebar from "./CustomerSidebar";
-import { ThemeProvider,createMuiTheme } from '@material-ui/core/styles';
+import { ThemeProvider,createTheme } from '@material-ui/core/styles';
 
-const theme = createMuiTheme({
+const theme = createTheme({
  typography: {
    fontFamily: ['"Montserrat"', 'Open Sans','Chilanka','cursive'].join(',')
   }
