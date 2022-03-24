@@ -13,7 +13,7 @@ import { Form, Formik, ErrorMessage, Field } from 'formik';
 export default function VendorLogin(props) {
 
     const [notify, setNotify] = React.useState({ isOpen: false, mesg: '' });
-    const [selectedRole, setSelectedRole] = React.useState(null);
+    const [selectedRole, setSelectedRole] = React.useState("customer");
 
     const { roleDialog, setRoleDialog } = props;
      let navigate = useNavigate();
@@ -28,18 +28,17 @@ export default function VendorLogin(props) {
         navigate('/login', { replace: true })
     };
 
-    const handleRole = (event) => {
-            console.log(event.target);
-            localStorage.setItem('userRole', JSON.stringify(event.target.role));
-
+    const handleRole = (e) => {
+            console.log(e.target.value);
+            setSelectedRole(e.target.value);
     }
 
-    const handleSubmit = (event) => {
-         const userRole = JSON.parse(localStorage.getItem("userRole"))
-        if(userRole == "customer")
+    const handleSubmit = () =>{
+        console.log(selectedRole);
+        if(selectedRole == "customer")
         {
             navigate('/customerHome', { replace: true });
-        } else if(userRole == "vendor")
+        } else if(selectedRole == "vendor")
          {
              navigate('/vendorHome', { replace: true });
          } else {
@@ -50,6 +49,11 @@ export default function VendorLogin(props) {
          }
 
     };
+
+    const handleChange = e => {
+        const { name, value } = e.target;
+        setSelectedRole(value);
+      };
 
 
     return (

@@ -21,6 +21,7 @@ import ProductCategories from "./ProductCategories";
 import RecommendedProducts from "./RecommendedProducts";
 import { ThemeProvider,createTheme } from '@material-ui/core/styles';
 
+
 const theme = createTheme({
  typography: {
    fontFamily: ['"Montserrat"', 'Open Sans','Chilanka','cursive'].join(',')
@@ -31,17 +32,6 @@ const CustomerHome=()=>{
 
     let navigate = useNavigate();
 
-     const handleLogout = () => {
-      navigate('/', {replace: true})
-     };
-
-      const customerProfile = () => {
-         navigate('/customerProfile', {replace: true})
-      };
-      const productDescription = product => e =>  {
-       localStorage.setItem("productInfo", JSON.stringify(product));
-       navigate('/productDescription', {replace: true})
-    };
     const handleShopNow = () => {
             var elmntToView = document.getElementById("shop");
             elmntToView.scrollIntoView();
@@ -67,16 +57,6 @@ const CustomerHome=()=>{
         }
       };
 
-      const [productsList, setProductsList] = useState([]);
-      const [isLoading, setisLoading] = useState(true)
-      React.useEffect(() => {
-
-        fetch(`http://localhost:8088/product/getMostPopularProducts`)
-      .then((res) => res.json())
-      .then((data) => setProductsList([...data]))
-      .then(setisLoading(false));
-      console.log(productsList);
-    }, []);
     return(
 
         <Grid style={{overflowX:'hidden'}}>
@@ -102,11 +82,11 @@ const CustomerHome=()=>{
              </Paper>
              <div class="shop" id="shop">
              <br/><br/><br/>
-                <RecommendedProducts />
-                <br/><br/>
                 <MostPopularProducts />
                 <br/><br/>
                 <ProductCategories />
+                <br/><br/>
+                <RecommendedProducts />
              </div>
         </ThemeProvider >
     </Grid>

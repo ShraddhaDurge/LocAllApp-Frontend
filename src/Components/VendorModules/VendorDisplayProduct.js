@@ -1,76 +1,88 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Grid, Paper, TextField, Button,Typography, Container } from '@material-ui/core';
-import axios from 'axios';
+import { Grid, Button,Typography, makeStyles, Card, Box, CardContent } from '@material-ui/core';
+import CurrencyRupeeIcon from '@mui/icons-material/CurrencyRupee';
 
-function VendorDisplayProduct(props){
-    const paperStyle={padding :'20px', width:'120vh', margin:"20px", align: 'center', position:'relative'}
-    const gridStyle={backgroundColor: '#E3F2FD', postion:'fixed', height:'100vh', overflow:'auto', margin:"0px"}
-    const btnstyle = { margin:'20px auto',display:'flex',justifyContent:'center',alignItems:'center', width:'30%',height:'20%', backgroundColor: '#2196F3'}
+const useStyles=makeStyles({
+    card:{
+        backgroundColor:"#D1C4E9",
+        width:"1000px",
+        height:"450px",
+        margin:"10px 80px",
+        boxShadow: '0 14px 28px rgba(0,0,0,0.25),0 10px 10px rgba(0,0,0,0.22)',
+        overflowY: 'scroll'
+    }
+    ,button:{
+        color:"primary",
+        '&:hover':{
+            backgroundColor:"#2471A3",
+        },
+        marginTop:"20px",
+
+    }
+    });
+const VendorDisplayProduct = (props) =>{
+    const btnstyle = { margin:'20px auto',display:'flex',justifyContent:'center',alignItems:'center', width:"250px", backgroundColor: '#5E35B1'}
     const linkstyle={color:'#FFF', hover: "#000", textDecoration: 'none', cursor: 'pointer', padding:'10px 10px' }
     const pid=JSON.parse(localStorage.getItem("product id"))
     console.log("pid="+pid)
 
+
     const productInfo = JSON.parse(localStorage.getItem("productInfo"))
     console.log("productInfo in display= "+productInfo)
-
+    const classes=useStyles();
     return(
         <html style={{height:'100%'}}>
-            <style>{`
-						table, th, td{
-
-							border-collapse: collapse;
-						}
-						th, td{
-							align: left;
-							padding: 10px;
-							max-width: 200px;
-						}
-
-					`}</style>
         <body style={{height:'100vh'}}>
-        <center>
-        <Grid style={gridStyle}>
-        <center>
-        <Paper elevation={20} style={paperStyle}>
-        <Grid align='center' style={{padding:"30px 10px"}}>
-            <center>
-            <Container>
-            <table><tbody><tr>
+        <Box m={5}>
 
-                <Typography gutterBottom variant="h5" component="div">
-                    <td>Product:</td><td> {productInfo.productName}</td>
-                </Typography></tr>
-                <Typography variant="body2" color="text.secondary">
-                    <tr>
-                <td>Description:</td><td> {productInfo.productDesc}</td>
-                </tr><tr>
+<Grid container  spacing={6} >
 
-                <td>Selling Price Per Unit:</td><td> Rs.{productInfo.price}</td>
-                </tr><tr>
+    <Grid item xs={12} sm={6} md={6}>
+        <Card className={classes.card}>
+                <CardContent>
+                <Grid container spacing={8}>
+                    <Grid item xs={6} style={{ margin:'0px 0px', padding:'0px 0px'}}>
+                        <img src={`data:image/png;base64,${productInfo.productImage}`} background_size= "cover" border-radius= "200px" background_repeat= "no-repeat" alt="product" height= "465" width="550"/>
+                    </Grid>
+                <Grid item xs={6} style={{ margin:'0px auto', padding:'10px 0px 10px 80px', align:"center"}}>
+                    <br/>
+                    <Typography gutterBottom variant="h3" component="div" color="primary" >
+                        <b>{productInfo.productName}</b>
+                    </Typography>
+                    <br/>
+                    <Typography gutterBottom variant="h6" component="div" color="textPrimary">
+                    Product Price:  <CurrencyRupeeIcon/>{productInfo.price} &nbsp;per item
+                    </Typography>
 
-                <td>Available Quantity:</td><td> {productInfo.quantAvailable}</td>
-                </tr><tr>
 
-                <td>Tags:</td><td>   {productInfo.productTags.map((tag, i) => (
-                    <span key={i}>#{tag.tag}    </span>))}</td>
-                </tr>
-                </Typography>
-            </tbody></table>
-            <br/>
-            <Button type='submit' variant="contained" style={btnstyle} fullWidth>
-            <Link to="/inventoryManagement" style={linkstyle}>Go Back</Link>
-            </Button>
+                    <br/>
+                    <Typography gutterBottom variant="h6" component="div" color="textPrimary">
+                    Available Quantity:  {productInfo.quantAvailable} units
+                    </Typography>
 
-            </Container>
-            </center>
-            <br/>
-            </Grid >
+                    <br/>
+                    <Typography gutterBottom variant="h6" component="div" color="textPrimary">
+                    Product Description:  {productInfo.productDesc}
+                    </Typography>
+                    <br/>
+                    <Typography gutterBottom variant="h6" component="div" color="textPrimary">
+                    Tags:  {productInfo.productTags.map((tag, i) => (<span key={i}>#{tag.tag}</span>))}
+                    </Typography>
+                    <br/>
+                    <Button type='submit' variant="contained" style={btnstyle} fullWidth>
+                        <Link to="/inventoryManagement" style={linkstyle}>Go Back</Link>
+                    </Button>
 
-        </Paper>
-        </center>
-        </Grid>
-        </center>
+                    </Grid>
+                </Grid>
+
+                </CardContent>
+        </Card>
+    </Grid>
+
+</Grid>
+</Box>
         </body>
         </html>
         )

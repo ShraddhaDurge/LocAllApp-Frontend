@@ -23,6 +23,8 @@ export default function SimpleSnackbar(props) {
     setNotify({
       ...notify,
       isOpen:false});
+
+    window.location.reload();
   };
 
   return (

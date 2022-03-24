@@ -26,6 +26,7 @@ import logo from '../Images/logo1.png';
 //import SearchBar from "material-ui-search";
 import useAutocomplete from '@mui/material/useAutocomplete';
 import Image from '../Images/2593108.png';
+import LocationOnIcon from '@mui/icons-material/LocationOn';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -149,7 +150,7 @@ export default function MenuAppBar(props) {
                    style={BarStyling}
                    key="random1"
                    value={search}
-                   placeholder={"search product"}
+                   placeholder={"Search Product"}
                    onChange={(e) => setSearch(e.target.value)}
                   />
               {auth && (
@@ -158,6 +159,10 @@ export default function MenuAppBar(props) {
                     <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="Home" onClick={goHome}>
                       <HomeIcon/>
                     </IconButton></Tooltip>
+                  {/* <Tooltip title="Select Location">
+                   <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="Location">
+                     <LocationOnIcon/>
+                   </IconButton></Tooltip>*/}
                    <Tooltip title="Shopping Basket">
                           <IconButton className={classes.menuButton} color="inherit" aria-label="Cart" onClick={goToShoppingBasket}>
                             <ShoppingBasketIcon/>

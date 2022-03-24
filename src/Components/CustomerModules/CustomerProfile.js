@@ -11,7 +11,6 @@ import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
 import Homebar from "./Homebar";
 import Image from '../Images/15.png';
-import CustomerSidebar from "./CustomerSidebar";
 import { ThemeProvider,createTheme } from '@material-ui/core/styles';
 
 const theme = createTheme({
@@ -37,9 +36,9 @@ function customerProfile(myProfile,action) {
         email: myInfo.email,
         phoneno: myInfo.phoneno,
         billingAddress: customerProfile.billingAddress,
-        shippingAddress:customerProfile.shippingAddress,
-        shippingPincode:customerProfile.shippingPincode,
-        billingPincode:customerProfile.billingPincode
+        shippingAddress: customerProfile.shippingAddress,
+        shippingPincode: customerProfile.shippingPincode,
+        billingPincode: customerProfile.billingPincode
         };
       }
       case 'error': {
@@ -86,8 +85,8 @@ const CustomerProfile=()=>{
     const [mesg,setMesg]=useState('');
     const [open, setOpen] =useState(false);
     const userid = myInfo.id;
+    console.log(userid)
     useEffect(()=>{
-
             axios.get(`http://localhost:8088/customer/getCustomerProfile/${userid}`)
             .then(res=>{
                 console.log(res)

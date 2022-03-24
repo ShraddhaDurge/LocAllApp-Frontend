@@ -78,7 +78,7 @@ const MostPopularProducts=()=>{
                             return(
                                 <div class="container">
 
-                                <Card sx={{ maxWidth: 400, alignItems:"center", margin:"10px",backgroundColor:"#F8BBD0"}} key={product.id}>
+                                <Card sx={{ minWidth: 250, maxWidth: 400, alignItems:"center", margin:"10px",backgroundColor:"#F8BBD0"}} key={product.id}>
                                 <CardActionArea onClick={productDescription(product)}>
                                     <CardMedia
                                     component="img"

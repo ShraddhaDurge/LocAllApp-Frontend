@@ -12,30 +12,60 @@ import { CardActionArea } from '@mui/material';
 import { useState } from 'react';
 import logo1 from '../Images/LocAll (8).png';
 import axios from 'axios';
-
+import PaymentsIcon from '@mui/icons-material/Payments';
+import Snack from '../Snackbar';
 import 'react-multi-carousel/lib/styles.css';
 
 const ShoppingBasket=()=>{
 
     let navigate = useNavigate();
 
-     const handleLogout = () => {
-      navigate('/', {replace: true})
+     const goToOrderSummery = () => {
+      navigate('/checkout', {replace: true})
      };
-
-      const customerProfile = () => {
-         navigate('/customerProfile', {replace: true})
-      };
 
       const productDescription = product => e =>  {
         localStorage.setItem("productInfo", JSON.stringify(product));
         navigate('/productDescription', {replace: true})
      };
 
+       const onDelete = basketId => e => {
+
+                 console.log(basketId);
+                 axios.delete(`http://localhost:8088/customer/delete/${basketId}`)
+                 .then((response) => {
+                     var res=response.status
+                     console.log(response)
+                     console.log(response.status)
+                     if (res === 200) {
+                         setNotify({
+                             isOpen:true,
+                             mesg:"Removed from basket"
+                         })
+                     }
+                 })
+                 .catch((error) => {
+                     if (error.response.status === 400) {
+                         setNotify({
+                             isOpen:true,
+                             mesg:error.response.message
+                         })
+
+                     }
+                     else{
+                     console.log(error)
+                     setNotify({
+                         isOpen:true,
+                         mesg:"Something went wrong!"
+                     })}
+                 });
+             }
+
       const [productsList, setProductsList] = useState([]);
       const [totalPrice, setTotalPrice] = React.useState(0);
       const [isLoading, setisLoading] = useState(true)
       const [isEmpty, setIsEmpty] = useState(true)
+      const [notify, setNotify] = useState({ isOpen: false, mesg: '' });
       const paperStyle={padding :'20px', width:'80%', margin:"20px", align: 'center', position:'relative'}
       //const payButton={padding:'5px', align:'center'}
 
@@ -53,6 +83,8 @@ const ShoppingBasket=()=>{
       console.log(productsList);
     }, [userid]);
 
+
+
     return(
         <html style={{height:'100%'}}>
 					<style>{`
@@ -60,9 +92,9 @@ const ShoppingBasket=()=>{
 					        table-layout: fixed;
 					    }
 						th, td{
-							padding: 20px;
-							max-width: 250px;
-							width: 150px;
+							padding: 10px;
+							max-width: 300px;
+							width: 250px;
 							text-align: left;
 						}
 					`}</style>
@@ -76,7 +108,7 @@ const ShoppingBasket=()=>{
                 <h2>Your Shopping Basket</h2>
                 <hr/>
                 <Grid>
-                <Grid item xs={8}>
+                <Grid item xs={10}>
 
                 <table>
                 <tr>
@@ -98,11 +130,16 @@ const ShoppingBasket=()=>{
 				productsList.map(product => {
                             return(
                                 <tr key={product.basketId}>
-                                    <td><img src={`data:image/png;base64,${product.product.productImage}`} width={150} onClick={productDescription(product.product)} style={{cursor: 'pointer'}} /></td>
+                                    <td><img src={`data:image/png;base64,${product.product.productImage}`} width={150} onClick={productDescription(product.product)} alt="product" style={{cursor: 'pointer'}} /></td>
                                     <td>{product.product.productName}</td>
                                     <td>{product.quantSelected}</td>
                                     <td>Rs. {product.product.price}</td>
                                     <td>Rs. {product.discountedPrice}</td>
+                                    <td>
+                                        <Button type="submit" variant="contained" color="primary" onClick={onDelete(product.basketId)} >
+                                            Remove Product
+                                        </Button>
+                                    </td>
                                 </tr>
 
                                )
@@ -115,14 +152,14 @@ const ShoppingBasket=()=>{
 
                 </Grid>
                 <hr/>
-                <Grid item xs={5} color="secondary" style={{ padding:"10px", backgroundColor: '#E3F2FD'}}>
+                <Grid item xs={5} color="secondary" style={{ padding:"20px", backgroundColor: '#E3F2FD'}}>
                 <h4>Sub Total =  Rs. {totalPrice}</h4>
 
                 <h4>Shipping  =  Rs. 0</h4>
                 <hr/>
                 <h3>Total Price = Rs. {totalPrice}</h3>
-                <br/>
-                <Button color="primary" variant="contained" >Proceed to payment</Button>
+
+                <Button color="primary" variant="contained" onClick={goToOrderSummery}><PaymentsIcon/> &nbsp;Proceed to payment </Button>
 
                 </Grid>
                 </Grid>
@@ -130,7 +167,12 @@ const ShoppingBasket=()=>{
 
             </Paper>
             </center>
+
     </Grid>
+    <Snack
+        notify={notify}
+        setNotify={setNotify}
+    />
     </body>
     </html>
 )

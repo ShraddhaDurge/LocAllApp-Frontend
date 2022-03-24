@@ -59,8 +59,10 @@ const handleHome = () => {
     };
  const handleLogout= () => {
 //            setAnchorEl(null);
-            navigate('/', { replace: true })
             localStorage.clear();
+            localStorage.removeItem("myBusinessProfile");
+            navigate('/', { replace: true })
+
         };
   return (
     <>

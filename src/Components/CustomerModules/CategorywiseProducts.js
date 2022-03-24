@@ -18,11 +18,10 @@ import { CardActionArea } from '@mui/material';
 import { Link } from 'react-router-dom';
 
 
-const ViewAllProducts = (props) => {
+const CategorywiseProducts = (props) => {
     const { viewAllP, setViewAllP } = props;
-    console.log("in view alll"+props);
+    console.log("in view alll "+props);
     let navigate = useNavigate();
-
     const marginTop = { marginTop: '10px', marginBottom: '10px' }
     const [success, setSuccess] = useState(false);
     const [mesg, setMesg] = useState('');
@@ -32,27 +31,32 @@ const ViewAllProducts = (props) => {
     const handleClose = () => {
         setViewAllP({
             openViewAll: false
-
           })
     };
 
     const showProduct = info => e => {
         console.log("in show product")
         localStorage.setItem("productInfo", JSON.stringify(info));
-        window.location.href="/vendorDisplayProduct"
+        window.location.href="/ProductDescription"
     }
 
     const [productsList, setProductsList] = useState([]);
     const [isLoading, setisLoading] = useState(true);
-    const businessInfo=JSON.parse(localStorage.getItem("businessInfo"))
-    const bid = businessInfo.business_id
+     const category=JSON.parse(localStorage.getItem("categoryName"))
+
     React.useEffect(() => {
 
-      fetch(`http://localhost:8088/product/getList/${bid}`)
-      .then((res) => res.json())
-      .then((data) => setProductsList([...data]))
-      .then(setisLoading(false));
-    }, [bid]);
+      const category=JSON.parse(localStorage.getItem("categoryName"))
+      console.log(category);
+      axios.get(`http://localhost:8088/product/getCategoryProducts/${category}`)
+      .then((res) => {
+         setProductsList([...res.data]);
+         setisLoading(false);
+         console.log(productsList);
+      })
+
+
+    }, [category]);
 
 
     return(
@@ -88,7 +92,7 @@ const ViewAllProducts = (props) => {
                 aria-labelledby="alert-dialog-title"
                 aria-describedby="alert-dialog-description"
             >    <center>
-                    <DialogTitle id="past-event-dialog-title" textAlign="center" style={{backgroundColor:"#9FA8DA"}}>Product Inventory</DialogTitle>
+                    <DialogTitle id="past-event-dialog-title" style={{backgroundColor:"#9FA8DA"}}>{category}</DialogTitle>
 
                     <DialogContent style={{backgroundColor:"#9FA8DA", alignItems:"center"}} >
                         <Box >
@@ -158,4 +162,4 @@ const ViewAllProducts = (props) => {
     )
 }
 
-export default ViewAllProducts;
+export default CategorywiseProducts;
