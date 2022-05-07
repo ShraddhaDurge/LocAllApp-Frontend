@@ -6,9 +6,10 @@ import * as Yup from 'yup';
 import Snackbar from '@material-ui/core/Snackbar';
 import axios from 'axios';
 import logo from '../Images/logo1.png';
-import Snack from '../Snackbar';
+import { useNavigate } from 'react-router-dom';
 
 class VendorVerification extends Component{
+
 
   constructor(props) {
         super(props);
@@ -16,18 +17,12 @@ class VendorVerification extends Component{
 				items: [],
 				DataisLoaded: false
 		};
-//		this.notify = {
-//                isOpen: false,
-//                mesg: " "
-//		};
 	};
 
-	state = { isOp: false };
-//	notify = {isOpen: false};
+	state = { isOpen: false };
 
   handleShowDialog = () => {
-    this.setState({ isOp: !this.state.isOp });
-//    this.setNotify({ isOpen: false })
+    this.setState({ isOpen: !this.state.isOpen });
     console.log('cliked');
   };
 
@@ -53,7 +48,6 @@ class VendorVerification extends Component{
 			const statustxtstyle={color:'#FFF', hover: "#000", textDecoration: 'none', cursor: 'pointer'}
 			const acceptbtnstyle = { margin:'20px auto', padding:'4px',display:'flex',justifyContent:'center',alignItems:'center', width:'30%',height:'20%', backgroundColor: '#77DD77'}
 			const denybtnstyle = { margin:'20px auto', padding:'4px',display:'flex',justifyContent:'center',alignItems:'center', width:'30%',height:'20%', backgroundColor: '#FF6961'}
-//            const {isOpen, mesg} = this.notify;
 
 
 			if (!DataisLoaded) {
@@ -65,10 +59,11 @@ class VendorVerification extends Component{
 				<center>
 				<Paper elevation={20} style={paperStyle}>
 				<Grid align='center' style={{padding:"30px 10px"}}>
+
 				<Typography variant='h5' color="textSecondary" align="center">No Vendors Pending to Verify</Typography>
-				<Button type='submit' variant="contained" style={btnstyle} fullWidth>
-				<Link to="/adminHome" style={linkstyle}>Back to Home Page</Link>
-				</Button>
+                 	<Button type='submit' variant="contained" style={btnstyle} fullWidth>
+                    <Link to="/adminHome" style={linkstyle}>Back to Home Page</Link>
+                    </Button>
 				</Grid>
 				</Paper>
 				</center>
@@ -83,6 +78,8 @@ class VendorVerification extends Component{
 
 			const show = license => e => {
 				localStorage.setItem('image info', JSON.stringify(license));
+//				  let navigate = useNavigate();
+//				  navigate('/displayImage', { replace: true })
 				this.props.history.push('/displayImage');
 			}
 
@@ -96,10 +93,10 @@ class VendorVerification extends Component{
             				console.log(response.data)
             				console.log(response.status)
             				if (res === 200) {
-//            						this.setNotify({
-//                                          isOpen: true,
-//                                          mesg: "Vendor verified Successfully!"
-//                                      });
+//            						setSuccess(true);
+//            						setMesg(response.data.message);
+//            						setOpen(true);
+            						//navigate('/adminHome', { replace:true })
             						console.log("accepted")
             				}
 
@@ -107,16 +104,12 @@ class VendorVerification extends Component{
             		.catch((error) => {
             				if (error.response.status === 400) {
             						console.log(error.response.data.message);
-//            						this.setNotify({
-//                                      isOpen: true,
-//                                      mesg: error.response.data.message
-//                                  })
+//            						setOpen(true);
+//            						setMesg(error.response.data.message);
             				}
             				else {
-//            				this.setNotify({
-//                                      isOpen: true,
-//                                      mesg: "Something went wrong"
-//                                  })
+//            						setOpen(true);
+//            						setMesg("Something went wrong");
             						console.log(error)
             				}
             		});
@@ -135,10 +128,10 @@ class VendorVerification extends Component{
             			console.log(response.data)
             			console.log(response.status)
             			if (res === 200) {
-//                        this.setNotify({
-//                                          isOpen: true,
-//                                          mesg: "Vendor verified Successfully!"
-//                                      })
+//            					setSuccess(true);
+//            					setMesg(response.data.message);
+//            					setOpen(true);
+            					//navigate('/adminHome', { replace:true })
             					console.log("accepted successfully!")
 
             			}
@@ -147,18 +140,14 @@ class VendorVerification extends Component{
             	.catch((error) => {
             			if (error.response.status === 400) {
             					console.log(error.response.data.message);
-//            					this.setNotify({
-//                                  isOpen: true,
-//                                  mesg: error.response.data.message
-//                              })
+//            					setOpen(true);
+//            					setMesg(error.response.data.message);
 //            					props.resetForm()
 
             			}
             			else {
-//            					this.setNotify({
-//                                      isOpen: true,
-//                                      mesg: "Something went wrong"
-//                                  })
+//            					setOpen(true);
+//            					setMesg("Something went wrong");
             					console.log(error)
             			}
             	});
@@ -178,7 +167,6 @@ class VendorVerification extends Component{
 							padding: 5px;
 							max-width: 200px;
 						}
-
 					`}</style>
 				<body style={{height:'100vh'}}>
 				<center>
@@ -192,7 +180,7 @@ class VendorVerification extends Component{
                      </Grid>
                 	<Typography variant='h5' color="textSecondary" align="center">Welcome to Vendor Verification</Typography>
             		<br/>
-
+					<br/>
 					<Formik>
 						{(props) => (
 							<Form>
@@ -257,9 +245,10 @@ class VendorVerification extends Component{
 						)}
 					</Formik>
 
-					<Button type='submit' variant="contained" style={btnstyle} fullWidth>
-            		<Link to="/adminHome" style={linkstyle}>Back to Home Page</Link>
-            		</Button>
+                    	<Button type='submit' variant="contained" style={btnstyle} fullWidth>
+                             <Link to="/adminHome" style={linkstyle}>Back to Home Page</Link>
+                        </Button>
+
 					</center>
            	<br/>
             </Grid >

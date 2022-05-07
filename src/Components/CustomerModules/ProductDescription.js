@@ -12,6 +12,7 @@ import Badge from "@material-ui/core/Badge";
 import ShoppingBasketIcon from '@mui/icons-material/ShoppingBasket';
 import AddIcon from "@material-ui/icons/Add";
 import RemoveIcon from "@material-ui/icons/Remove";
+import Rating from '@mui/material/Rating';
 
 const useStyles=makeStyles({
 card:{
@@ -20,7 +21,8 @@ card:{
     height:"450px",
     padding:"auto auto",
     margin:"10px 80px",
-    boxShadow: '0 14px 28px rgba(0,0,0,0.25),0 10px 10px rgba(0,0,0,0.22)'
+    boxShadow: '0 14px 28px rgba(0,0,0,0.25),0 10px 10px rgba(0,0,0,0.22)',
+    overflowY: 'scroll',
 }
 ,button:{
     color:"primary",
@@ -95,22 +97,24 @@ const ProductDescription = (props) => {
                     <Card className={classes.card}>
                           <CardContent>
                           <Grid container spacing={5}>
-                             <Grid item xs={6} style={{ margin:'0px 0px', padding:'0px 0px'}}>
-                                 <img src={`data:image/png;base64,${productInfo.productImage}`} background_size= "cover" border-radius= "200px" background_repeat= "no-repeat" alt="Event image" height= "480" width="550"/>
+                             <Grid item xs={7} style={{ margin:'0px 0px', padding:'0px 0px'}}>
+                                 <img src={`data:image/png;base64,${productInfo.productImage}`} background_size= "cover" border-radius= "200px" background_repeat= "no-repeat" alt="product" height= "480" width="550"/>
                              </Grid>
-                            <Grid item xs={4} style={{ margin:'0px auto', padding:'20px 50px', align:"center"}}>
+                            <Grid item xs={5} style={{padding:'10px 10px 10px 60px', align:"center"}}>
                                <br></br>
                                <Typography gutterBottom variant="h3" component="div" color="primary" >
                                     <b>
                                     {productInfo.productName}
                                     </b>
+
                                </Typography>
+
                                <Typography display="inline" gutterBottom variant="h5" component="div">
-                                   <CurrencyRupeeIcon/>{productInfo.price} &nbsp;
-                                   </Typography>
-                                   <Typography display="inline" gutterBottom variant="subtitle1" component="div">
-                                       per item
-                                  </Typography>
+                               <CurrencyRupeeIcon/>{productInfo.price} &nbsp;
+                               </Typography>
+                               <Typography display="inline" gutterBottom variant="subtitle1" component="div">
+                                   per item
+                              </Typography>
                               <br/>
                               <br/>
                               <Typography gutterBottom variant="h6" component="div" color="textSecondary">
@@ -122,7 +126,15 @@ const ProductDescription = (props) => {
                                 <Typography gutterBottom variant="subtitle1" component="div">
                                   {productInfo.productTags.map((tag, i) => (<span key={i}>#{tag.tag}</span>))}
                                   </Typography>
-                                  <br/>
+                                  <Typography gutterBottom variant="subtitle1" component="div">
+
+                                   <Rating
+                                       name="simple-controlled"
+                                       value={productInfo.rating}
+                                       readOnly
+                                     />
+                                     &nbsp; 3 Reviews
+                                    </Typography>
                                   <br/>
 
                              <Typography gutterBottom variant="h6" component="div">

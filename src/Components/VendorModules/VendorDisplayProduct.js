@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Grid, Button,Typography, makeStyles, Card, Box, CardContent } from '@material-ui/core';
 import CurrencyRupeeIcon from '@mui/icons-material/CurrencyRupee';
+import { useNavigate } from 'react-router-dom';
 
 const useStyles=makeStyles({
     card:{
@@ -31,6 +32,18 @@ const VendorDisplayProduct = (props) =>{
     const productInfo = JSON.parse(localStorage.getItem("productInfo"))
     console.log("productInfo in display= "+productInfo)
     const classes=useStyles();
+    let navigate = useNavigate();
+
+    const handleBack = (event) => {
+         const backButtonLoc = JSON.parse(localStorage.getItem("backButtonLoc"))
+        if(backButtonLoc === "InventoryManagement"){
+        navigate('/InventoryManagement', { replace: true })
+        }
+        else {
+        navigate('/vendorReports', { replace: true })
+        }
+    }
+
     return(
         <html style={{height:'100%'}}>
         <body style={{height:'100vh'}}>
@@ -70,8 +83,8 @@ const VendorDisplayProduct = (props) =>{
                     Tags:  {productInfo.productTags.map((tag, i) => (<span key={i}>#{tag.tag}</span>))}
                     </Typography>
                     <br/>
-                    <Button type='submit' variant="contained" style={btnstyle} fullWidth>
-                        <Link to="/inventoryManagement" style={linkstyle}>Go Back</Link>
+                    <Button type='submit' variant="contained" style={btnstyle} fullWidth onClick={handleBack}>
+                    Go Back
                     </Button>
 
                     </Grid>

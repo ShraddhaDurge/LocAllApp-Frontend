@@ -82,7 +82,7 @@ const ProductCategories=()=>{
                             return(
                                 <div class="container">
 
-                                <Card sx={{ minWidth: 250, maxWidth: 400, alignItems:"center", margin:"10px",backgroundColor:"#FFCCBC"}} key={category.category}>
+                                <Card sx={{ minWidth: 280, maxWidth: 400, alignItems:"center", margin:"10px",backgroundColor:"#FFCCBC"}} key={category.category}>
                                 <CardActionArea onClick={categoryProducts(category.category)}>
                                     <CardMedia
                                     component="img"

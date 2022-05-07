@@ -80,13 +80,14 @@ const CustomerHome=()=>{
 
             </Grid>
              </Paper>
-             <div class="shop" id="shop">
-             <br/><br/><br/>
-                <MostPopularProducts />
-                <br/><br/>
-                <ProductCategories />
-                <br/><br/>
+             <div class="shop" id="shop" >
+             <br/><br/>
                 <RecommendedProducts />
+                <br/>
+                <MostPopularProducts />
+                <br/>
+                <ProductCategories />
+
              </div>
         </ThemeProvider >
     </Grid>

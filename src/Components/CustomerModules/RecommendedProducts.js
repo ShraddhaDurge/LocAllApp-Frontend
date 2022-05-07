@@ -47,16 +47,18 @@ const RecommendedProducts=()=>{
       };
 
       const [productsList, setProductsList] = useState([]);
-            const [isLoading, setisLoading] = useState(true)
-            React.useEffect(() => {
+        const [isLoading, setisLoading] = useState(true);
+        const myInfo=JSON.parse(localStorage.getItem("myInfo"))
+        const userid = myInfo.id;
+        React.useEffect(() => {
 
-              fetch(`http://localhost:8088/product/getMostPopularProducts`)
-            .then((res) => res.json())
-            .then((data) => setProductsList([...data]))
-            .then(setisLoading(false));
+          fetch(`http://localhost:8088/product/getRecommendedProducts/${userid}`)
+        .then((res) => res.json())
+        .then((data) => setProductsList([...data]))
+        .then(setisLoading(false));
 
-            console.log(productsList);
-          }, []);
+        console.log(productsList);
+      }, []);
 
     return(
 
@@ -79,14 +81,9 @@ const RecommendedProducts=()=>{
                             return(
                                 <div class="container">
 
-                                <Card sx={{ minWidth: 250, maxWidth: 400, alignItems:"center", margin:"10px",backgroundColor:"#D1C4E9"}} key={product.id}>
+                                <Card sx={{ minWidth: 280, maxWidth: 400, alignItems:"center", margin:"10px",backgroundColor:"#D1C4E9"}} key={product.id}>
                                 <CardActionArea onClick={productDescription(product)}>
-                                    <CardMedia
-                                    component="img"
-                                    height="140"
-                                    image={`data:image/png;base64,${product.productImage}`}
-                                    alt="img of product"
-                                    />
+
                                     <CardContent>
                                         <table><tbody><tr>
                                     <Typography gutterBottom variant="h5" component="div">

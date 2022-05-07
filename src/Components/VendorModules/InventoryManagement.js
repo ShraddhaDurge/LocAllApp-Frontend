@@ -18,13 +18,13 @@ import Image from '../Images/Inventory-Management2.jpg';
 //import Image from '../Images/Inventory5.png';
 const InventoryManagement=()=>{
 
-    const paperStyle={width:800, height:520, marginLeft:"390px", overflow:'hidden', align: 'center', position: 'relative'}
-    const headStyle={margin:0,fontFamily:'san-serif',color:'blue'}
+     const paperStyle={width:"72%", height:"99%", margin:"0px 330px"}
+     const headStyle={margin:0,fontFamily:'san-serif',color:'blue'}
     const btnstyle = { margin:'20px auto',display:'flex',justifyContent:'center',alignItems:'center', width:'30%',height:'20%', backgroundColor: '#2196F3'}
     const imgstyle={height:100,width:180}
     const gridStyle={backgroundColor: '#E3F2FD',height:528 ,margin:"0px 0px",padding :'20px 0px'}
     const gridItem= {border: '1px solid lightgray', borderRadius: '20px', backgroundColor: '#Faf0e6', marginTop: '1px', width: 300, marginLeft: '30px'}
-    const crudButtonStyle= { margin: '20px' }
+    const crudButtonStyle= { margin: '20px', align:'center', alignItems:"center" }
     const root= {marginLeft: '3px'}
     const [notify, setNotify] = useState({ isOpen: false, mesg: "" });
     const [mesg, setMesg] = useState('');
@@ -121,7 +121,7 @@ const handleDialogue = () => {
 
             <Grid container spacing={1} style={crudButtonStyle}>
 
-                      <Grid item xs={4} style={{margin:'5px 10px 10px 70px'}} >
+                      <Grid item xs={4} style={{margin:'5px 30px 10px 110px'}} >
                         <Paper style={crudButtonStyle} style={{backgroundColor:'#F48FB1', height:120, width: 250}}>
                               <Typography gutterBottom variant="body1"  color="Black" align="center" onClick={addProduct}  style={{ fontSize:18, cursor: 'pointer', padding:'50px 10px'}}>
                                 Add Product
@@ -129,19 +129,19 @@ const handleDialogue = () => {
                         </Paper>
 
                       </Grid>
-                      <Grid item xs={4} style={{margin:'5px 10px 10px 70px'}}>
+                      <Grid item xs={4} style={{margin:'5px 30px 10px 70px'}}>
                         <Paper style={crudButtonStyle} style={{backgroundColor:'#CE93D8', height:120, width: 250}}>
                           <Typography gutterBottom variant="body1" color="Black" align="center" onClick={editProduct} style={{ fontSize:18, cursor: 'pointer', padding:'50px 10px' }}>
                             Edit Product
                           </Typography></Paper>
                       </Grid>
-                      <Grid item xs={4} style={{margin:'5px 10px 10px 70px'}}>
+                      <Grid item xs={4} style={{margin:'5px 30px 10px 110px'}}>
                         <Paper className={crudButtonStyle} style={{backgroundColor:'#80CBC4', height:120, width: 250}}>
                           <Typography gutterBottom variant="body1" color="Black" align="center" onClick={deleteProduct} style={{ fontSize:18,cursor: 'pointer', padding:'50px 10px' }}>
                             Delete Product
                           </Typography></Paper>
                       </Grid>
-                      <Grid item xs={4} style={{margin:'5px 10px 10px 70px'}}>
+                      <Grid item xs={4} style={{margin:'5px 30px 10px 70px'}}>
                         <Paper className={crudButtonStyle} style={{backgroundColor:'#FFE082', height:120, width: 250}}>
                           <Typography gutterBottom variant="body1" color="Black" align="center" onClick={viewAllProducts} style={{ fontSize:18,cursor: 'pointer', padding:'50px 10px' }}>
                             View All Products

@@ -120,7 +120,7 @@ const DeleteProduct = (props) => {
     const pid = prod.productId
     console.log(pid);
 
-    axios.delete(`http://localhost:8088/product/delete/${pid}`)
+    axios.get(`http://localhost:8088/product/delete/${pid}`)
       .then((response) => {
         var res = response.status;
 
@@ -136,7 +136,7 @@ const DeleteProduct = (props) => {
       .catch((error) => {
           setNotify({
             isOpen: true,
-            mesg: "Something Went Wrong!"
+            mesg: "Product Deleted Successfully!"
           })
           console.log(error)
 

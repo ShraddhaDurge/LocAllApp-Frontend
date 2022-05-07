@@ -10,9 +10,18 @@ import Snackbar from '@material-ui/core/Snackbar';
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
 import VendorSidebar from "./VendorSidebar";
+import Checkbox from '@mui/material/Checkbox';
+import { ExportToCsv } from 'export-to-csv';
+import csv from '../Images/csv.png';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import Select from '@mui/material/Select';
+import order from '../Images/order.png';
 
 const OrderManagement=()=>{
-    const paperStyle={padding :'0px 20px 0px 20px',width:800, height:520, margin:"0px 360px"}
+    const paperStyle={width:"72%", height:"99%", margin:"0px 330px",overflowY: 'scroll'}
+
     const headStyle={margin:0,fontFamily:'san-serif',color:'blue'}
     const btnstyle = { margin:'20px auto',display:'flex',justifyContent:'center',alignItems:'center', width:'30%',height:'20%', backgroundColor: '#2196F3'}
     const imgstyle={height:100,width:180}
@@ -20,176 +29,313 @@ const OrderManagement=()=>{
 
     const myInfo=JSON.parse(localStorage.getItem("myInfo"))
     const businessInfo=JSON.parse(localStorage.getItem("businessInfo"))
-//    const classes=useStyles();
 
-    const initialValues = {
-        username: myInfo.username,
-        phoneno: myInfo.phoneno,
-        email: myInfo.email,
-        businessName: businessInfo.businessName,
-        businessCategory: businessInfo.businessCategory,
-        address: businessInfo.address,
-        pincodes: businessInfo.pincodes,
-        gstin: businessInfo.gstin,
-        businessStatus: businessInfo.status
-    }
-
-//    const [myprofile, setMyprofile] = useReducer(businessProfile, initialValues);
-//    const { businessName,businessCategory,address,pincodes,gstin} = myprofile;
     const [success,setSuccess]=useState(false);
     const [mesg,setMesg]=useState('');
     const [open, setOpen] =useState(false);
+    const [productsList, setProductsList] = useState([]);
+    const [customerList, setCustomerList] = useState([]);
+    const [isLoading, setisLoading] = useState(true)
+    const [checked, setChecked] = useState(false);
+    const[filterParam, setFilterParam] = useState('');
+    const[sortParam, setSortParam] = useState('');
+    const[element, setElement] = useState('');
+    const[filterSelected, isFilterSelected] = useState(false);
+    const [filterList, setFilterList] = useState([]);
+
+    const options = {
+        fieldSeparator: ',',
+        quoteStrings: '"',
+        decimalSeparator: '.',
+        showLabels: true,
+        showTitle: true,
+        title: 'Customer Orders',
+        useTextFile: false,
+        useBom: true,
+        useKeysAsHeaders: true,
+        // headers: ['Column 1', 'Column 2', etc...] <-- Won't work with useKeysAsHeaders present!
+      };
 
     let navigate = useNavigate();
-    const onSubmit = async (e) => {
-        e.preventDefault();
-//        const newBusiness = {
-//            businessName,
-//            businessCategory,
-//            address,
-//            pincodes,
-//            gstin
-//        };
+          const businessId = businessInfo.business_id;
+          React.useEffect(() => {
+            axios.get(`http://localhost:8088/vendor/getCustomerOrders/${businessId}`)
+          .then((res) => {
+                 console.log(res.data)
+                 if(res.data.length !== 0){
+                    setProductsList([...res.data])
+                     localStorage.setItem('filteredList',JSON.stringify([...res.data]))
+                     setisLoading(false)
+                    }
+                 })
+          .catch(err=>{
+             console.log(err)
+         })
+        }, [businessId]);
 
-//        console.log(newBusiness)
-//        axios.post("/account/saveBusinessProfile", newBusiness)
-//        .then((response) => {
-//            var res = response.status;
-//
-//            console.log(response.status)
-//            if (res === 200) {
-//                    setSuccess(true);
-//                    setMesg("Business Profile Updated!");
-//                    setOpen(true);
-//            }
-//
-//        })
-//        .catch((error) => {
-//            if (error.response.status === 400) {
-//                console.log(error.response.data.message);
-//                // alert("Error ")
-//                    setOpen(true);
-//                    setMesg(error.response.data.message);
-//
-//
-//            }
-//            else{
-//                // alert("Something went wrong")
-//                   setOpen(true);
-//                    setMesg("Something went wrong");}
-//            console.log(error)
-//        });
-
-    }
     const handleClose = (event, reason) => {
-      if(success)
-      {
           setOpen(false);
-      }
-      else{
-          setOpen(false);
-
-      }
   };
-    const info2=JSON.parse(localStorage.getItem("businessInfo"))
+
+        const handleChecked = (basketId, check) => {
+          setChecked(check);
+            axios.get(`http://localhost:8088/vendor/setOrderDeliveredStatus/${basketId}`)
+                  .then((res) => {
+                         console.log(res.data)
+                         axios.get(`http://localhost:8088/vendor/getCustomerOrders/${businessId}`)
+                           .then((res) => {
+                                  console.log(res.data)
+                                  if(res.data.length !== 0){
+                                     setProductsList([...res.data])
+                                     localStorage.removeItem("filteredList");
+                                     localStorage.setItem('filteredList',JSON.stringify([...res.data]))
+                                     }
+                                  })
+                         })
+        };
+        const handleFilter = (filter) => {
+
+            isFilterSelected(true);
+            setisLoading(true);
+            console.log(filter)
+            localStorage.removeItem("filter");
+            setFilterParam(filter)
+            if(filter === "Product Name"){
+                const para = [...new Set(productsList.map(item => item.productName))];
+
+            localStorage.setItem('filter',JSON.stringify(para))
+//                console.log(filterList);
+            } else if(filter === "Delivery Status") {
+                const para = [...new Set(productsList.map(item => item.deliveryStatus))];
+                 localStorage.setItem('filter',JSON.stringify(para))
+
+            } else if(filter === "Area Code") {
+                 const para = [...new Set(productsList.map(item => item.shippingAddress.substring(item.shippingAddress.length - 6)))];
+                  localStorage.setItem('filter',JSON.stringify(para))
+            } else if(filter === "Order Date") {
+                 const para = [...new Set(productsList.map(item => item.orderDate.substring(0, 10)))];
+                  localStorage.setItem('filter',JSON.stringify(para))
+            } else {
+                 localStorage.setItem('filteredList',JSON.stringify(productsList))
+                 setisLoading(false);
+                 isFilterSelected(false);
+            }
+
+            const filtered=JSON.parse(localStorage.getItem("filter"))
+            console.log(filtered);
+        }
+
+        const handleFilterElement = (element) => {
+            isFilterSelected(true);
+            const filter=JSON.parse(localStorage.getItem("filter"))
+            console.log(filterParam);
+            console.log(element)
+            setElement(element)
+            localStorage.removeItem("filteredList");
+
+            if(filterParam === "Product Name"){
+                  var filteredProducts = [];
+                      productsList.map( product => {
+                          if(product.productName === element) {
+                              filteredProducts.push(product);
+                          }
+                      })
+                localStorage.setItem('filteredList',JSON.stringify([...new Set(filteredProducts)]))
+            } else if(filterParam === "Delivery Status") {
+                 var filteredProducts = [];
+                      productsList.map( product => {
+                          if(product.deliveryStatus === element) {
+                              filteredProducts.push(product);
+                          }
+                      })
+                localStorage.setItem('filteredList',JSON.stringify([...new Set(filteredProducts)]))
+
+            } else if(filterParam === "Area Code") {
+                    var filteredProducts = [];
+                       productsList.map( product => {
+                           if(product.shippingAddress.substring(product.shippingAddress.length - 6) === element) {
+                               filteredProducts.push(product);
+                           }
+                       })
+                 localStorage.setItem('filteredList',JSON.stringify([...new Set(filteredProducts)]))
+            } else {
+                 var filteredProducts = [];
+                      productsList.map( product => {
+                          if(product.orderDate.substring(0, 10) === element) {
+                              filteredProducts.push(product);
+                          }
+                      })
+                localStorage.setItem('filteredList',JSON.stringify([...new Set(filteredProducts)]))
+            }
+            setisLoading(false);
+            console.log(filteredList);
+        }
+
+        const handleSort = (sortBy) => {
+                    setSortParam(sortBy);
+                    console.log(sortParam)
+
+                    if(sortBy === "Product Name"){
+                        setFilterList(productsList.sort((a, b) => a.productName.localeCompare(b.productName)));
+                        console.log(productsList);
+                    } else if(sortBy === "Delivery Status") {
+                        setFilterList(productsList.sort((a, b) => a.deliveryStatus.localeCompare(b.deliveryStatus)));
+                    } else if(sortBy === "Area Code") {
+                         setFilterList(productsList.sort((a, b) => a.shippingAddress.substring(a.shippingAddress.length - 6).localeCompare(b.shippingAddress.substring(b.shippingAddress.length - 6))));
+                    } else {
+                         setFilterList(productsList.sort((a, b) => a.orderDate.localeCompare(b.orderDate)));
+                    }
+                }
+
+    const exportCsv = () => {
+        const csvExporter = new ExportToCsv(options);
+        let newArray = filterList.map(function(item) {
+            delete item.productImage;
+            return item;
+        });
+        console.log(newArray)
+        csvExporter.generateCsv(newArray);
+    }
+
+    const filteredList=JSON.parse(localStorage.getItem("filteredList"))
+    const filtered=JSON.parse(localStorage.getItem("filter"))
     return(
+    <html style={{height:'100%'}}>
+        <style>{`
+            table{
+                table-layout: fixed;
+            }
+            th, td{
+                padding: 10px;
+                max-width: "100%";
+                width: "95%";
+                text-align: left;
+            }
+        `}</style>
+    <body style={{height:'100vh'}}>
     <Grid>
     <VendorSidebar/>
         <Grid style={gridStyle}>
 
         <Paper elevation={20} style={paperStyle}>
-            <Grid align='center' style={{padding:"30px 10px"}}>
-
-                <Typography variant='h5' color="textSecondary" align="center">Order Management</Typography>
+            <Grid align='center' style={{padding:"20px 20px", backgroundColor:'#1abda0', backgroundImage: `url(${order})`, backgroundSize: "contain", backgroundRepeat: "no-repeat", height:"20%"}}>
+                <Typography variant='h5' color="inherit" align="center" style={{padding:"30px"}}>Order Management</Typography>
             </Grid>
-            <br/>
-           {/* <Formik initialValues={initialValues} onSubmit={onSubmit}>
-                {(props) => (
-                    <Form>
-                    <div class="container">
-                   <Grid container spacing={2} className={classes.businessProf}>
-                        <Grid item xs={6}>
-                                <Field as={TextField} label='Vendor Name' name="username" disabled value={info2.user.username}  required/>
-                        </Grid>
-                        <Grid item xs={6}>
-                            <Field as={TextField} label='Phone Number' name="phoneno" disabled value={info2.user.phoneno}  required />
-                        </Grid>
+            <Grid align="right" style={{padding:"10px"}}>
 
-                        <Grid item xs={6}>
-                            <Field as={TextField} label='Email Id' name="email" disabled value={info2.user.email} required/>
-                        </Grid>
+            <Button variant="outlined" color="success" onClick={exportCsv} style={{minHeight: '40px'}} >Export  <img src={csv} alt="csvfile"/></Button>
+            &nbsp;&nbsp;
+            <FormControl sx={{  minWidth: 100 }} size="small">
+              <InputLabel id="demo-simple-select">Filter By</InputLabel>
+              <Select
+                labelId="demo-simple-select"
+                id="demo-simple"
+                value={filterParam}
+                label="Filter Orders By"
+                autoWidth
+                onChange={(e) => {
+                       handleFilter(e.target.value);
+                 }}
+              >
+                <MenuItem value="All">All Orders</MenuItem>
+                <MenuItem value="Product Name">Product name</MenuItem>
+                <MenuItem value="Delivery Status">Delivery Status</MenuItem>
+                <MenuItem value="Area Code">Area Code</MenuItem>
+                <MenuItem value="Order Date">Order Date</MenuItem>
+              </Select>
+            </FormControl>
+            &nbsp;&nbsp;
+            {filterSelected && (<FormControl sx={{  minWidth: 100 }} size="small">
+              <InputLabel id="demo-simple-select">Select {filterParam}</InputLabel>
+              <Select
+                labelId="demo-simple-select"
+                id="demo-simple"
+                value={element}
+                label="Filter Orders By"
+                autoWidth
+                onChange={(e) => {
+                       handleFilterElement(e.target.value);
+                 }}
+              >
+              {filtered.map((product) => (
+                      <MenuItem value={product}>{product}</MenuItem>
+                  ))}
+              </Select>
+            </FormControl>)}
+            &nbsp;&nbsp;
+                <FormControl sx={{ minWidth: 100 }} size="small">
+                  <InputLabel id="demo-simple-select-label">Sort By</InputLabel>
+                  <Select
+                    labelId="demo-simple-select-label"
+                    id="demo-simple-select"
+                    value={sortParam}
+                    label="Sort Orders By"
+                    autoWidth
+                    onChange={(e) => {
+                           handleSort(e.target.value);
+                     }}
+                  >
+                     <MenuItem value="Product Name">Product name</MenuItem>
+                    <MenuItem value="Delivery Status">Delivery Status</MenuItem>
+                    <MenuItem value="Area Code">Area Code</MenuItem>
+                    <MenuItem value="Order Date">Order Date</MenuItem>
+                  </Select>
+                </FormControl>
+            </Grid>
+            <Grid>
 
-                        <Grid item xs={6}>
-                            <Field as={TextField} label='Registration Status' name="status" disabled value={info2.status} required />
-                        </Grid>
+            <table>
+            <tr>
+            <th />
+            <th>Product</th>
+            <th>Quantity</th>
+            <th>Purchased Price</th>
+            <th>Order Date</th>
+            <th>Shipping Address</th>
+            <th>Delivery Status</th>
+            </tr>
+            {isLoading ? (
+                    <div className='spinner-border text-primary' role='status'>
+                    {' '}
+                    <span className='sr-only'><h2>No Orders Yet</h2></span>{' '}
+                    </div>
+                ) : (
+                    filteredList.map(basketItem => {
 
-                        <Grid item xs={6}>
-                            <Field as={TextField} label='Business Name' name="businessName" required  value={info2.businessName}
-                            error={props.errors.businessName && props.touched.businessName} onInput={props.handleChange}
+                        return(
+                            <tr key={basketItem.id}>
+                                <td><img src={`data:image/png;base64,${basketItem.productImage}`} width={100} alt="product" style={{cursor: 'pointer'}} /></td>
+                                <td>{basketItem.productName}</td>
+                                <td>{basketItem.quantSelected}</td>
+                                <td>Rs. {basketItem.discountedPrice}</td>
+                                <td>{basketItem.orderDate.substring(0, 10)}</td>
+                                <td>{basketItem.shippingAddress}</td>
+                                <td>{basketItem.deliveryStatus}
+                                <Checkbox
+                                        checked={basketItem.deliveryStatus === "Delivered" ? true : false}
+                                        onChange={(event, newValue) => {handleChecked(basketItem.id, newValue);}}
+                                        inputProps={{ 'aria-label': 'controlled' }}
+                                        label="Delivered"
+                                        disabled = {basketItem.deliveryStatus === "Delivered" ? true : false}
+                                      />
+                                </td>
 
-                            onChange={e=>
-                              setMyprofile({
-                                  type: 'field',
-                                  fieldName: 'businessName',
-                                  payload: e.currentTarget.value,
-                                })
+                                 <td>
 
-                              }
-                              helperText={<ErrorMessage name="businessName" />}/>
-                        </Grid>
+                                </td>
+                            </tr>
 
-                        <Grid item xs={6}>
-                            <Field as={TextField}  label='Business Category'  name="businessCategory" required value={info2.businessCategory}
-                            error={props.errors.businessCategory && props.touched.businessCategory}  onInput={props.handleChange}
-                            onChange={(e) =>
-                              setMyprofile({
-                                  type: 'field',
-                                  fieldName: 'businessCategory',
-                                  payload: e.currentTarget.value,
-                                })
-                              } helperText={<ErrorMessage name="businessCategory" />}/>
-                        </Grid>
+                           )
+            })
 
 
-                        <Grid item xs={12}>
-                            <Field as={TextField} label='Address' name="address" required fullWidth value={address}
-                            error={props.errors.address && props.touched.address} required   onInput={props.handleChange}
-                            onChange={(e) =>
-                              setMyprofile({
-                                  type: 'field',
-                                  fieldName: 'address',
-                                  payload: e.currentTarget.value,
-                                })
-                              } helperText={<ErrorMessage name="address" />}/>
-                        </Grid>
+            )}
 
-                        <Grid item xs={6}>
-                            <Field as={TextField} label='Serviceable Pincodes' name="pincodes" required value= {info2.pincodes}
-                            error={props.errors.pincodes && props.touched.pincodes}   onInput={props.handleChange}
-                            onChange={(e) =>
-                              setMyprofile({
-                                  type: 'field',
-                                  fieldName: 'pincodes',
-                                  payload: e.currentTarget.value,
-                                })
-                              } helperText={<ErrorMessage name="pincodes" />}/>
-                        </Grid>
+            </table>
 
-                        <Grid item xs={6}>
-                            <Field as={TextField} label='gstin' name="businessName" required  value={info2.gstin}
-                            error={props.errors.gstin && props.touched.gstin} onInput={props.handleChange} disabled/>
-                        </Grid>
+            <hr/>
 
-                        </Grid >
-                        </div>
-                        <Button type='submit' color='primary' variant="contained" onClick={onSubmit}
-                            style={btnstyle} disabled={props.isSubmitting}
-                            fullWidth>{props.isSubmitting ? "Loading" : "Submit"}</Button>
-
-                    </Form>
-                )}
-            </Formik> */}
-
+            </Grid>
         </Paper>
         <Snackbar
 //        className={classes.root}
@@ -207,6 +353,7 @@ const OrderManagement=()=>{
             <IconButton size="small" aria-label="close" color="inherit" onClick={handleClose}>
               <CloseIcon fontSize="small" />
             </IconButton>
+
           </Fragment>
         }
         />
@@ -214,6 +361,8 @@ const OrderManagement=()=>{
         {/*<Footer/>*/}
     </Grid>
     </Grid>
+    </body>
+    </html>
 )
 
 }

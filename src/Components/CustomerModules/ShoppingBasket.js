@@ -21,7 +21,17 @@ const ShoppingBasket=()=>{
     let navigate = useNavigate();
 
      const goToOrderSummery = () => {
-      navigate('/checkout', {replace: true})
+        const custProfile=JSON.parse(localStorage.getItem("customerProfile"))
+        console.log(custProfile)
+        if(custProfile !== ''){
+            navigate('/checkout', {replace: true})
+        } else {
+             setNotify({
+                 isOpen:true,
+                 mesg:"Please add billing and shipping address"
+             })
+        }
+
      };
 
       const productDescription = product => e =>  {
@@ -66,7 +76,7 @@ const ShoppingBasket=()=>{
       const [isLoading, setisLoading] = useState(true)
       const [isEmpty, setIsEmpty] = useState(true)
       const [notify, setNotify] = useState({ isOpen: false, mesg: '' });
-      const paperStyle={padding :'20px', width:'80%', margin:"20px", align: 'center', position:'relative'}
+      const paperStyle={padding :'20px', width:'90%', margin: 'auto', align: 'center', position:'relative'}
       //const payButton={padding:'5px', align:'center'}
 
       const myInfo=JSON.parse(localStorage.getItem("myInfo"))
@@ -101,8 +111,6 @@ const ShoppingBasket=()=>{
 				<body style={{height:'100vh'}}>
         <Grid>
         <Homebar />
-
-            <br/><br/>
             <center>
             <Paper elevation={20} style={paperStyle}>
                 <h2>Your Shopping Basket</h2>
@@ -115,7 +123,7 @@ const ShoppingBasket=()=>{
                 <th />
                 <th>Product</th>
                 <th>Quantity</th>
-                <th>Price</th>
+                <th>Price per item</th>
                 <th>Discounted Price</th>
                 </tr>
 

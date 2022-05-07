@@ -30,9 +30,6 @@ import Image from '../Images/2593108.png';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import Badge from "@material-ui/core/Badge";
 
-import SearchBar from './SearchBar';
-import SearchIcon from '@mui/icons-material/Search';
-
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
@@ -103,7 +100,7 @@ export default function MenuAppBar(props) {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
   const [search, setSearch] = React.useState('')
-  const BarStyling = {width:"20rem",background:"#F2F1F9", border:"none", padding:"0.5rem", marginRight:"5rem"};
+  const BarStyling = {width:"20rem",background:"#B39DDB", border:"none", padding:"0.5rem", marginRight:"5rem"};
 
   const handleMenu = (event) => {
     setAnchorEl(event.currentTarget);
@@ -120,33 +117,19 @@ export default function MenuAppBar(props) {
     localStorage.clear();
   };
 
-  const handleProfile = () => {
-    setAnchorEl(null);
-    navigate('/customerProfile', {replace: true})
-
+  const verifyVendors = () => {
+   setAnchorEl(null);
+    navigate('/vendorVerification', {replace: true})
   };
-
-  const handlePastOrders = () => {
-      setAnchorEl(null);
-      navigate('/pastOrders', {replace: true})
-
-    };
 
   const goHome = () => {
-    navigate('/customerHome', {replace: true})
+    setAnchorEl(null);
+    navigate('/adminHome', {replace: true})
 
   };
-  const goToShoppingBasket = () => {
-      navigate('/shoppingBasket', {replace: true})
 
-    };
+  const searchProduct = () => {
 
-
-  const [searchDialog, setSearchDialog] = React.useState({ isOp: false });
-  const searchProduct = (e) => {
-
-
-      setSearchDialog({isOp:true})
     };
 
         const [itemCount, setItemCount] = React.useState(0);
@@ -177,25 +160,8 @@ export default function MenuAppBar(props) {
                 <img src={logo} alt="logo" height="50" width="200" align="center" onClick={goHome} style={{cursor: 'pointer'}}/>
               </Typography>
 
-              <Tooltip title="Search Product">
-                <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="Home" onClick={searchProduct}>
-                <SearchIcon/>
-                </IconButton></Tooltip>
               {auth && (
                 <div >
-                  <Tooltip title="Go to Home page">
-                    <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="Home" onClick={goHome}>
-                      <HomeIcon/>
-                    </IconButton></Tooltip>
-                 <Tooltip title="Select Location">
-                   <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="Location">
-                     <LocationOnIcon/>
-                   </IconButton></Tooltip>
-                   <Tooltip title="Shopping Basket">
-                          <Badge badgeContent={itemCount} className={classes.basketIcon} color="primary" aria-label="Shopping Basket" onClick={goToShoppingBasket}>
-                              <ShoppingBasketIcon />{" "}
-                            </Badge>
-                            </Tooltip>
 
                     <Button onClick={handleMenu} className={classes.menuButton} startIcon={<AccountCircleIcon />} endIcon={<ArrowDropDownIcon />}
                      size="large" style={{ fontSize: 15, textTransform: 'none', color: 'white' }} >
@@ -209,26 +175,26 @@ export default function MenuAppBar(props) {
                     open={Boolean(anchorEl)}
                     onClose={handleClose}
                   >
-                    <MenuItem onClick={handleProfile}>
+                    <MenuItem onClick={verifyVendors}>
                       <List>
                         <ListItem alignItems='center'>
                           <ListItemIcon ><PersonIcon /></ListItemIcon>
                           <ListItemText>
-                            Profile
+                            Vendor Verification
                           </ListItemText>
                         </ListItem>
                       </List>
                     </MenuItem>
-                    <MenuItem onClick={handlePastOrders}>
+                    {/*<MenuItem >
                       <List>
                         <ListItem alignItems='center'>
                           <ListItemIcon ><DashboardIcon /></ListItemIcon>
                           <ListItemText>
-                            View past orders
+                            Support & Feedback
                           </ListItemText>
                         </ListItem>
                       </List>
-                    </MenuItem>
+                    </MenuItem>*/}
                     <MenuItem onClick={handleSignout}>
                       <List>
                         <ListItem alignItems='center'>
@@ -247,8 +213,6 @@ export default function MenuAppBar(props) {
           </AppBar>
         </ElevationScroll>
       </div>
-       <SearchBar searchDialog={searchDialog}
-          setSearchDialog={setSearchDialog} />
     </Box>
   );
 }

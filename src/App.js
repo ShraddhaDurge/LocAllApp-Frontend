@@ -16,6 +16,7 @@ import VendorDisplayProduct from './Components/VendorModules/VendorDisplayProduc
 import ProductDescription from './Components/CustomerModules/ProductDescription';
 import ShoppingBasket from './Components/CustomerModules/ShoppingBasket';
 import Checkout from './Components/CustomerModules/Checkout';
+import PastOrders from './Components/CustomerModules/PastOrders';
 
 function App() {
   return (
@@ -39,6 +40,7 @@ function App() {
         <Route path="/productDescription" element={<ProductDescription/>} />
        <Route path="/shoppingBasket" element={<ShoppingBasket/>} />
        <Route path="/checkout" element={<Checkout/>} />
+       <Route path="/pastOrders" element={<PastOrders/>} />
       </Routes>
 
     </Router>

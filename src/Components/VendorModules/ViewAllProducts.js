@@ -16,7 +16,21 @@ import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
 import { CardActionArea } from '@mui/material';
 import { Link } from 'react-router-dom';
+import { ExportToCsv } from 'export-to-csv';
+import FileDownloadIcon from '@mui/icons-material/FileDownload';
 
+const options = {
+        fieldSeparator: ',',
+        quoteStrings: '"',
+        decimalSeparator: '.',
+        showLabels: true,
+        showTitle: true,
+        title: 'Customer Orders',
+        useTextFile: false,
+        useBom: true,
+        useKeysAsHeaders: true,
+        // headers: ['Column 1', 'Column 2', etc...] <-- Won't work with useKeysAsHeaders present!
+      };
 
 const ViewAllProducts = (props) => {
     const { viewAllP, setViewAllP } = props;
@@ -39,12 +53,13 @@ const ViewAllProducts = (props) => {
     const showProduct = info => e => {
         console.log("in show product")
         localStorage.setItem("productInfo", JSON.stringify(info));
+        localStorage.setItem("backButtonLoc", JSON.stringify("InventoryManagement"));
         window.location.href="/vendorDisplayProduct"
     }
 
     const [productsList, setProductsList] = useState([]);
     const [isLoading, setisLoading] = useState(true);
-    const businessInfo=JSON.parse(localStorage.getItem("businessInfo"))
+    const businessInfo=JSON.parse(localStorage.getItem("myBusinessProfile"))
     const bid = businessInfo.business_id
     React.useEffect(() => {
 
@@ -54,6 +69,16 @@ const ViewAllProducts = (props) => {
       .then(setisLoading(false));
     }, [bid]);
 
+        const exportCsv = (list) => {
+            const csvExporter = new ExportToCsv(options);
+            let newArray = list.map(function(item) {
+                delete item.productImage;
+                delete item.productTags;
+                return item;
+            });
+            console.log(newArray)
+            csvExporter.generateCsv(newArray);
+        }
 
     return(
         <html>
@@ -88,7 +113,9 @@ const ViewAllProducts = (props) => {
                 aria-labelledby="alert-dialog-title"
                 aria-describedby="alert-dialog-description"
             >    <center>
-                    <DialogTitle id="past-event-dialog-title" textAlign="center" style={{backgroundColor:"#9FA8DA"}}>Product Inventory</DialogTitle>
+                    <DialogTitle id="past-event-dialog-title" textAlign="center" style={{backgroundColor:"#9FA8DA"}}>
+                    Product Inventory &nbsp;&nbsp;<IconButton aria-label="download" onClick={() => exportCsv(productsList)}> <FileDownloadIcon /> </IconButton>
+                    </DialogTitle>
 
                     <DialogContent style={{backgroundColor:"#9FA8DA", alignItems:"center"}} >
                         <Box >

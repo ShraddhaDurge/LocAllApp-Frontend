@@ -7,10 +7,11 @@ import { makeStyles } from '@material-ui/core/styles';
 import Snackbar from '@material-ui/core/Snackbar';
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
-import Image from '../Images/2593164.png';
+import Image from '../Images/vendorHome2.png';
 import VerifiedIcon from '@mui/icons-material/Verified';
 import PendingActionsIcon from '@mui/icons-material/PendingActions';
 import VendorSidebar from './VendorSidebar.js'
+import UploadGstCertificate from "../Login&Register/UploadGstCertificate";
 
 function businessProfile(myprofile,action) {
     const businessInfo=JSON.parse(localStorage.getItem("myBusinessProfile"))
@@ -56,7 +57,7 @@ function businessProfile(myprofile,action) {
   ))
 
 const VendorHome=()=>{
-    const paperStyle={width:800, height:520, marginLeft:"390px",overflowY: 'scroll', overflowX:'hidden', align: 'center', position: 'relative'}
+    const paperStyle={width:"72%", height:"99%", margin:"0px 330px"}
     const btnstyle = { margin:'5px auto auto auto',display:'flex',justifyContent:'center',alignItems:'center', width:'30%',height:'20%', backgroundColor: '#2196F3'}
     const gridStyle={backgroundColor: '#E3F2FD',height:528 ,padding :'20px 0px'}
     const pincodeButtons= {borderRadius: '20px',marginLeft: '5px',backgroundColor: "#199bf1",color: '#FFFFFF','&:hover': {backgroundColor: "#5858FA"}}
@@ -65,6 +66,7 @@ const VendorHome=()=>{
     const businessInfo=JSON.parse(localStorage.getItem("businessInfo"))
     const classes=useStyles();
     const emptyPins = {pincode:0,district:'', statename:''};
+    const [imgdialog, setImgdialog] = useState({ isOp: false });
 
     const initialValues = {
         username: myInfo.username,
@@ -93,6 +95,7 @@ const VendorHome=()=>{
                 console.log(res)
                 const pro=res.data
                localStorage.setItem('myBusinessProfile',JSON.stringify(pro))
+               localStorage.setItem('busiInfo', JSON.stringify(res.data.business));
                setMyprofile({ type: 'success' })
             })
             .catch(err=>{
@@ -123,6 +126,10 @@ const VendorHome=()=>{
                     setSuccess(true);
                     setMesg("Business Profile Updated!");
                     setOpen(true);
+
+                    setImgdialog({
+                        isOp: true
+                    })
             }
 
         })
@@ -178,7 +185,7 @@ const VendorHome=()=>{
         <Grid style={gridStyle}>
 
         <Paper elevation={20} style={paperStyle} >
-            <Paper style={{backgroundImage: `url(${Image})`, backgroundSize: "cover", backgroundRepeat: "no-repeat", height:120, widh:800, padding:"60px 0px 0px 90px", marginBottom:"20px"}}>
+            <Paper style={{backgroundImage: `url(${Image})`, backgroundSize: "cover", backgroundRepeat: "no-repeat", height:120, width:"90%", padding:"60px 0px 0px 90px", marginBottom:"20px"}}>
               <Typography gutterBottom variant="h5" fontFamily="Segoe UI" color="textPrimary">
                 Hello @{info2.user.username}! <FieldIcon name={info2.status} />
               </Typography>
@@ -240,7 +247,7 @@ const VendorHome=()=>{
                             <Field as={TextField} label='gstin' name="gstin" required  value={info2.gstin}
                             error={props.errors.gstin && props.touched.gstin} onInput={props.handleChange} disabled/>
                         </Grid>
-                        <Grid item xs={6} align="center" style={{marginLeft:"90px"}}>
+                        <Grid item xs={6} align="center" style={{marginLeft:"125px"}}>
                           <FieldArray name="pincodes">
                                 {({ push, remove }) => (
                                   <Fragment>
@@ -297,7 +304,8 @@ const VendorHome=()=>{
           </Fragment>
         }
         />
-
+        <UploadGstCertificate imgdialog={imgdialog}
+            setImgdialog={setImgdialog} />
         {/*<Footer/>*/}
     </Grid>
     </Grid>

@@ -10,12 +10,15 @@ import {
 } from "react-pro-sidebar";
 
 //import icons from react icons
-import { FaList, FaRegHeart } from "react-icons/fa";
-import { FiHome, FiLogOut, FiArrowLeftCircle, FiArrowRightCircle } from "react-icons/fi";
-import { RiPencilLine } from "react-icons/ri";
+import { FaRegHeart } from "react-icons/fa";
+import { FiArrowLeftCircle, FiArrowRightCircle } from "react-icons/fi";
+import HomeIcon from '@mui/icons-material/Home';
 import { BiCog } from "react-icons/bi";
 import logo from '../Images/logo1.png';
-
+import InventoryIcon from '@mui/icons-material/Inventory';
+import ShoppingBasketIcon from '@mui/icons-material/ShoppingBasket';
+import AssessmentIcon from '@mui/icons-material/Assessment';
+import LogoutIcon from '@mui/icons-material/Logout';
 
 //import sidebar css from react-pro-sidebar module and our custom css
 import "react-pro-sidebar/dist/css/styles.css";
@@ -60,7 +63,6 @@ const handleHome = () => {
  const handleLogout= () => {
 //            setAnchorEl(null);
             localStorage.clear();
-            localStorage.removeItem("myBusinessProfile");
             navigate('/', { replace: true })
 
         };
@@ -85,15 +87,15 @@ const handleHome = () => {
           </SidebarHeader>
           <SidebarContent>
             <Menu iconShape="square" >
-              <MenuItem active={true} icon={<FiHome />} onClick={handleHome} > Home </MenuItem>
-              <MenuItem icon={<FaList />} onClick={handleInventory} >Inventory Management </MenuItem>
-              <MenuItem icon={<FaRegHeart />} onClick={handleOrders}>Order Management</MenuItem>
-              <MenuItem  icon={<RiPencilLine />} onClick={handleReports}>Reports & Analysis</MenuItem>
+              <MenuItem active={true} icon={<HomeIcon />} onClick={handleHome} > Home </MenuItem>
+              <MenuItem icon={<InventoryIcon />} onClick={handleInventory} >Inventory Management </MenuItem>
+              <MenuItem icon={<ShoppingBasketIcon />} onClick={handleOrders}>Order Management</MenuItem>
+              <MenuItem  icon={<AssessmentIcon />} onClick={handleReports}>Reports & Analytics</MenuItem>
               </Menu>
           </SidebarContent>
           <SidebarFooter>
             <Menu iconShape="square">
-              <MenuItem icon={<FiLogOut />} onClick={handleLogout}>Logout</MenuItem>
+              <MenuItem icon={<LogoutIcon />} onClick={handleLogout}>Logout</MenuItem>
             </Menu>
           </SidebarFooter>
         </ProSidebar>
