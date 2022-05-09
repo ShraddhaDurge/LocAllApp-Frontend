@@ -21,6 +21,16 @@ const ShoppingBasket=()=>{
     let navigate = useNavigate();
 
      const goToOrderSummery = () => {
+
+        axios.get(`http://localhost:8088/customer/getCustomerProfile/${userid}`)
+            .then(res=>{
+                console.log(res)
+               localStorage.setItem('customerProfile',JSON.stringify(res.data))
+            })
+            .catch(err=>{
+                console.log(err)
+            })
+
         const custProfile=JSON.parse(localStorage.getItem("customerProfile"))
         console.log(custProfile)
         if(custProfile !== ''){
@@ -167,7 +177,7 @@ const ShoppingBasket=()=>{
                 <hr/>
                 <h3>Total Price = Rs. {totalPrice}</h3>
 
-                <Button color="primary" variant="contained" onClick={goToOrderSummery}><PaymentsIcon/> &nbsp;Proceed to payment </Button>
+                <Button color="primary" variant="contained" onClick={goToOrderSummery} disabled={totalPrice === 0}><PaymentsIcon/> &nbsp;Proceed to payment </Button>
 
                 </Grid>
                 </Grid>

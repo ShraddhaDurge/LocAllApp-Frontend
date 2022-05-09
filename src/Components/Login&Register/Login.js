@@ -10,6 +10,7 @@ import EmailIcon from '@mui/icons-material/Email';
 import LockIcon from '@mui/icons-material/Lock';
 import logo from '../Images/LocAll (8).png';
 import VendorLogin from './VendorLogin';
+import firebase from '../firebase';
 
 const Login = ({ handleChange }) => {
 
@@ -118,20 +119,25 @@ const Login = ({ handleChange }) => {
                     if(response.data.role ==='customer'){
                         localStorage.setItem('myInfo', JSON.stringify(response.data.user));
                         navigate('/customerHome', { replace: true })
+                        firebase.analytics().logEvent('customer_logged_in');
                     }else if(response.data.role ==='admin'){
                          localStorage.setItem('myInfo', JSON.stringify(response.data.user));
                          navigate('/adminHome', { replace: true })
+                         firebase.analytics().logEvent('admin_logged_in');
                          }
                     else if(response.data.role ==='vendor'){
                         console.log(response.data.business.user)
                         localStorage.setItem('myInfo', JSON.stringify(response.data.business.user));
                         localStorage.setItem('businessInfo', JSON.stringify(response.data.business));
 //                        navigate('/vendorHome', { replace: true })
+                        firebase.analytics().logEvent('vendor_logged_in');
                         setRoleDialog({ isOp: true })
                     }
                     else {
                         console.log("No such role exists!")
                     }
+
+                    firebase.analytics().logEvent('user_logged_in');
                 }
 
             })

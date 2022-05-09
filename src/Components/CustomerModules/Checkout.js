@@ -19,6 +19,7 @@ import Loader from "react-loader-spinner";
 //import Spinner from '../Images/Spinner.gif';
 import moment from "moment";
 import LoadingButton from '@mui/lab/LoadingButton';
+import firebase from '../firebase';
 
 const theme = createTheme({
  typography: {
@@ -60,23 +61,11 @@ const Checkout=()=>{
         setCheckOut(false);
         axios.get(`http://localhost:8088/customer/getBasket/${userid}`)
         .then((res) => {
-             console.log(res.data.basketItems)
              setProductsList([...res.data.basketItems])
              setTotalPrice(res.data.totalCost)
+             console.log(productsList)
              localStorage.setItem('totalCost',JSON.stringify(res.data.totalCost))
-
-              axios.get(`http://localhost:8088/customer/getCustomerProfile/${userid}`)
-                     .then(res=>{
-                         console.log(res)
-                         setIsLoading(false)
-                         localStorage.removeItem("customerProfile");
-                         localStorage.setItem('customerProfile',JSON.stringify(res.data))
-                     })
-                     .catch(err=>{
-                         console.log(err)
-
-                     })
-
+             setIsLoading(false);
             })
 
 //        console.log(productsList);
@@ -135,7 +124,8 @@ const loadScript = (src) => {
                                isOpen:true,
                                mesg:"Payment done Successfully!"
                            })
-                   const myTimeout = setTimeout(navigate('/customerHome', {replace: true}), 5000);
+                   firebase.analytics().logEvent('items_purchased');
+                   const myTimeout = setTimeout(navigate('/customerHome', {replace: true}), 10000);
                })
                .catch(err=>{
                    console.log(err)

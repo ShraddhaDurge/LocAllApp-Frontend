@@ -13,6 +13,7 @@ import ShoppingBasketIcon from '@mui/icons-material/ShoppingBasket';
 import AddIcon from "@material-ui/icons/Add";
 import RemoveIcon from "@material-ui/icons/Remove";
 import Rating from '@mui/material/Rating';
+import firebase from '../firebase';
 
 const useStyles=makeStyles({
 card:{
@@ -61,11 +62,13 @@ const ProductDescription = (props) => {
             var res=response.status
             console.log(response)
             console.log(response.status)
+
             if (res === 200) {
                 setNotify({
                     isOpen:true,
                     mesg:"Added to basket"
                 })
+                firebase.analytics().logEvent('item_added_to_basket');
             }
         })
         .catch((error) => {
