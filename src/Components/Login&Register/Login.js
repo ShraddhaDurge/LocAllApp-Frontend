@@ -118,12 +118,33 @@ const Login = ({ handleChange }) => {
                 if(res === 200){
                     if(response.data.role ==='customer'){
                         localStorage.setItem('myInfo', JSON.stringify(response.data.user));
-                        navigate('/customerHome', { replace: true })
-                        firebase.analytics().logEvent('customer_logged_in');
+                        const myInfo=JSON.parse(localStorage.getItem("myInfo"))
+                        const userid = myInfo.id;
+                        axios.get(`http://localhost:8088/customer/getCustomerProfile/${userid}`)
+                        .then(res=>{
+                           console.log(res)
+                           localStorage.setItem('customerProfile',JSON.stringify(res.data))
+                            if(res.data !== null) {
+                                localStorage.setItem('customerPincode',JSON.stringify(res.data.shippingPincode))
+                           }else {
+                                localStorage.setItem('customerPincode',JSON.stringify(0))
+
+                           }
+
+                           firebase.analytics().logEvent('customer_logged_in');
+                           navigate('/customerHome', { replace: true })
+                        })
+                        .catch(err=>{
+                            console.log(err)
+
+                        })
+
+
                     }else if(response.data.role ==='admin'){
                          localStorage.setItem('myInfo', JSON.stringify(response.data.user));
-                         navigate('/adminHome', { replace: true })
                          firebase.analytics().logEvent('admin_logged_in');
+                         navigate('/adminHome', { replace: true })
+
                          }
                     else if(response.data.role ==='vendor'){
                         console.log(response.data.business.user)
@@ -136,29 +157,16 @@ const Login = ({ handleChange }) => {
                     else {
                         console.log("No such role exists!")
                     }
-
                     firebase.analytics().logEvent('user_logged_in');
                 }
-
             })
             .catch((error) => {
                 console.log(error)
-                if (error.response.status === 400) {
-                    console.log(error.response.data);
                     setNotify({
                         isOpen: true,
                         mesg: "Invalid Email or password"
                     })
                     props.resetForm()
-                }
-                else {
-                    setNotify({
-                        isOpen: true,
-                        mesg: "Something went wrong"
-                    })
-                    console.log(error)
-                    props.resetForm()
-                }
             });
     }
     const Register = () => {

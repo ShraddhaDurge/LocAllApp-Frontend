@@ -7,7 +7,7 @@ export default class CategoryWiseSalesChart extends PureComponent {
 
   render() {
     return (
-        <BarChart width={630} height={320} data={categorySales} barSize={60}
+        <BarChart width={530} height={320} data={categorySales} barSize={60}
              nameKey="category">
             <XAxis dataKey="category"/>
             <YAxis dataKey="sales"  />

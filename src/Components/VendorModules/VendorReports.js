@@ -85,6 +85,8 @@ const VendorReports=()=>{
     const [open, setOpen] =useState(false);
     const [reports,setReports]=useState([]);
     const [topProducts, setTopProducts] =useState([]);
+    const [lastProducts, setLastProducts] =useState([]);
+    const [noProducts, setNoProducts] =useState(false);
     let navigate = useNavigate();
     const businessId = businessInfo.business_id;
        React.useEffect(() => {
@@ -95,7 +97,11 @@ const VendorReports=()=>{
               localStorage.setItem('productSales',JSON.stringify(res.data.productWiseSales))
               localStorage.setItem('monthRevenue',JSON.stringify(res.data.monthWiseRevenue))
               setTopProducts(res.data.vendorTopProducts)
-
+              if(res.data.vendorLastProducts.length !== 0){
+                setLastProducts(res.data.vendorLastProducts)
+              } else {
+                setNoProducts(true);
+              }
        })
      }, [businessId]);
 
@@ -258,7 +264,7 @@ const VendorReports=()=>{
                 </Grid >
                <Grid container style={{padding:'20px'}}>
 
-                   <Grid item xs={4} md={12}>
+                   <Grid item xs={6} md={12}>
                     <Typography gutterBottom variant="h6" color="secondary" align="center" >
                         Top Selling Products       <IconButton aria-label="download" onClick={() => exportCsv(topProducts)}> <FileDownloadIcon /> </IconButton>
                     </Typography>
@@ -293,6 +299,51 @@ const VendorReports=()=>{
                    </TableContainer>
 
                    </Grid>
+
+
+                   <Grid item xs={6} md={12}>
+                   <Typography gutterBottom variant="h6" color="secondary" align="center" >
+                       Least Selling Products       <IconButton aria-label="download" onClick={() => exportCsv(topProducts)} disabled={noProducts}> <FileDownloadIcon /> </IconButton>
+                   </Typography>
+                   { !noProducts ? (
+                  <TableContainer component={Paper}  className={classes.ncontainer}>
+                    <Table className={classes.table} aria-label="simple table">
+                      <TableHead>
+                        <TableRow>
+                          <TableCell align="center"  style={{backgroundColor:"#73C6B6"}}>Product Name</TableCell>
+                          <TableCell align="center" style={{backgroundColor:"#73C6B6"}}>Total Sales</TableCell>
+                          <TableCell align="center"  style={{backgroundColor:"#73C6B6"}}>Revenue </TableCell>
+                          <TableCell align="center"  style={{backgroundColor:"#73C6B6"}}>Inventory </TableCell>
+                          <TableCell align="center"  style={{backgroundColor:"#73C6B6"}}>See Details </TableCell>
+                        </TableRow>
+                      </TableHead>
+
+                      <TableBody>
+
+                        {lastProducts.map((row) => (
+
+                          <TableRow key={row.firstname}>
+
+                            <TableCell align="center" >{row.productName}</TableCell>
+                            <TableCell align="center">{row.totalSales}</TableCell>
+                            <TableCell align="center">{row.totalRevenue}</TableCell>
+                            <TableCell align="center">{row.inventory}</TableCell>
+                            <TableCell align="center"><Button variant="text" color="primary" onClick={showProduct(row.productName)}> see details </Button></TableCell>
+                          </TableRow>
+                        ))}
+                      </TableBody>
+                    </Table>
+                  </TableContainer>) : (
+                    <Paper style={{backgroundColor:"#73C6B6"}}>
+                    <Typography gutterBottom variant="subtitle1" align="center" >
+                        No Least Selling Products!
+                   </Typography>
+                   </Paper>
+                  )}
+
+
+                  </Grid>
+
                </Grid>
 
         </Paper>

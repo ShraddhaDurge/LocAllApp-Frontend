@@ -39,7 +39,6 @@ const PastOrders = () => {
           axios.get(`http://localhost:8088/customer/viewPastOrders/${userid}`)
                 .then((res) =>
                 {
-                          console.log(res.data)
                           setProductsList([...res.data]);
                           console.log("product list",productsList);
                           setisLoading(false)

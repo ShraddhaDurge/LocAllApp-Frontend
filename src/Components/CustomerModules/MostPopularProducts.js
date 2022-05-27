@@ -46,17 +46,20 @@ const MostPopularProducts=()=>{
         }
       };
 
-      const [productsList, setProductsList] = useState([]);
-            const [isLoading, setisLoading] = useState(true)
-            React.useEffect(() => {
+    const [productsList, setProductsList] = useState([]);
+    const [isLoading, setisLoading] = useState(true)
 
-              fetch(`http://localhost:8088/product/getMostPopularProducts`)
-            .then((res) => res.json())
-            .then((data) => setProductsList([...data]))
-            .then(setisLoading(false));
 
-            console.log(productsList);
-          }, []);
+    React.useEffect(() => {
+       const pincode=JSON.parse(localStorage.getItem("customerPincode"))
+
+      fetch(`http://localhost:8088/product/getMostPopularProducts/${pincode}`)
+    .then((res) => res.json())
+    .then((data) => setProductsList([...data]))
+    .then(setisLoading(false));
+
+    console.log(productsList);
+  }, [1]);
 
     return(
 
@@ -78,7 +81,7 @@ const MostPopularProducts=()=>{
                             return(
                                 <div class="container">
 
-                                <Card sx={{ minWidth: 280, maxWidth: 400, alignItems:"center", margin:"10px",backgroundColor:"#F8BBD0"}} key={product.id}>
+                                <Card sx={{ minWidth: 300, maxWidth: 1000, alignItems:"center", margin:"10px",backgroundColor:"#F8BBD0"}} key={product.id}>
                                 <CardActionArea onClick={productDescription(product)}>
                                     <CardMedia
                                     component="img"

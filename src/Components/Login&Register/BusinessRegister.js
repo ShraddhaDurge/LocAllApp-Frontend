@@ -62,7 +62,7 @@ const BusinessRegister = () => {
                 console.log(response.status)
                 if (res === 200) {
                     setSuccess(true);
-                    localStorage.setItem('busiInfo', JSON.stringify(response.data.business));
+                    localStorage.setItem('businessInfo', JSON.stringify(response.data.business));
                     setMesg(response.data.message);
                     setOpen(true);
                      setImgdialog({

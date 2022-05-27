@@ -125,18 +125,13 @@ const CustomerProfile=()=>{
         .catch((error) => {
             if (error.response.status === 400) {
                 console.log(error.response.data.message);
-                // alert("Error ")
                     setOpen(true);
                     setMesg(error.response.data.message);
-
-
             }
             else{
-                // alert("Something went wrong")
                    setOpen(true);
                    setMesg("Something went wrong");}
                    console.log(error)
-//                   window.location.reload()
         });
 
     }

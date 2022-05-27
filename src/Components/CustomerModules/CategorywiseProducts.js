@@ -42,13 +42,13 @@ const CategorywiseProducts = (props) => {
 
     const [productsList, setProductsList] = useState([]);
     const [isLoading, setisLoading] = useState(true);
-     const category=JSON.parse(localStorage.getItem("categoryName"))
-
+    const category=JSON.parse(localStorage.getItem("categoryName"))
+    const pincode=JSON.parse(localStorage.getItem("customerPincode"))
     React.useEffect(() => {
-
-      const category=JSON.parse(localStorage.getItem("categoryName"))
       console.log(category);
-      axios.get(`http://localhost:8088/product/getCategoryProducts/${category}`)
+
+
+      axios.get(`http://localhost:8088/product/getCategoryProducts/${category}/${pincode}`)
       .then((res) => {
          setProductsList([...res.data]);
          setisLoading(false);

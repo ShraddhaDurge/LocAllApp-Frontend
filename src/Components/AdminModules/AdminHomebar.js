@@ -15,7 +15,7 @@ import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import HomeIcon from '@material-ui/icons/Home';
 import DashboardIcon from '@material-ui/icons/Dashboard';
 import LogoutIcon from '@mui/icons-material/Logout';
-import ShoppingBasketIcon from '@mui/icons-material/ShoppingBasket';
+import AnalyticsIcon from '@mui/icons-material/Analytics';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
@@ -29,6 +29,7 @@ import useAutocomplete from '@mui/material/useAutocomplete';
 import Image from '../Images/2593108.png';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import Badge from "@material-ui/core/Badge";
+import StoreMallDirectoryIcon from '@mui/icons-material/StoreMallDirectory';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -128,6 +129,11 @@ export default function MenuAppBar(props) {
 
   };
 
+//  const goAnalytics = () => {
+//      navigate(, {replace: true})
+//
+//    };
+
   const searchProduct = () => {
 
     };
@@ -159,56 +165,32 @@ export default function MenuAppBar(props) {
               <Typography variant="h6" className={classes.title}  >
                 <img src={logo} alt="logo" height="50" width="200" align="center" onClick={goHome} style={{cursor: 'pointer'}}/>
               </Typography>
-
               {auth && (
-                <div >
+                  <div >
 
-                    <Button onClick={handleMenu} className={classes.menuButton} startIcon={<AccountCircleIcon />} endIcon={<ArrowDropDownIcon />}
-                     size="large" style={{ fontSize: 15, textTransform: 'none', color: 'white' }} >
-                            <Typography >Hello, {dataInfo.username}</Typography>
-                    </Button>
-                  <StyledMenu
-                    id="menu-appbar"
-                    anchorEl={anchorEl}
+                      <Button onClick={handleMenu} className={classes.menuButton} startIcon={<AccountCircleIcon />}
+                       size="large" style={{ fontSize: 15, textTransform: 'none', color: 'white' }} >
+                              <Typography >Hello, {dataInfo.username}</Typography>
+                      </Button>
 
-                    keepMounted
-                    open={Boolean(anchorEl)}
-                    onClose={handleClose}
-                  >
-                    <MenuItem onClick={verifyVendors}>
-                      <List>
-                        <ListItem alignItems='center'>
-                          <ListItemIcon ><PersonIcon /></ListItemIcon>
-                          <ListItemText>
-                            Vendor Verification
-                          </ListItemText>
-                        </ListItem>
-                      </List>
-                    </MenuItem>
-                    {/*<MenuItem >
-                      <List>
-                        <ListItem alignItems='center'>
-                          <ListItemIcon ><DashboardIcon /></ListItemIcon>
-                          <ListItemText>
-                            Support & Feedback
-                          </ListItemText>
-                        </ListItem>
-                      </List>
-                    </MenuItem>*/}
-                    <MenuItem onClick={handleSignout}>
-                      <List>
-                        <ListItem alignItems='center'>
-                          <ListItemIcon ><LogoutIcon /></ListItemIcon>
-                          <ListItemText>
-                            Signout
-                          </ListItemText>
-                        </ListItem>
-                      </List>
-                    </MenuItem>
-                  </StyledMenu>
+                  </div>
+                )}
+              <Tooltip title="Go to User Analytics">
+                  <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="User Analytics" onClick={()=> window.open("https://analytics.google.com/analytics/web/?authuser=0&hl=en#/p301705009/realtime/overview?params=_u..nav%3Dmaui&collectionId=app", "_blank")}>
+                    <AnalyticsIcon/>
+                  </IconButton>
+              </Tooltip>
+              <Tooltip title="Verify Vendors">
+                    <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="User Analytics" onClick={verifyVendors}>
+                      <StoreMallDirectoryIcon/>
+                    </IconButton>
+                </Tooltip>
 
-                </div>
-              )}
+              <Tooltip title="SignOut">
+                  <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="signout" onClick={handleSignout}>
+                    <LogoutIcon/>
+                  </IconButton>
+              </Tooltip>
             </Toolbar>
           </AppBar>
         </ElevationScroll>

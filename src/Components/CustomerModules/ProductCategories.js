@@ -51,17 +51,18 @@ const ProductCategories=()=>{
       };
 
       const [categoryList, setCategoryList] = useState([]);
-            const [isLoading, setisLoading] = useState(true)
-            React.useEffect(() => {
+      const [isLoading, setisLoading] = useState(true)
+        const pincode=JSON.parse(localStorage.getItem("customerPincode"))
+      React.useEffect(() => {
 
-              fetch(`http://localhost:8088/product/getProductCategories`)
-            .then((res) => res.json())
-            .then((data) => setCategoryList([...data]))
-            .then(setisLoading(false));
+          fetch(`http://localhost:8088/product/getProductCategories/${pincode}`)
+        .then((res) => res.json())
+        .then((data) => setCategoryList([...data]))
+        .then(setisLoading(false));
 
-            console.log(categoryList);
+        console.log(categoryList);
 
-          }, []);
+      }, [pincode]);
 
     return(
 
@@ -82,7 +83,7 @@ const ProductCategories=()=>{
                             return(
                                 <div class="container">
 
-                                <Card sx={{ minWidth: 280, maxWidth: 400, alignItems:"center", margin:"10px",backgroundColor:"#FFCCBC"}} key={category.category}>
+                                <Card sx={{ minWidth: 300, maxWidth: 500, alignItems:"center", margin:"10px",backgroundColor:"#FFCCBC"}} key={category.category}>
                                 <CardActionArea onClick={categoryProducts(category.category)}>
                                     <CardMedia
                                     component="img"

@@ -6,6 +6,7 @@ import axios from 'axios';
 import logo from '../Images/logo1.png';
 import AdminHomebar from './AdminHomebar'
 import graph from '../Images/graph.png';
+import { Table, TableCell, TableBody, TableHead, TableRow, TableContainer } from '@material-ui/core';
 import BarChartOutlinedIcon from '@mui/icons-material/BarChartOutlined';
 import TimelineSharpIcon from '@mui/icons-material/TimelineSharp';
 import DiscountIcon from '@mui/icons-material/Discount';
@@ -87,7 +88,8 @@ const AdminHome=()=>{
     const [reports,setReports]=useState([]);
     const dataInfo = JSON.parse(localStorage.getItem("myInfo"))
     const userid = dataInfo.id;
-
+    const [topProducts, setTopProducts] =useState([]);
+    const [lastProducts, setLastProducts] =useState([]);
     useEffect(() => {
            axios.get(`http://localhost:8088/admin/getAnalytics`)
            .then((res) => {
@@ -95,6 +97,8 @@ const AdminHome=()=>{
                   setReports(res.data)
                   localStorage.setItem('categorySales',JSON.stringify(res.data.categorySales));
                   localStorage.setItem('monthTotalRevenue',JSON.stringify(res.data.monthWiseRevenues));
+                  setTopProducts(res.data.topProducts)
+                  setLastProducts(res.data.leastSellingProducts)
            })
            .catch(err=>{
                    console.log(err)
@@ -275,15 +279,15 @@ const AdminHome=()=>{
          <br />
      <Grid container spacing={1} direction="row" style={{margin:"5px"}}>
          <Grid item xs={6}>
-            <Paper style={{padding:"5px 0px", width:"640px"}}>
+            <Paper style={{margin:"0px 15px", padding:"20px 0px"}}>
                 <Typography gutterBottom variant="subtitle1" color="primary" align="center" >
                    Category wise Sales &nbsp;&nbsp;<IconButton aria-label="download" onClick={() => exportCsv(categorySales)}> <FileDownloadIcon /> </IconButton>
                </Typography>
                 <CategoryWiseSalesChart />
             </Paper>
          </Grid>
-         <Grid item xs={5} style={{margin:"0px 40px"}}>
-             <Paper style={{padding:"5px", width:"540px"}}>
+         <Grid item xs={6} >
+             <Paper style={{margin:"0px 15px", padding:"20px 10px"}}>
                  <Typography gutterBottom variant="subtitle1" color="primary" align="center" >
                     Month wise Revenue &nbsp;&nbsp;<IconButton aria-label="download" onClick={() => exportCsv(categorySales)}> <FileDownloadIcon /> </IconButton>
                 </Typography>
@@ -291,6 +295,76 @@ const AdminHome=()=>{
              </Paper>
           </Grid>
     </Grid>
+    <Grid container spacing={1} direction="row" style={{margin:"5px"}}>
+    <Grid item xs={6} md={6}>
+        <Paper style={{margin:"15px", padding:"20px 10px"}}>
+        <Typography gutterBottom variant="h6" color="secondary" align="center" >
+            Top Selling Products       <IconButton aria-label="download" onClick={() => exportCsv(topProducts)}> <FileDownloadIcon /> </IconButton>
+        </Typography>
+
+       <TableContainer component={Paper}  className={classes.ncontainer}>
+         <Table className={classes.table} aria-label="simple table">
+           <TableHead>
+             <TableRow>
+               <TableCell align="center"  style={{backgroundColor:"#73C6B6"}}>Product Name</TableCell>
+               <TableCell align="center" style={{backgroundColor:"#73C6B6"}}>Total Sales</TableCell>
+               <TableCell align="center"  style={{backgroundColor:"#73C6B6"}}>Revenue </TableCell>
+               <TableCell align="center"  style={{backgroundColor:"#73C6B6"}}>Inventory </TableCell>
+             </TableRow>
+           </TableHead>
+
+           <TableBody>
+
+             {topProducts.map((row) => (
+
+               <TableRow key={row.firstname}>
+
+                 <TableCell align="center" >{row.productName}</TableCell>
+                 <TableCell align="center">{row.totalSales}</TableCell>
+                 <TableCell align="center">{row.totalRevenue}</TableCell>
+                 <TableCell align="center">{row.inventory}</TableCell>
+               </TableRow>
+             ))}
+           </TableBody>
+         </Table>
+       </TableContainer>
+        </Paper>
+       </Grid>
+       <Grid item xs={6} md={6}>
+       <Paper style={{margin:"15px", padding:"20px 10px"}}>
+       <Typography gutterBottom variant="h6" color="secondary" align="center" >
+           Least Selling Products       <IconButton aria-label="download" onClick={() => exportCsv(topProducts)}> <FileDownloadIcon /> </IconButton>
+       </Typography>
+
+      <TableContainer component={Paper}  className={classes.ncontainer}>
+        <Table className={classes.table} aria-label="simple table">
+          <TableHead>
+            <TableRow>
+              <TableCell align="center"  style={{backgroundColor:"#73C6B6"}}>Product Name</TableCell>
+              <TableCell align="center" style={{backgroundColor:"#73C6B6"}}>Total Sales</TableCell>
+              <TableCell align="center"  style={{backgroundColor:"#73C6B6"}}>Revenue </TableCell>
+              <TableCell align="center"  style={{backgroundColor:"#73C6B6"}}>Inventory </TableCell>
+            </TableRow>
+          </TableHead>
+
+          <TableBody>
+
+            {lastProducts.map((row) => (
+
+              <TableRow key={row.firstname}>
+
+                <TableCell align="center" >{row.productName}</TableCell>
+                <TableCell align="center">{row.totalSales}</TableCell>
+                <TableCell align="center">{row.totalRevenue}</TableCell>
+                <TableCell align="center">{row.inventory}</TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+       </Paper>
+      </Grid>
+        </Grid>
     </Grid>
 )
 

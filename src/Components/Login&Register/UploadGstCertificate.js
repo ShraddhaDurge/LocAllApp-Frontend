@@ -36,7 +36,7 @@ export default function UploadGstCertificate(props) {
         const file = JSON.parse(localStorage.getItem("files"));
         fd.append('file', selectedFile);
         console.log({ selectedFile })
-        const busiInfo = JSON.parse(localStorage.getItem("busiInfo"));
+        const busiInfo = JSON.parse(localStorage.getItem("businessInfo"));
         const bid = busiInfo.business_id;
 
         const config = {
@@ -79,12 +79,14 @@ export default function UploadGstCertificate(props) {
 
 
     const fileSelectedHandler = (event) => {
+        console.log("In fileSelectedHandler")
         setSelectedFile(event.target.files[0]);
         localStorage.setItem('files', JSON.stringify(event.target.files[0]));
         setFileName(event.target.files[0].name);
         console.log({ fileName })
     }
     const handleClick = event => {
+        console.log("In handle click")
         hiddenFileInput.current.click();
     };
 

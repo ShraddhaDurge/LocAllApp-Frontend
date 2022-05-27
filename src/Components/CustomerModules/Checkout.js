@@ -249,8 +249,9 @@ const loadScript = (src) => {
                                   loadingPosition="end"
                                   variant="contained"
                                 >
-                                  Please Wait
+                                  Please Wait &nbsp; &nbsp;
                                 </LoadingButton>
+
                     ) : (
                         <Button color="primary" variant="contained" onClick={() => displayRazorpay(totalPrice)}>
                                          Pay using &nbsp; &nbsp; <img src={white} width={150} alt="razorpay"/>

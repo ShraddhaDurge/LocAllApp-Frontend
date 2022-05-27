@@ -21,16 +21,6 @@ const ShoppingBasket=()=>{
     let navigate = useNavigate();
 
      const goToOrderSummery = () => {
-
-        axios.get(`http://localhost:8088/customer/getCustomerProfile/${userid}`)
-            .then(res=>{
-                console.log(res)
-               localStorage.setItem('customerProfile',JSON.stringify(res.data))
-            })
-            .catch(err=>{
-                console.log(err)
-            })
-
         const custProfile=JSON.parse(localStorage.getItem("customerProfile"))
         console.log(custProfile)
         if(custProfile !== ''){

@@ -81,7 +81,7 @@ const RecommendedProducts=()=>{
                             return(
                                 <div class="container">
 
-                                <Card sx={{ minWidth: 280, maxWidth: 400, alignItems:"center", margin:"10px",backgroundColor:"#D1C4E9"}} key={product.id}>
+                                <Card sx={{ minWidth: 300, maxWidth: 500, alignItems:"center", margin:"10px",backgroundColor:"#D1C4E9"}} key={product.id}>
                                 <CardActionArea onClick={productDescription(product)}>
 
                                     <CardContent>
